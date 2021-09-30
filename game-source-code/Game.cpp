@@ -1,5 +1,3 @@
-
-
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <cmath>
@@ -36,7 +34,9 @@ const bool Game::IsRunning() const
     return this->window->isOpen();
 }
 
-//Function
+//Functions
+
+//Creates Window
 void Game::createWindow()
 {
     this->videomode.height=600;
@@ -47,7 +47,7 @@ void Game::createWindow()
 
 
 };
-
+//Gives values to private variables.
 void Game::createVarible()
 {
     this->MaxLaserCount=10;
@@ -55,17 +55,17 @@ void Game::createVarible()
     this->LaserDelay=this->MaxLaserDelay;
     this->CurrentLasers=0;
     //Load font
-	if (!this->font.loadFromFile("arial.ttf"))
-		std::cout << "ERROR::GAME::Failed to load font" << "\n";
+    if (!this->font.loadFromFile("resources/arial.ttf"))
+        std::cout << "ERROR::GAME::Failed to load font" << "\n";
 
     this->StartSplashText.setFont(this->font);
-	this->StartSplashText.setCharacterSize(25);
-	this->StartSplashText.setFillColor(sf::Color::White);
-	this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
-	this->StartSplashText.setPosition(0,250);
+    this->StartSplashText.setCharacterSize(25);
+    this->StartSplashText.setFillColor(sf::Color::White);
+    this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
+    this->StartSplashText.setPosition(0,250);
 }
 
-
+//Checks if window closed by clicking escape
 void Game::UpdateEvent()
 {
     while(this->window->pollEvent(this->event))
@@ -85,24 +85,17 @@ void Game::UpdateEvent()
 }
 
 
-
+//Updates everything in game
 void Game::update()
 {
 
 
     this->UpdateEvent();
-    //this->ShootLaser();
-
     this->BugB.update(this->window);
-
     this->UpdateEvent();
     this->ShootLaser();
     this->LaserCollision();
-
-        this->MakeCentipede();
-
-
-
+    this->MakeCentipede();
 
     if (CurrentLasers>=1)
     {
@@ -115,69 +108,57 @@ void Game::update()
     for(int i=9; i>=0; i--)
     {
         this->segments.at(i).update(this->window);
-        //for(int j=0;j<20000;j++)
-        //std::cout<<i<<std::endl;
+
     }
-    // std::cout<<400000000<<std::endl;
-    //this->laser.update(this->window);
+
 
 }
-
+//Renders Objects and window
 void Game::render()
 {
     this->window->clear(sf::Color::Black);
-    if(start){
-            this->window->draw(this->StartSplashText);
-           // this->window->display();
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+    //Splash Screen displayed
+    if(start)
     {
-        start=false;
+        this->window->draw(this->StartSplashText);
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+            start=false;
+        }
     }
-    }
-else{
+    else
+    {
 
 
-    //Render Objects in space
-    this->BugB.render(this->window);
-    //  this->BugB.render(this->window);
-    for(int i=9; i>=0; i--)
-    {
-        this->segments.at(i).render(this->window);
+        //Render Objects in space
+        this->BugB.render(this->window);
+        for(int i=9; i>=0; i--)
+        {
+            this->segments.at(i).render(this->window);
+        }
+        for(auto i:this->laser)
+        {
+            i.render(this->window);
+        }
     }
-    for(auto i:this->laser)
-    {
-        i.render(this->window);
-    }
-
-    // this->BugB.render(this->window);
-//    for(auto i:this->laser)
-    //{
-    //     i.render(this->window);
-    // }
-}
 
     this->window->display();
 }
-
+//Creates the laser beams
 void Game::ShootLaser()
 {
-    //Time delay
-
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&laser.size()<=this->MaxLaserCount&&LaserDelay>=MaxLaserDelay)
     {
-
         sf::FloatRect BugPos=this->BugB.GetBugPosition();
         this->laser.push_back(Laser(BugPos));
         CurrentLasers++;
         LaserDelay=0.f;
-
     }
     LaserDelay++;
-
 }
 
-
+//Checks if Laser collides with objects such as edge of screen or centipede segments
 void Game::LaserCollision()
 {
 
@@ -196,17 +177,16 @@ void Game::LaserCollision()
             {
                 this->laser.erase(this->laser.begin()+i);
                 CurrentLasers--;
-                // this->segments.erase(this->segments.begin()+j);
             }
         }
     }
 }
+//Makes a centipede. Segments that follow each other
 void Game::MakeCentipede()
 {
     int length=10;
     float delay=25.f;
     float pos;
-    //  LaserDelay=0.f;
     for(int i=0; i<length; i++)
     {
         pos=i*delay;
