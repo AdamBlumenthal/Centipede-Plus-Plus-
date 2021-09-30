@@ -20,7 +20,9 @@ Laser::~Laser()
     //Destructor
 
 }
-
+sf::RectangleShape Laser::getLaser(){
+    return laser;
+    }
 void Laser::createVarible()
 {
     this->MoveSpeed=10.f;

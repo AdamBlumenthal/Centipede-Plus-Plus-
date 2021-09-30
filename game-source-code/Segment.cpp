@@ -3,18 +3,10 @@
 #include <iostream>
 //using namespace std;
 Segment::Segment(float& pos):position(pos){
-//std::cout<<"Zunaid"<<std::endl;
-//makeSegment(position);
-//std::cout<<"Dylan"<<std::endl;
-//float position=0.f;
-    //float position=0.f;
+
     this->makeSegment(pos);
 }
-//sf::FloatRect BugBlaster::GetBugPosition()
- //{
-  //   sf::FloatRect BugBounds=bug.getGlobalBounds();
-    // return BugBounds;
- //}
+
 void Segment::moveDirections(){
 
     int gameWidth=800;

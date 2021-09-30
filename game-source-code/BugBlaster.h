@@ -25,7 +25,7 @@ class BugBlaster
         void WindowCollision(sf::RenderTarget* target);
 
         sf::FloatRect GetBugPosition();
-
+        sf::RectangleShape getBug();
 
 
     private:

@@ -26,7 +26,7 @@ class Laser
         void CheckCollisionWindow(sf::RenderTarget* target);
 
         sf::FloatRect GetLaserPosition();
-
+        sf::RectangleShape getLaser();
 
 
 

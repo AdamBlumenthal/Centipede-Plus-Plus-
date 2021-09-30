@@ -19,7 +19,9 @@ BugBlaster::~BugBlaster()
 {
 
 }
-
+sf::RectangleShape BugBlaster::getBug(){
+    return bug;
+    }
 void BugBlaster::createVarible()
 {
     this->MoveSpeed=5.f;
