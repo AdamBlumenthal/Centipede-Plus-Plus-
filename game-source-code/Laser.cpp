@@ -30,6 +30,7 @@ void Laser::createVarible()
 
 void Laser::createLaser()
 {
+    //Sets laser parameters
     this->laser.setFillColor(sf::Color::Yellow);
     this->laser.setSize(sf::Vector2f(5.f,20.f));
 }
@@ -42,6 +43,7 @@ void Laser::LaserMove()
 
 void Laser::SetPositionLaser(sf::FloatRect BugBounds)
 {
+    //Start position set at the top of BugBlaster
     laser.setPosition(BugBounds.left+BugBounds.width/2-2.5,BugBounds.top);
 
 }
@@ -56,7 +58,7 @@ sf::FloatRect Laser::GetLaserPosition()
 
 void Laser::update(sf::RenderTarget* target)
 {
-
+    //Changes in movement
     this->LaserMove();
 
 }

@@ -19,9 +19,11 @@ BugBlaster::~BugBlaster()
 {
 
 }
+//Get class object
 sf::RectangleShape BugBlaster::getBug(){
     return bug;
     }
+   //Initialise Varibles
 void BugBlaster::createVarible()
 {
     this->MoveSpeed=5.f;
@@ -61,7 +63,7 @@ void BugBlaster::KeyInput()
 
  void BugBlaster::WindowCollision(sf::RenderTarget* target)
  {
-
+//Creates lower box for BugBlaster
      if(bug.getGlobalBounds().left<=0.f)
      {
          this->bug.setPosition(0.f,bug.getGlobalBounds().top);
@@ -103,7 +105,7 @@ void BugBlaster::update(sf::RenderTarget* target)
 }
 
 void BugBlaster::render(sf::RenderTarget* target)
-{
+{   //Renders to window
     target->draw(this->bug);
 }
 
