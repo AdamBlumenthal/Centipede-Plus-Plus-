@@ -9,6 +9,7 @@
 #include "Laser.h"
 #include <vector>
 #include "CentipedeSegment.h"
+#include "Mushroom.h"
 
 
 
@@ -56,9 +57,13 @@ void Game::createVarible()
     this->MaxLaserDelay=10.f;
     this->LaserDelay=this->MaxLaserDelay;
     this->CurrentLasers=0;
+
     this->MaxLengthCentipede=12;
     lvlBegin=false;
     currentSegments=MaxLengthCentipede;
+
+    this->MushCount=20;
+
     //Load font
     if (!this->font.loadFromFile("resources/arial.ttf"))
         std::cout << "ERROR::GAME::Failed to load font" << "\n";
@@ -68,6 +73,16 @@ void Game::createVarible()
     this->StartSplashText.setFillColor(sf::Color::White);
     this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
     this->StartSplashText.setPosition(0,250);
+
+    Mushroom* Mush=NULL;
+
+   for(int i=0;i<=MushCount;i++)
+        {
+            Mush=new Mushroom();
+            this->Mush.push_back(Mush);
+
+        }
+
 }
 
 //Checks if window closed by clicking escape
@@ -100,8 +115,11 @@ void Game::update()
     this->UpdateEvent();
     this->ShootLaser();
     this->LaserCollision();
+//<<<<<<< HEAD
     this->LaserCollisionCentipede();
     this->LaserCollisionHeads();
+     this->LaserCollisionMushrooms();
+    //this->MakeCentipede();
     if(currentSegments==0)
     {
         MaxLengthCentipede--;
@@ -116,6 +134,10 @@ void Game::update()
         this->MakeHeads();
         lvlBegin=false;
     }
+//=======
+    //this->LaserCollisionCentipede();
+
+//>>>>>>> Zunaid
 
     if (CurrentLasers>=1)
     {
@@ -165,17 +187,23 @@ void Game::render()
        for(auto i:segments){
         i.render(this->window);
        }
-        for(int i=0; i<heads.size(); i++)
-        {
-            this->heads.at(i).render(this->window);
+        for(int i=0; i<heads.size(); i++){
+                this->heads.at(i).render(this->window);
         }
+
+        for(int i=0;i<=MushCount;i++)
+        {
+            Mush.at(i)->render(this->window);
+        }
+
         for(auto i:this->laser)
         {
             i.render(this->window);
         }
-    }
+
 
     this->window->display();
+}
 }
 //Creates the laser beams
 void Game::ShootLaser()
@@ -209,6 +237,7 @@ void Game::LaserCollision()
 
     }
 }
+
 void Game:: LaserCollisionCentipede()
 {
     bool leave=false;
@@ -239,6 +268,43 @@ void Game:: LaserCollisionCentipede()
         }
     }
 }
+
+
+
+void Game::LaserCollisionMushrooms(){
+
+      bool leave=false;
+    for(int i=0; i<CurrentLasers; i++)
+    {
+    for(int k=0; k<=MushCount; k++)
+        {
+            if(this->laser.at(i).GetLaserPosition().intersects(Mush.at(k)->GetMushroomPosition()))
+            {
+
+                this->laser.erase(this->laser.begin()+i);
+                CurrentLasers--;
+                leave=true;
+                Mush.at(k)->HealthLoss();
+                if(Mush.at(k)->IsHealthZero()==true)
+                {
+                    Mush.erase(Mush.begin()+k);
+                    MushCount--;
+
+                }
+                 break;
+                        }
+        }
+            if(leave){
+            //std::cout<<"hwoosooodsdofosdsdgsd"<<std::endl;
+            break;
+        }
+    }
+
+
+}
+
+
+
 void Game:: LaserCollisionHeads()
 {
     bool leave=false;
@@ -248,25 +314,27 @@ void Game:: LaserCollisionHeads()
         {
             if(this->laser.at(i).GetLaserPosition().intersects(this->heads.at(j).GetSegmentPosition()))
             {
-                //std::cout<<"Number of segments:"+segments.size()<<std::endl;
-                this->laser.erase(this->laser.begin()+i);
+                 this->laser.erase(this->laser.begin()+i);
                 //std::cout<<j+"Hit"<<std::endl;
                 leave=true;
                 this->heads.erase(this->heads.begin()+j);
                 CurrentLasers--;
                 currentSegments--;
-                break;
-
-                //seg.getFillColor()==sf::Color::Green
-                //  std::cout<<j<<std::endl;
+                 break;
             }
         }
-        if(leave){
+            if(leave){
             std::cout<<"hwoosooodsdofosdsdgsd"<<std::endl;
             break;
         }
     }
+
+
 }
+
+
+                //std::cout<<"Number of segments:"+segments.size()<<std::endl
+
 //Makes a centipede. Segments that follow each other
 void Game::MakeCentipede()
 {

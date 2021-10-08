@@ -6,6 +6,7 @@
 #include "Laser.h"
 #include <vector>
 #include "CentipedeSegment.h"
+#include "Mushroom.h"
 
 
 class Game
@@ -27,11 +28,20 @@ public:
     void render();
     void UpdateEvent();
     void ShootLaser();
+
+    //collisions
     void LaserCollision();
     void LaserCollisionCentipede();
     void LaserCollisionHeads();
+    void LaserCollisionMushrooms();
+
     void MakeCentipede();
     void MakeHeads();
+
+    //Collisions
+   // void LaserCollisionCentipede();
+   // void LaserCollision();
+
 
 private:
 
@@ -47,6 +57,8 @@ private:
     float LaserDelay;
     int CurrentLasers;
 
+    int MushCount;
+
     bool start=true;
 
     sf::Font font;
@@ -56,6 +68,8 @@ private:
     std::vector <Laser> laser;//Laser object
     std::vector <Segment> segments;//Centipede
     std::vector <Segment> heads;//Independent centipedes
+    std::vector <Mushroom*> Mush;
+
 
 };
 #endif // GAMEENGINE_H_INCLUDED
