@@ -9,6 +9,7 @@
 #include "Laser.h"
 #include <vector>
 #include "CentipedeSegment.h"
+#include "Mushroom.h"
 
 
 
@@ -54,6 +55,7 @@ void Game::createVarible()
     this->MaxLaserDelay=10.f;
     this->LaserDelay=this->MaxLaserDelay;
     this->CurrentLasers=0;
+    this->MushCount=20;
     //Load font
     if (!this->font.loadFromFile("resources/arial.ttf"))
         std::cout << "ERROR::GAME::Failed to load font" << "\n";
@@ -63,6 +65,16 @@ void Game::createVarible()
     this->StartSplashText.setFillColor(sf::Color::White);
     this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
     this->StartSplashText.setPosition(0,250);
+
+    Mushroom* Mush=NULL;
+
+   for(int i=0;i<=MushCount;i++)
+        {
+            Mush=new Mushroom();
+            this->Mush.push_back(Mush);
+
+        }
+
 }
 
 //Checks if window closed by clicking escape
@@ -95,6 +107,8 @@ void Game::update()
     this->UpdateEvent();
     this->ShootLaser();
     this->LaserCollision();
+    //this->LaserCollisionCentipede();
+    this->LaserCollisionMushrooms();
     this->MakeCentipede();
 
     if (CurrentLasers>=1)
@@ -132,6 +146,13 @@ void Game::render()
 
         //Render Objects in space
         this->BugB.render(this->window);
+
+        for(int i=0;i<=MushCount;i++)
+        {
+            Mush.at(i)->render(this->window);
+        }
+
+
         for(int i=9; i>=0; i--)
         {
             this->segments.at(i).render(this->window);
@@ -162,25 +183,57 @@ void Game::ShootLaser()
 void Game::LaserCollision()
 {
 
-    for(int j=0; j<segments.size(); j++)
+    for(int i=0; i<CurrentLasers; i++)
     {
-        for(int i=0; i<CurrentLasers; i++)
-        {
-            sf::FloatRect LaserPos=this->laser.at(i).GetLaserPosition();
+        sf::FloatRect LaserPos=this->laser.at(i).GetLaserPosition();
 
-            if(LaserPos.top<=0.f)
-            {
-                this->laser.erase(this->laser.begin()+i);
-                CurrentLasers--;
-            }
-            else if(this->laser.at(i).GetLaserPosition().intersects(this->segments.at(j).GetSegmentPosition()))
-            {
-                this->laser.erase(this->laser.begin()+i);
-                CurrentLasers--;
-            }
+        if(LaserPos.top<=0.f)
+        {
+            this->laser.erase(this->laser.begin()+i);
+            CurrentLasers--;
+            break;
         }
+
     }
 }
+
+
+void Game::LaserCollisionMushrooms()
+{
+    bool leave=false;
+    for(int i=0; i<CurrentLasers; i++)
+    {
+        for(int k=0; k<=MushCount; k++)
+        {
+            if(this->laser.at(i).GetLaserPosition().intersects(Mush.at(k)->GetMushroomPosition()))
+            {
+
+                this->laser.erase(this->laser.begin()+i);
+                CurrentLasers--;
+                leave=true;
+                Mush.at(k)->HealthLoss();
+                if(Mush.at(k)->IsHealthZero()==true)
+                {
+                    Mush.erase(Mush.begin()+k);
+                    MushCount--;
+
+                }
+                break;
+
+                //seg.getFillColor()==sf::Color::Green
+                //  std::cout<<j<<std::endl;
+            }
+        }
+        if(leave){
+            std::cout<<"hwoosooodsdofosdsdgsd"<<std::endl;
+            break;
+        }
+    }
+
+
+}
+
+
 //Makes a centipede. Segments that follow each other
 void Game::MakeCentipede()
 {
