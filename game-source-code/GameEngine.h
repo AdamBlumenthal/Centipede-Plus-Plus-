@@ -29,13 +29,17 @@ public:
     void ShootLaser();
     void LaserCollision();
     void MakeCentipede();
+    void MakeHeads();
 
 private:
 
     sf::RenderWindow* window;
     sf::Event event;
     sf::VideoMode videomode;
-
+    static int numberOfCentipedes;
+    bool lvlBegin;
+    int MaxLengthCentipede;
+    int currentSegments;
     int MaxLaserCount;
     float MaxLaserDelay;
     float LaserDelay;
@@ -49,6 +53,7 @@ private:
     BugBlaster BugB;//BugBlaster object
     std::vector <Laser> laser;//Laser object
     std::vector <Segment> segments;//Centipede
+    std::vector <Segment> heads;//Independent centipedes
 
 };
 #endif // GAMEENGINE_H_INCLUDED

@@ -7,10 +7,12 @@ class Segment
 
 public:
     Segment(float& position);
+    Segment(float& position, float& movespeed);
     void moveDirections();
     sf::RectangleShape getSegment();
     void update(sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
+    void makeHead();
     sf::FloatRect GetSegmentPosition();
 private:
     sf::RectangleShape segment1;

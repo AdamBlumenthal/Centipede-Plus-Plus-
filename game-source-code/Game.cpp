@@ -13,6 +13,8 @@
 
 
 
+int Game::numberOfCentipedes=7;
+//int Game::
 //Constructor
 Game::Game()
 {
@@ -54,6 +56,9 @@ void Game::createVarible()
     this->MaxLaserDelay=10.f;
     this->LaserDelay=this->MaxLaserDelay;
     this->CurrentLasers=0;
+    this->MaxLengthCentipede=3;
+    lvlBegin=true;
+    currentSegments=MaxLengthCentipede;
     //Load font
     if (!this->font.loadFromFile("resources/arial.ttf"))
         std::cout << "ERROR::GAME::Failed to load font" << "\n";
@@ -95,7 +100,18 @@ void Game::update()
     this->UpdateEvent();
     this->ShootLaser();
     this->LaserCollision();
-    this->MakeCentipede();
+    if(currentSegments==0){
+            MaxLengthCentipede--;
+            currentSegments=MaxLengthCentipede;
+            lvlBegin=true;
+    }
+
+    if(lvlBegin){
+            this->MakeCentipede();
+            //(MaxLengthCentipede<numberOfCentipedes)
+            this->MakeHeads();
+            lvlBegin=false;
+    }
 
     if (CurrentLasers>=1)
     {
@@ -105,11 +121,16 @@ void Game::update()
         }
 
     }
-    for(int i=9; i>=0; i--)
+    for(int i=segments.size()-1; i>=0; i--)
     {
         this->segments.at(i).update(this->window);
 
     }
+     for(int i=0; i<heads.size(); i++)
+        {
+            this->heads.at(i).update(this->window);
+        //    std::cout<<"Update "+i<<std::endl;
+        }
 
 
 }
@@ -132,9 +153,13 @@ void Game::render()
 
         //Render Objects in space
         this->BugB.render(this->window);
-        for(int i=9; i>=0; i--)
+        for(int i=segments.size()-1; i>=0; i--)
         {
             this->segments.at(i).render(this->window);
+        }
+         for(int i=0; i<heads.size(); i++)
+        {
+            this->heads.at(i).render(this->window);
         }
         for(auto i:this->laser)
         {
@@ -153,6 +178,7 @@ void Game::ShootLaser()
         sf::FloatRect BugPos=this->BugB.GetBugPosition();
         this->laser.push_back(Laser(BugPos));
         CurrentLasers++;
+        //Game::MaxLengthCentipede
         LaserDelay=0.f;
     }
     LaserDelay++;
@@ -176,7 +202,15 @@ void Game::LaserCollision()
             else if(this->laser.at(i).GetLaserPosition().intersects(this->segments.at(j).GetSegmentPosition()))
             {
                 this->laser.erase(this->laser.begin()+i);
+                std::cout<<j+"Hit"<<std::endl;
+
+                this->segments.erase(this->segments.begin()+j);
                 CurrentLasers--;
+                currentSegments--;
+               if(j<segments.size()&&(segments.begin()+j)<segments.end()&&j>0)
+                    segments.at(j-1).makeHead();
+                //seg.getFillColor()==sf::Color::Green
+               std::cout<<j<<std::endl;
             }
         }
     }
@@ -184,16 +218,31 @@ void Game::LaserCollision()
 //Makes a centipede. Segments that follow each other
 void Game::MakeCentipede()
 {
-    int length=10;
+    //int length=10;
     float delay=25.f;
     float pos;
-    for(int i=0; i<length; i++)
+    for(int i=0; i<MaxLengthCentipede; i++)
     {
         pos=i*delay;
 
         this->segments.push_back(Segment(pos));
 
     }
+    segments.at(MaxLengthCentipede-1).makeHead();
 
 }
+void Game::MakeHeads()
+{
+    //int length=10;
+    float delay=25.f;
+    float pos;
+    for(int i=0; i<(numberOfCentipedes-MaxLengthCentipede); i++)
+    {
+        pos=i*delay+200.f;
 
+        this->heads.push_back(Segment(pos,delay));
+        heads.at(i).makeHead();
+        std::cout<<"twice"<<std::endl;
+    }
+   // std::cout<<"Test"<<std::endl;
+}
