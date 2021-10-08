@@ -61,6 +61,7 @@ void Game::createVarible()
     this->MaxLengthCentipede=12;
     lvlBegin=false;
     start=true;
+    gameOver=false;
     currentSegments=MaxLengthCentipede;
 
     this->MushCount=20;
@@ -74,7 +75,7 @@ void Game::createVarible()
     this->StartSplashText.setFont(this->font);
     this->StartSplashText.setCharacterSize(25);
     this->StartSplashText.setFillColor(sf::Color::White);
-    this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
+   // this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
     this->StartSplashText.setPosition(0,250);
 
     Mushroom* Mush=NULL;
@@ -123,13 +124,15 @@ void Game::update()
     this->LaserCollisionHeads();
     this->LaserCollisionMushrooms();
     this->CollisionCentipedeMushroom();
+    this->CollisionBugCentipede();
     //this->MakeCentipede();
-    if(currentSegments==0&&MaxLengthCentipede>1)
+    if(currentSegments==0)
     {
         MaxLengthCentipede--;
         currentSegments=MaxLengthCentipede;
         lvlBegin=true;
     }
+    if(MaxLengthCentipede==0)gameOver=true;
     //else {
     //lvlBegin=false;
     //}
@@ -176,6 +179,7 @@ void Game::render()
     //Splash Screen displayed
     if(start)
     {
+         this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
 
         this->window->draw(this->StartSplashText);
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
@@ -184,8 +188,26 @@ void Game::render()
             lvlBegin=true;
         }
     }
+    else if(gameOver){
+          this->StartSplashText.setString("Game Over\n Press Enter to restart \n Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
+        this->window->draw(this->StartSplashText);
+      if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+        {
+
+
+          //  this->window->clear(sf::Color::Black);
+          segments.clear();
+          heads.clear();
+          Mush.clear();
+          createVarible();
+          start=false;
+            gameOver=false;
+            lvlBegin=true;
+        }
+    }
     else
     {
+        update();
         //Render Objects in space
         this->BugB.render(this->window);
         // for(int i=segments.size()-1; i>=0; i--)
@@ -235,9 +257,9 @@ void Game::LaserCollision()
 
     for(int i=0; i<CurrentLasers; i++)
     {
-        sf::FloatRect LaserPos=this->laser.at(i).GetLaserPosition();
+        //sf::FloatRect LaserPos=this->laser.at(i).GetLaserPosition();
 
-        if(LaserPos.top<=0.f)
+        if(laser.at(i).GetLaserPosition().top<=0.f)
         {
             this->laser.erase(this->laser.begin()+i);
             CurrentLasers--;
@@ -334,7 +356,7 @@ void Game:: LaserCollisionHeads()
                 MakeMushroom(heads.at(j));
                 this->heads.erase(this->heads.begin()+j);
                 CurrentLasers--;
-                currentSegments--;
+                //currentSegments--;
                 break;
             }
         }
@@ -357,20 +379,26 @@ void Game::CollisionCentipedeMushroom()
             if(Mush.at(i)->GetMushroomPosition().intersects(this->segments.at(j).GetSegmentPosition()))
             {
 
-                leave=true;
+               // leave=true;
                 segments.at(j).moveMushroom();
-                break;
+               // break;
             }
-        }
-        if(leave)
-        {
-            break;
         }
     }
 
 
 }
+void Game::CollisionBugCentipede(){
 
+ for(int j=0; j<segments.size(); j++)
+        {
+            if(this->BugB.GetBugPosition().intersects(this->segments.at(j).GetSegmentPosition()))
+            {
+                gameOver=true;
+                break;
+            }
+        }
+}
 //std::cout<<"Number of segments:"+segments.size()<<std::endl
 
 //Makes a centipede. Segments that follow each other

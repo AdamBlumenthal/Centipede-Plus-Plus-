@@ -35,6 +35,7 @@ public:
     void LaserCollisionHeads();
     void LaserCollisionMushrooms();
     void CollisionCentipedeMushroom();
+    void CollisionBugCentipede();
 
     void MakeCentipede();
     void MakeHeads();
@@ -61,6 +62,7 @@ private:
     int MushCount;
 
     bool start;
+    bool gameOver;
 
     sf::Font font;
     sf::Text StartSplashText;

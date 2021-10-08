@@ -5,7 +5,7 @@
 //Constructor
 Segment::Segment(float& pos):position(pos)
 {
-    movespeed=5.f;
+    movespeed=40.f;
     verticalSpeed=20.f;
     this->makeSegment(pos);
 }
@@ -35,7 +35,7 @@ void Segment::moveDirections()
       //  this->segment1.move(0,20.f);
       moveMushroom();
     }
-    else if(this->segment1.getPosition().y+20.f>=gameHeight||(this->segment1.getPosition().y+20.f==0&&verticalSpeed<0)){
+    else if(this->segment1.getPosition().y+20.f>gameHeight||(this->segment1.getPosition().y+20.f==0&&verticalSpeed<0)){
             verticalSpeed=(-1)*verticalSpeed;
                 moveMushroom();
             }
