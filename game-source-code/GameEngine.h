@@ -28,6 +28,8 @@ public:
     void UpdateEvent();
     void ShootLaser();
     void LaserCollision();
+    void LaserCollisionCentipede();
+    void LaserCollisionHeads();
     void MakeCentipede();
     void MakeHeads();
 

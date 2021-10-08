@@ -7,7 +7,7 @@
 //Constructor
 Laser::Laser(sf::FloatRect BugBounds)
 {
-    this->laser.setPosition(BugBounds.left+BugBounds.width/2-2.5,BugBounds.top);
+    this->laser.setPosition(BugBounds.left+BugBounds.width/2,BugBounds.top);
     this->createVarible();
     this->createLaser();
 
@@ -32,7 +32,7 @@ void Laser::createLaser()
 {
     //Sets laser parameters
     this->laser.setFillColor(sf::Color::Yellow);
-    this->laser.setSize(sf::Vector2f(5.f,20.f));
+    this->laser.setSize(sf::Vector2f(1.f,20.f));
 }
 
 //functions

@@ -29,7 +29,7 @@ void BugBlaster::createVarible()
 void BugBlaster::createBug()
 {
     this->bug.setFillColor(sf::Color::Green);
-    this->bug.setSize(sf::Vector2f(25.f,25.f));
+    this->bug.setSize(sf::Vector2f(24.f,24.f));
 }
 
 //functions

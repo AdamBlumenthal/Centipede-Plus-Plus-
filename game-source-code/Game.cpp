@@ -13,7 +13,7 @@
 
 
 
-int Game::numberOfCentipedes=7;
+int Game::numberOfCentipedes=12;
 //int Game::
 //Constructor
 Game::Game()
@@ -56,8 +56,8 @@ void Game::createVarible()
     this->MaxLaserDelay=10.f;
     this->LaserDelay=this->MaxLaserDelay;
     this->CurrentLasers=0;
-    this->MaxLengthCentipede=3;
-    lvlBegin=true;
+    this->MaxLengthCentipede=12;
+    lvlBegin=false;
     currentSegments=MaxLengthCentipede;
     //Load font
     if (!this->font.loadFromFile("resources/arial.ttf"))
@@ -100,17 +100,21 @@ void Game::update()
     this->UpdateEvent();
     this->ShootLaser();
     this->LaserCollision();
-    if(currentSegments==0){
-            MaxLengthCentipede--;
-            currentSegments=MaxLengthCentipede;
-            lvlBegin=true;
+    this->LaserCollisionCentipede();
+    this->LaserCollisionHeads();
+    if(currentSegments==0)
+    {
+        MaxLengthCentipede--;
+        currentSegments=MaxLengthCentipede;
+        lvlBegin=true;
     }
 
-    if(lvlBegin){
-            this->MakeCentipede();
-            //(MaxLengthCentipede<numberOfCentipedes)
-            this->MakeHeads();
-            lvlBegin=false;
+    if(lvlBegin)
+    {
+        this->MakeCentipede();
+        //(MaxLengthCentipede<numberOfCentipedes)
+        this->MakeHeads();
+        lvlBegin=false;
     }
 
     if (CurrentLasers>=1)
@@ -126,11 +130,11 @@ void Game::update()
         this->segments.at(i).update(this->window);
 
     }
-     for(int i=0; i<heads.size(); i++)
-        {
-            this->heads.at(i).update(this->window);
+    for(int i=0; i<heads.size(); i++)
+    {
+        this->heads.at(i).update(this->window);
         //    std::cout<<"Update "+i<<std::endl;
-        }
+    }
 
 
 }
@@ -145,6 +149,7 @@ void Game::render()
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
             start=false;
+            lvlBegin=true;
         }
     }
     else
@@ -153,11 +158,14 @@ void Game::render()
 
         //Render Objects in space
         this->BugB.render(this->window);
-        for(int i=segments.size()-1; i>=0; i--)
-        {
-            this->segments.at(i).render(this->window);
-        }
-         for(int i=0; i<heads.size(); i++)
+       // for(int i=segments.size()-1; i>=0; i--)
+      //  {
+         //   this->segments.at(i).render(this->window);
+       // }
+       for(auto i:segments){
+        i.render(this->window);
+       }
+        for(int i=0; i<heads.size(); i++)
         {
             this->heads.at(i).render(this->window);
         }
@@ -188,30 +196,74 @@ void Game::ShootLaser()
 void Game::LaserCollision()
 {
 
-    for(int j=0; j<segments.size(); j++)
+    for(int i=0; i<CurrentLasers; i++)
     {
-        for(int i=0; i<CurrentLasers; i++)
+        sf::FloatRect LaserPos=this->laser.at(i).GetLaserPosition();
+
+        if(LaserPos.top<=0.f)
         {
-            sf::FloatRect LaserPos=this->laser.at(i).GetLaserPosition();
+            this->laser.erase(this->laser.begin()+i);
+            CurrentLasers--;
+            break;
+        }
 
-            if(LaserPos.top<=0.f)
+    }
+}
+void Game:: LaserCollisionCentipede()
+{
+    bool leave=false;
+    for(int i=0; i<CurrentLasers; i++)
+    {
+        for(int j=0; j<segments.size(); j++)
+        {
+            if(this->laser.at(i).GetLaserPosition().intersects(this->segments.at(j).GetSegmentPosition()))
             {
+                //std::cout<<"Number of segments:"+segments.size()<<std::endl;
                 this->laser.erase(this->laser.begin()+i);
-                CurrentLasers--;
-            }
-            else if(this->laser.at(i).GetLaserPosition().intersects(this->segments.at(j).GetSegmentPosition()))
-            {
-                this->laser.erase(this->laser.begin()+i);
-                std::cout<<j+"Hit"<<std::endl;
-
+                //std::cout<<j+"Hit"<<std::endl;
+                leave=true;
                 this->segments.erase(this->segments.begin()+j);
                 CurrentLasers--;
                 currentSegments--;
-               if(j<segments.size()&&(segments.begin()+j)<segments.end()&&j>0)
+                if(j>0&&segments.begin()+j<=segments.end())
                     segments.at(j-1).makeHead();
+                break;
+
                 //seg.getFillColor()==sf::Color::Green
-               std::cout<<j<<std::endl;
+                //  std::cout<<j<<std::endl;
             }
+        }
+        if(leave){
+            std::cout<<"hwoosooodsdofosdsdgsd"<<std::endl;
+            break;
+        }
+    }
+}
+void Game:: LaserCollisionHeads()
+{
+    bool leave=false;
+    for(int i=0; i<CurrentLasers; i++)
+    {
+        for(int j=0; j<heads.size(); j++)
+        {
+            if(this->laser.at(i).GetLaserPosition().intersects(this->heads.at(j).GetSegmentPosition()))
+            {
+                //std::cout<<"Number of segments:"+segments.size()<<std::endl;
+                this->laser.erase(this->laser.begin()+i);
+                //std::cout<<j+"Hit"<<std::endl;
+                leave=true;
+                this->heads.erase(this->heads.begin()+j);
+                CurrentLasers--;
+                currentSegments--;
+                break;
+
+                //seg.getFillColor()==sf::Color::Green
+                //  std::cout<<j<<std::endl;
+            }
+        }
+        if(leave){
+            std::cout<<"hwoosooodsdofosdsdgsd"<<std::endl;
+            break;
         }
     }
 }
@@ -234,7 +286,7 @@ void Game::MakeCentipede()
 void Game::MakeHeads()
 {
     //int length=10;
-    float delay=25.f;
+    float delay=10.f;
     float pos;
     for(int i=0; i<(numberOfCentipedes-MaxLengthCentipede); i++)
     {
@@ -244,5 +296,5 @@ void Game::MakeHeads()
         heads.at(i).makeHead();
         std::cout<<"twice"<<std::endl;
     }
-   // std::cout<<"Test"<<std::endl;
+    // std::cout<<"Test"<<std::endl;
 }
