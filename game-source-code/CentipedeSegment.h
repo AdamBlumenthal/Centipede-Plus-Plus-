@@ -9,6 +9,7 @@ public:
     Segment(float& position);
     Segment(float& position, float& movespeed);
     void moveDirections();
+    void moveMushroom();
     sf::RectangleShape getSegment();
     void update(sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
@@ -16,7 +17,8 @@ public:
     sf::FloatRect GetSegmentPosition();
 private:
     sf::RectangleShape segment1;
-    float movespeed=5.f;
+    float movespeed;//=5.f;
+    float verticalSpeed;
     void makeSegment(float& position);
     float position;
 
