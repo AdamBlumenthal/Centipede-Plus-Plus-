@@ -115,11 +115,10 @@ void Game::update()
     this->UpdateEvent();
     this->ShootLaser();
     this->LaserCollision();
-//<<<<<<< HEAD
     this->LaserCollisionCentipede();
     this->LaserCollisionHeads();
-     this->LaserCollisionMushrooms();
-    //this->MakeCentipede();
+    this->LaserCollisionMushrooms();
+
     if(currentSegments==0)
     {
         MaxLengthCentipede--;
