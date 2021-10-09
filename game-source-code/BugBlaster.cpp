@@ -104,3 +104,7 @@ void BugBlaster::render(sf::RenderTarget* target)
     target->draw(this->bug);
 }
 
+void BugBlaster::SetPosition(float x,float y)
+{
+    this->bug.setPosition(x,y);
+}

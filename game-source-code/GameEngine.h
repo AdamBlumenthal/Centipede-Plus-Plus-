@@ -36,6 +36,7 @@ public:
     void LaserCollisionMushrooms();
     void CollisionCentipedeMushroom();
     void CollisionBugCentipede();
+    void CollisionBugPlayer();
 
     void MakeCentipede();
     void MakeHeads();

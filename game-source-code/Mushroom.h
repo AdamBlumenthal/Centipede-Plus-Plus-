@@ -17,6 +17,7 @@ class Mushroom
     void render(sf::RenderTarget* target);
 
     sf::FloatRect GetMushroomPosition();
+    sf::Sprite getMushroom();
 
 
     void HealthLoss();

@@ -73,6 +73,11 @@ sf::FloatRect Mushroom::GetMushroomPosition()
     return MushroomBounds;
 }
 
+sf::Sprite Mushroom::getMushroom()
+{
+    return mush;
+}
+
  bool Mushroom::IsHealthZero()
  {
      if(MushHealth<=0)

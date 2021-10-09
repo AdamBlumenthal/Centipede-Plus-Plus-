@@ -126,6 +126,12 @@ void Game::update()
     this->CollisionCentipedeMushroom();
     this->CollisionBugCentipede();
     //this->MakeCentipede();
+
+    this->CollisionBugPlayer();
+
+
+
+
     if(currentSegments==0)
     {
         MaxLengthCentipede--;
@@ -207,7 +213,7 @@ void Game::render()
     }
     else
     {
-        update();
+        //update();
         //Render Objects in space
         this->BugB.render(this->window);
         // for(int i=segments.size()-1; i>=0; i--)
@@ -440,4 +446,44 @@ void Game::MakeMushroom(Segment segment)
     Mushroom* mush=new Mushroom(temp.left, temp.top);
     Mush.push_back(mush);
     //delete mush;
+}
+
+void Game::CollisionBugPlayer()
+{
+
+    for(int k=0; k<Mush.size(); k++)
+        {
+            if(BugB.GetBugPosition().intersects(Mush.at(k)->GetMushroomPosition()))
+            {
+                    //Left and right
+                if(BugB.GetBugPosition().left>=Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width
+                  && BugB.GetBugPosition().left+BugB.GetBugPosition().width>Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width)
+                   {
+                       BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width,BugB.GetBugPosition().top);
+                       std::cout<<"Right";
+                   }
+               else if(BugB.GetBugPosition().left+BugB.GetBugPosition().width>=Mush.at(k)->GetMushroomPosition().left)
+                   {
+                      BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width,BugB.GetBugPosition().top);
+                      std::cout<<"Left"<<std::endl;
+                    }
+                //Up and down
+                if (BugB.GetBugPosition().top>Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height
+                 && BugB.GetBugPosition().top+BugB.GetBugPosition().height<Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height)
+                 {
+                     BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top+Mush.at(k)->GetMushroomPosition().height);
+                      std::cout<<"Bottom";
+                  }
+                  else if(BugB.GetBugPosition().top+BugB.GetBugPosition().height<Mush.at(k)->GetMushroomPosition().top)
+                 {
+                    BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height);
+                      std::cout<<"Top";
+                  }
+
+
+                break;
+            }
+
+        }
+
 }
