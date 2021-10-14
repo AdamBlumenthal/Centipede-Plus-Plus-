@@ -8,8 +8,7 @@
 class Mushroom
 {
     public:
-        Mushroom();
-        Mushroom(float& x, float& y);
+        Mushroom(float x, float y);
         virtual ~Mushroom();
 
     //functions

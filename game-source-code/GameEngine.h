@@ -7,6 +7,7 @@
 #include <vector>
 #include "CentipedeSegment.h"
 #include "Mushroom.h"
+#include "Flea.h"
 
 
 class Game
@@ -73,6 +74,7 @@ private:
     std::vector <Segment> segments;//Centipede
     std::vector <Segment> heads;//Independent centipedes
     std::vector <Mushroom*> Mush;
+    Flea flea;
 
 
 };

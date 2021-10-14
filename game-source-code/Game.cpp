@@ -10,6 +10,7 @@
 #include <vector>
 #include "CentipedeSegment.h"
 #include "Mushroom.h"
+#include "Flea.h"
 
 
 
@@ -78,12 +79,25 @@ void Game::createVarible()
    // this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
     this->StartSplashText.setPosition(0,250);
 
-    Mushroom* Mush=NULL;
+    Mushroom* Tempmush=nullptr;
 
     for(int i=0; i<=MushCount; i++)
     {
-        Mush=new Mushroom();
-        this->Mush.push_back(Mush);
+        float randomy = 21+(rand() % 580);
+        float randomx = (rand() % 800);
+        Tempmush=new Mushroom(randomx,randomy);
+        this->Mush.push_back(Tempmush);
+
+        for(int j=0; j<i-1; j++)//Makes sure random mushrooms dont intersect, if they intersect creates new mushroom
+        {
+            if(Mush.at(j)->GetMushroomPosition().intersects(Mush.at(i)->GetMushroomPosition()))
+            {
+                this->Mush.pop_back();
+                i--;
+            }
+
+
+        }
 
     }
 
@@ -116,6 +130,11 @@ void Game::update()
 
     this->UpdateEvent();
     this->BugB.update(this->window);
+    this->flea.update();
+    if(flea.CollisionBottomWindow(this->window))
+    {
+
+    }
     //this->UpdateEvent();
     this->ShootLaser();
     this->LaserCollision();
@@ -216,6 +235,7 @@ void Game::render()
         //update();
         //Render Objects in space
         this->BugB.render(this->window);
+        this->flea.render(this->window);
         // for(int i=segments.size()-1; i>=0; i--)
         //{
         //this->segments.at(i).render(this->window);
@@ -451,40 +471,34 @@ void Game::MakeMushroom(Segment segment)
 void Game::CollisionBugPlayer()
 {
 
-    for(int k=0; k<Mush.size(); k++)
+    for(int k=0; k<Mush.size(); k++)//Checks all mushrooms
         {
 
             if(BugB.GetBugPosition().intersects(Mush.at(k)->GetMushroomPosition()))
             {
-
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)||sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-                {//Left and right
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)||sf::Keyboard::isKeyPressed(sf::Keyboard::Right))//Left and right
+                {
                 if(BugB.GetBugPosition().left>=Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width
-                  && BugB.GetBugPosition().left+BugB.GetBugPosition().width>Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width)
+                  && BugB.GetBugPosition().left+BugB.GetBugPosition().width>Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width)//Checks if on the right and not on the left
                    {
                        BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width,BugB.GetBugPosition().top);
-                       std::cout<<"Right";
                    }
-               else if(BugB.GetBugPosition().left+BugB.GetBugPosition().width>=Mush.at(k)->GetMushroomPosition().left)
+               else if(BugB.GetBugPosition().left+BugB.GetBugPosition().width>=Mush.at(k)->GetMushroomPosition().left)//Checks if on the left
                    {
                       BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width,BugB.GetBugPosition().top);
-                     std::cout<<"Left"<<std::endl;
                    }
                 }
-                std::cout<<"Here"<<std::endl;
 
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)||sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-                {//Up and down
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)||sf::Keyboard::isKeyPressed(sf::Keyboard::Down))//Up and down
+                {
                 if (BugB.GetBugPosition().top<Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height
-                    &&BugB.GetBugPosition().top>Mush.at(k)->GetMushroomPosition().top)
+                    &&BugB.GetBugPosition().top>Mush.at(k)->GetMushroomPosition().top)//Checks if below and not above
                  {
                      BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top+Mush.at(k)->GetMushroomPosition().height);
-                      std::cout<<"Bottom";
                   }
-                  else if(BugB.GetBugPosition().top+BugB.GetBugPosition().height>Mush.at(k)->GetMushroomPosition().top)
+                  else if(BugB.GetBugPosition().top+BugB.GetBugPosition().height>Mush.at(k)->GetMushroomPosition().top)//Checks if above
                  {
                     BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top-BugB.GetBugPosition().height);
-                      std::cout<<"Top";
                   }
                 }
 
