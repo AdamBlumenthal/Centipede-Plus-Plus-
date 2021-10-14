@@ -453,9 +453,12 @@ void Game::CollisionBugPlayer()
 
     for(int k=0; k<Mush.size(); k++)
         {
+
             if(BugB.GetBugPosition().intersects(Mush.at(k)->GetMushroomPosition()))
             {
-                    //Left and right
+
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)||sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+                {//Left and right
                 if(BugB.GetBugPosition().left>=Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width
                   && BugB.GetBugPosition().left+BugB.GetBugPosition().width>Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width)
                    {
@@ -465,25 +468,30 @@ void Game::CollisionBugPlayer()
                else if(BugB.GetBugPosition().left+BugB.GetBugPosition().width>=Mush.at(k)->GetMushroomPosition().left)
                    {
                       BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width,BugB.GetBugPosition().top);
-                      std::cout<<"Left"<<std::endl;
-                    }
-                //Up and down
-                if (BugB.GetBugPosition().top>Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height
-                 && BugB.GetBugPosition().top+BugB.GetBugPosition().height<Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height)
+                     std::cout<<"Left"<<std::endl;
+                   }
+                }
+                std::cout<<"Here"<<std::endl;
+
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)||sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+                {//Up and down
+                if (BugB.GetBugPosition().top<Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height
+                    &&BugB.GetBugPosition().top>Mush.at(k)->GetMushroomPosition().top)
                  {
                      BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top+Mush.at(k)->GetMushroomPosition().height);
                       std::cout<<"Bottom";
                   }
-                  else if(BugB.GetBugPosition().top+BugB.GetBugPosition().height<Mush.at(k)->GetMushroomPosition().top)
+                  else if(BugB.GetBugPosition().top+BugB.GetBugPosition().height>Mush.at(k)->GetMushroomPosition().top)
                  {
-                    BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height);
+                    BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top-BugB.GetBugPosition().height);
                       std::cout<<"Top";
                   }
+                }
 
-
-                break;
             }
 
-        }
+            }
+
+
 
 }
