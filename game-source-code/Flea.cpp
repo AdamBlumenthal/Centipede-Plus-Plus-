@@ -3,6 +3,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Mushroom.h"
 
 Flea::Flea()
 {
@@ -21,9 +22,11 @@ Flea::~Flea()
     //dtor
 }
 
-void Flea::update()
+void Flea::update(sf::RenderTarget* target)
 {
     this->FleaMove();
+
+
 
 }
 
@@ -66,8 +69,38 @@ bool Flea::CollisionBottomWindow(sf::RenderTarget* target)
 {
      if(flea.getGlobalBounds().top>=target->getSize().y)
     {
+        std::cout << "Flea is gone" <<std::endl;
        return true;
     }
 
 return false;
 }
+
+ std::vector <Mushroom*> Flea::SpawnMushroom(std::vector <Mushroom*> Mush)
+ {
+
+     float randomvalue = (rand() % 100);
+     int Length=Mush.size();
+
+     if(randomvalue<2)
+     {
+
+         Mushroom* Tempmush=nullptr;
+
+        Tempmush=new Mushroom(flea.getGlobalBounds().left, flea.getGlobalBounds().top);
+        Mush.push_back(Tempmush);
+
+
+     for(int j=0; j<Length-1; j++)//Makes sure dropped mushrooms dont intersect
+        {
+            if(Mush.at(Length)->GetMushroomPosition().intersects(Mush.at(j)->GetMushroomPosition()))
+            {
+                Mush.pop_back();
+                break;
+            }
+
+        }
+     }
+
+return Mush;
+ }

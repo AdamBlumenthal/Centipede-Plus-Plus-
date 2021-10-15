@@ -76,4 +76,11 @@ sf::Sprite Mushroom::getMushroom()
      }
  }
 
+ bool Mushroom::inPlayerArea()
+{
+    if(mush.getPosition().y>450)
+        return true;
+        else
+            return false;
+}
 

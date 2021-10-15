@@ -4,6 +4,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "Mushroom.h"
 
 
 
@@ -14,10 +15,12 @@ class Flea
         virtual ~Flea();
 
         //functions
-        void update();
+        void update(sf::RenderTarget* target);
         void render(sf::RenderTarget* target);
         void FleaMove();
         bool CollisionBottomWindow(sf::RenderTarget* target);
+
+        std::vector <Mushroom*> SpawnMushroom(std::vector <Mushroom*> Mush);
 
         sf::FloatRect GetFleaPosition();
 

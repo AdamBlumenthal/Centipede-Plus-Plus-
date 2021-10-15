@@ -29,6 +29,8 @@ public:
     void render();
     void UpdateEvent();
     void ShootLaser();
+    void SpawnFlea();
+    void KillFlea();
 
     //collisions
     void LaserCollision();
@@ -63,6 +65,10 @@ private:
 
     int MushCount;
 
+    //Flea varibles
+    int MinFleaTimeDelay;
+    int FleaTimeDelay;
+
     bool start;
     bool gameOver;
 
@@ -74,7 +80,7 @@ private:
     std::vector <Segment> segments;//Centipede
     std::vector <Segment> heads;//Independent centipedes
     std::vector <Mushroom*> Mush;
-    Flea flea;
+    std::vector <Flea*> flea;//Flea object
 
 
 };
