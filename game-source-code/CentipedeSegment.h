@@ -10,17 +10,21 @@ public:
     Segment(float& position, float& movespeed);
     void moveDirections();
     void moveMushroom();
+    void moveBlock();
+    bool isHead(){return head;};
     sf::RectangleShape getSegment();
     void update(sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
     void makeHead();
     sf::FloatRect GetSegmentPosition();
+    float getMoveSpeed(){return movespeed;}
 private:
     sf::RectangleShape segment1;
     float movespeed;//=5.f;
     float verticalSpeed;
     void makeSegment(float& position);
     float position;
+    bool head;
 
 };
 

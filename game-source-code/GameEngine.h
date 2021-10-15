@@ -7,6 +7,7 @@
 #include <vector>
 #include "CentipedeSegment.h"
 #include "Mushroom.h"
+#include "Centipede.h"
 
 
 class Game
@@ -32,10 +33,18 @@ public:
     //collisions
     void LaserCollision();
     void LaserCollisionCentipede();
+
+    //new centipede
+    void LaserCollisionCentipedes(Centipede& centipede);
     void LaserCollisionHeads();
     void LaserCollisionMushrooms();
     void CollisionCentipedeMushroom();
     void CollisionBugCentipede();
+    void checkRestCollision(int,int);
+    void CentipedeSelfCollision();
+    void CentipedeCollisionMushroom(Centipede& centipede);
+    bool IsEmpty(Centipede);
+    void SelfCollision();
 
     void MakeCentipede();
     void MakeHeads();
@@ -57,12 +66,15 @@ private:
     int MaxLaserCount;
     float MaxLaserDelay;
     float LaserDelay;
-    int CurrentLasers;
+   // int CurrentLasers;
 
     int MushCount;
 
     bool start;
     bool gameOver;
+    bool centMush;
+    bool pause;
+    Centipede centipede;
 
     sf::Font font;
     sf::Text StartSplashText;
@@ -72,7 +84,8 @@ private:
     std::vector <Segment> segments;//Centipede
     std::vector <Segment> heads;//Independent centipedes
     std::vector <Mushroom*> Mush;
-
+    std::vector<int>headCount;
+    std::vector<Centipede> centipedes;
 
 };
 #endif // GAMEENGINE_H_INCLUDED

@@ -16,7 +16,7 @@ int main()
     while (game.IsRunning())
     {
         //Update
-        //game.update();
+        game.update();
         //Render
         game.render();
     }

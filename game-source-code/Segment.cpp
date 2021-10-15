@@ -5,51 +5,54 @@
 //Constructor
 Segment::Segment(float& pos):position(pos)
 {
-    movespeed=40.f;
+    movespeed=2.f;
     verticalSpeed=20.f;
     this->makeSegment(pos);
+    head=false;
 }
 Segment::Segment(float& pos, float& mSpeed):position(pos),movespeed(mSpeed)
 {
     verticalSpeed=20.f;
     this->makeSegment(pos);
+    head=false;
 }
 //Movement with in bounds for the segments
 void Segment::moveDirections()
 {
 
-    int gameWidth=800;
-    int gameHeight=600;
-    if(this->segment1.getPosition().x==0&&movespeed<0)
-    {
+    //int gameWidth=800;
+   // int gameHeight=600;
+    //     if(this->segment1.getPosition().x==0&&movespeed<0)
+  //  {
        // this-> segment1.setPosition(this->segment1.getPosition().x,this->segment1.getPosition().y);
        //this->movespeed=(-1)*movespeed;
         //this->segment1.move(0,20.f);
-        moveMushroom();
-    }
+    //    moveMushroom();
+   // }
 
-    else if(this->segment1.getPosition().x +20.f >= gameWidth)
-    {
+    //else if(this->segment1.getPosition().x +20.f >= gameWidth)
+   // {
 //this-> segment1.setPosition(this->segment1.getPosition().x,this->segment1.getPosition().y);
        ///// this->movespeed=(-1)*movespeed;
       //  this->segment1.move(0,20.f);
-      moveMushroom();
-    }
-    else if(this->segment1.getPosition().y+20.f>gameHeight||(this->segment1.getPosition().y+20.f==0&&verticalSpeed<0)){
-            verticalSpeed=(-1)*verticalSpeed;
-                moveMushroom();
-            }
+     // moveMushroom();
+  //  }
+    //else if(this->segment1.getPosition().y+20.f>=gameHeight||(this->segment1.getPosition().y+20.f==0&&verticalSpeed<0)){
+      //      verticalSpeed=(-1)*verticalSpeed;
+     //           moveMushroom();
+      //      }
     this->segment1.move(movespeed,0);
 }
 void Segment::moveMushroom(){
         movespeed=(-1)*movespeed;
+       // std::cout<<movespeed<<std::endl;
         this->segment1.move(0,verticalSpeed);
-        this->segment1.move(movespeed,0);
+       // this->segment1.move(movespeed,0);
 }
 // Create a segment of the centipede
 void Segment::makeSegment(float& position)
 {
-    this->segment1.setSize(sf::Vector2f(20.f, 20.f));
+    this->segment1.setSize(sf::Vector2f(18.f, 18.f));
     this->segment1.setFillColor(sf::Color::Blue);
     this->segment1.setOutlineColor(sf::Color::Yellow);
     this->segment1.setPosition(position,0);
@@ -58,6 +61,7 @@ void Segment::makeSegment(float& position)
 void Segment::makeHead()
 {
     this->segment1.setFillColor(sf::Color::Red);
+    head=true;
 }
 //Get Shape of segment
 sf::RectangleShape Segment::getSegment()
@@ -68,7 +72,8 @@ sf::RectangleShape Segment::getSegment()
 void Segment::update(sf::RenderTarget* target)
 {
     //Changes in position
-    this->moveDirections();
+    //this->moveDirections();
+   // std::cout<<20<<std::endl;
 
 }
 //Rednders segment
