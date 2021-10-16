@@ -5,7 +5,7 @@
 //Constructor
 Segment::Segment(float& pos):position(pos)
 {
-    movespeed=40.f;
+    movespeed=10.f;
     verticalSpeed=20.f;
     this->makeSegment(pos);
 }

@@ -4,24 +4,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-Mushroom::Mushroom()
+Mushroom::Mushroom(float x, float y)
 {
     this->LoadTexture();
     this->LoadSprite();
-
-    float randomy = (rand() % 600);
-    float randomx = (rand() % 800);
-
-    this->mush.setPosition(randomx,randomy);
-
-}
-Mushroom::Mushroom(float& x, float& y)
-{
-    this->LoadTexture();
-    this->LoadSprite();
-
-   // float randomy = (rand() % 600);
-    //float randomx = (rand() % 800);
 
     this->mush.setPosition(x,y);
 
@@ -73,6 +59,11 @@ sf::FloatRect Mushroom::GetMushroomPosition()
     return MushroomBounds;
 }
 
+sf::Sprite Mushroom::getMushroom()
+{
+    return mush;
+}
+
  bool Mushroom::IsHealthZero()
  {
      if(MushHealth<=0)
@@ -85,4 +76,11 @@ sf::FloatRect Mushroom::GetMushroomPosition()
      }
  }
 
+ bool Mushroom::inPlayerArea()
+{
+    if(mush.getPosition().y>450)
+        return true;
+        else
+            return false;
+}
 

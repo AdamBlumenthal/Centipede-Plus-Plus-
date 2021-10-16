@@ -10,6 +10,7 @@
 #include <vector>
 #include "CentipedeSegment.h"
 #include "Mushroom.h"
+#include "Flea.h"
 
 
 
@@ -53,17 +54,20 @@ void Game::createWindow()
 //Gives values to private variables.
 void Game::createVarible()
 {
+    //Laser controls
     this->MaxLaserCount=10;
     this->MaxLaserDelay=10.f;
     this->LaserDelay=this->MaxLaserDelay;
     this->CurrentLasers=0;
 
     this->MaxLengthCentipede=12;
+    //Game controls
     lvlBegin=false;
     start=true;
     gameOver=false;
     currentSegments=MaxLengthCentipede;
 
+    //Mushroom controls
     this->MushCount=20;
 
     //Load font
@@ -78,14 +82,32 @@ void Game::createVarible()
    // this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
     this->StartSplashText.setPosition(0,250);
 
-    Mushroom* Mush=NULL;
+    Mushroom* Tempmush=nullptr;
 
     for(int i=0; i<=MushCount; i++)
     {
-        Mush=new Mushroom();
-        this->Mush.push_back(Mush);
+        float randomy = 21+(rand() % 580);
+        float randomx = (rand() % 800);
+        Tempmush=new Mushroom(randomx,randomy);
+        Mush.push_back(Tempmush);
+
+        for(int j=0; j<i-1; j++)//Makes sure random mushrooms dont intersect, if they intersect creates new mushroom
+        {
+            if(Mush.at(j)->GetMushroomPosition().intersects(Mush.at(i)->GetMushroomPosition()))
+            {
+                Mush.pop_back();
+                i--;
+            }
+
+
+        }
 
     }
+
+    //Flea controls
+    MinFleaTimeDelay=100;
+    FleaTimeDelay=0;
+
 
 }
 
@@ -114,21 +136,24 @@ void Game::update()
 {
 
 
+    SpawnFlea();
+    KillFlea();
     this->UpdateEvent();
     this->BugB.update(this->window);
+
+
     //this->UpdateEvent();
     this->ShootLaser();
     this->LaserCollision();
     this->LaserCollisionCentipede();
     this->LaserCollisionHeads();
     this->LaserCollisionMushrooms();
-<<<<<<< HEAD
-
-=======
     this->CollisionCentipedeMushroom();
     this->CollisionBugCentipede();
     //this->MakeCentipede();
->>>>>>> Adam
+
+    this->CollisionBugPlayer();
+
     if(currentSegments==0)
     {
         MaxLengthCentipede--;
@@ -174,6 +199,16 @@ void Game::update()
     }
 
 
+    if (flea.size()>=1)
+    {
+        for(int i=0; i<flea.size(); i++)
+        {
+            this->flea.at(i)->update(this->window);
+            Mush=this->flea.at(i)->SpawnMushroom(Mush);
+        }
+
+    }
+
 }
 //Renders Objects and window
 void Game::render()
@@ -210,7 +245,7 @@ void Game::render()
     }
     else
     {
-        update();
+        //update();
         //Render Objects in space
         this->BugB.render(this->window);
         // for(int i=segments.size()-1; i>=0; i--)
@@ -235,8 +270,16 @@ void Game::render()
         {
             i.render(this->window);
         }
+
+
+        for(int i=0; i<flea.size(); i++)
+        {
+            this->flea.at(i)->render(this->window);
+        }
+
     }
     this->window->display();
+
 
 }
 //Creates the laser beams
@@ -444,3 +487,101 @@ void Game::MakeMushroom(Segment segment)
     Mush.push_back(mush);
     //delete mush;
 }
+
+void Game::CollisionBugPlayer()
+{
+
+    for(int k=0; k<Mush.size(); k++)//Checks all mushrooms
+    {
+
+        if(BugB.GetBugPosition().intersects(Mush.at(k)->GetMushroomPosition()))
+        {
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)||sf::Keyboard::isKeyPressed(sf::Keyboard::Right))//Left and right
+            {
+                if(BugB.GetBugPosition().left>=Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width
+                        && BugB.GetBugPosition().left+BugB.GetBugPosition().width>Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width)//Checks if on the right and not on the left
+                {
+                    BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width,BugB.GetBugPosition().top);
+                }
+                else if(BugB.GetBugPosition().left+BugB.GetBugPosition().width>=Mush.at(k)->GetMushroomPosition().left)//Checks if on the left
+                {
+                    BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width,BugB.GetBugPosition().top);
+                }
+            }
+
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)||sf::Keyboard::isKeyPressed(sf::Keyboard::Down))//Up and down
+            {
+                if (BugB.GetBugPosition().top<Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height
+                        &&BugB.GetBugPosition().top>Mush.at(k)->GetMushroomPosition().top)//Checks if below and not above
+                {
+                    BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top+Mush.at(k)->GetMushroomPosition().height);
+                }
+                else if(BugB.GetBugPosition().top+BugB.GetBugPosition().height>Mush.at(k)->GetMushroomPosition().top)//Checks if above
+                {
+                    BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top-BugB.GetBugPosition().height);
+                }
+            }
+
+        }
+
+    }
+
+}
+
+void Game::SpawnFlea()
+{
+    int PlayerAreaMush=0;
+
+    for(int k=0; k<Mush.size(); k++)
+    {
+        if(Mush.at(k)->inPlayerArea())
+            PlayerAreaMush++;
+    }
+
+    if(PlayerAreaMush<7&&MinFleaTimeDelay<FleaTimeDelay)
+    {
+
+     Flea* Tempflea=nullptr;
+     Tempflea=new Flea();
+    flea.push_back(Tempflea);
+    FleaTimeDelay=0;
+
+    }
+    FleaTimeDelay++;
+
+}
+
+void Game::KillFlea()
+{
+     for(int h=0; h<flea.size(); h++)
+        {
+
+            if(flea.at(h)->CollisionBottomWindow(this->window))
+            {
+                flea.erase(flea.begin()+h);
+                std::cout<<flea.size()<<std::endl;
+            }
+
+        }
+}
+
+ //int* generalCollision( std::vector <A> a,std::vector <B> b)
+ //{
+    // int aa[a.size()];
+    // int bb[b.size()];
+
+    // for(int i=0;i<a.size();i++)
+    // {
+       //  for(int j=0;j<b.size();j++)
+        // {
+         //    if(a.getObjectPosition.intersects(b.getObjectPosiition))
+           //     {
+            //        aa[i]=1;
+            //        bb[j]=1;
+           //     }
+        // }
+   //  }
+
+   //  return [aa,bb];
+// }
+

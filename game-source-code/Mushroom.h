@@ -8,15 +8,16 @@
 class Mushroom
 {
     public:
-        Mushroom();
-        Mushroom(float& x, float& y);
+        Mushroom(float x, float y);
         virtual ~Mushroom();
 
     //functions
     void update(sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
+    bool inPlayerArea();
 
     sf::FloatRect GetMushroomPosition();
+    sf::Sprite getMushroom();
 
 
     void HealthLoss();

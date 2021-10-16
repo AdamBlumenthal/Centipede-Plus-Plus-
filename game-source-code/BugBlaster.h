@@ -12,16 +12,15 @@ public:
     BugBlaster(float x=350.f,float y=450.f);
     virtual ~BugBlaster();
 
-    //Varibles
-    float MoveSpeed;
-
-
     //functions
     void KeyInput();
     void update(sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
 
+
     void WindowCollision(sf::RenderTarget* target);
+    void SetPosition(float x,float y);
+
 
     sf::FloatRect GetBugPosition();
     sf::RectangleShape getBug();
@@ -31,6 +30,9 @@ private:
     sf::RectangleShape bug;
     void createVarible();
     void createBug();
+
+    //Varibles
+    float MoveSpeed;
 
 
 
