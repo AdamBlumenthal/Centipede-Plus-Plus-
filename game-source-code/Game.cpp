@@ -11,6 +11,7 @@
 #include "CentipedeSegment.h"
 #include "Mushroom.h"
 #include "Flea.h"
+#include "Centipede.h"
 
 
 
@@ -54,18 +55,23 @@ void Game::createWindow()
 //Gives values to private variables.
 void Game::createVarible()
 {
-    //Laser controls
-    this->MaxLaserCount=10;
-    this->MaxLaserDelay=10.f;
-    this->LaserDelay=this->MaxLaserDelay;
-    this->CurrentLasers=0;
 
+    //Laser controls
+
+    this->MaxLaserCount=10;
+    this->MaxLaserDelay=26.f;
+    this->LaserDelay=this->MaxLaserDelay;
+    //this->CurrentLasers=0;
+    //centipedes.push_back(Centipede(0,0.f,0.f));
     this->MaxLengthCentipede=12;
     //Game controls
     lvlBegin=false;
     start=true;
     gameOver=false;
+    centMush=false;
+    pause=false;
     currentSegments=MaxLengthCentipede;
+
 
     //Mushroom controls
     this->MushCount=20;
@@ -136,23 +142,44 @@ void Game::update()
 {
 
 
+
     SpawnFlea();
     KillFlea();
+
+    if(!pause){
     this->UpdateEvent();
+
     this->BugB.update(this->window);
+
 
 
     //this->UpdateEvent();
     this->ShootLaser();
     this->LaserCollision();
-    this->LaserCollisionCentipede();
-    this->LaserCollisionHeads();
     this->LaserCollisionMushrooms();
-    this->CollisionCentipedeMushroom();
     this->CollisionBugCentipede();
     //this->MakeCentipede();
 
     this->CollisionBugPlayer();
+
+
+    if(centipedes.size()>0){
+
+        for(int i=0;i<centipedes.size();i++){
+
+            CentipedeCollisionMushroom(centipedes.at(i));
+            LaserCollisionCentipedes(centipedes.at(i));
+            //SelfCollision(centipedes.at(i),  i);
+
+
+    }
+
+    centipedes.erase(remove_if(centipedes.begin(),centipedes.end(),[](Centipede cent)->bool{return cent.isEmpty();}),centipedes.end());
+       // SelfCollision();
+        for(int i=0;i<centipedes.size();i++)
+            centipedes.at(i).update(this->window);
+    }
+
 
     if(currentSegments==0)
     {
@@ -161,43 +188,27 @@ void Game::update()
         lvlBegin=true;
     }
     if(MaxLengthCentipede==0)gameOver=true;
-    //else {
-    //lvlBegin=false;
-    //}
+
     if(lvlBegin)
     {
-        this->MakeCentipede();
-        //(MaxLengthCentipede<numberOfCentipedes)
-        this->MakeHeads();
+
+
+        centipedes.push_back(Centipede(12,2.f, 0.f));
         lvlBegin=false;
     }
-//=======
-    //this->LaserCollisionCentipede();
 
-//>>>>>>> Zunaid
 
-    if (CurrentLasers>=1)
+    if (laser.size()>=1)
     {
-        for(int i=0; i<CurrentLasers; i++)
+        for(int i=0; i<laser.size(); i++)
         {
             this->laser.at(i).update(this->window);
         }
 
     }
-    for(int i=segments.size()-1; i>=0; i--)
-    {
-        this->segments.at(i).update(this->window);
+
 
     }
-
-    // for(auto i:segments)
-    //  i.update(this->window);
-    for(int i=0; i<heads.size(); i++)
-    {
-        this->heads.at(i).update(this->window);
-        //    std::cout<<"Update "+i<<std::endl;
-    }
-
 
     if (flea.size()>=1)
     {
@@ -245,22 +256,22 @@ void Game::render()
     }
     else
     {
-        //update();
-        //Render Objects in space
-        this->BugB.render(this->window);
-        // for(int i=segments.size()-1; i>=0; i--)
-        //{
-        //this->segments.at(i).render(this->window);
-        //}
-        for(auto i:this->segments)
-        {
-            i.render(this->window);
-        }
-        for(int i=0; i<heads.size(); i++)
-        {
-            this->heads.at(i).render(this->window);
-        }
 
+        //update();
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Tab)){
+            if(pause)
+                pause=false;
+            else
+                pause=true;
+        }
+       // update();
+        //Render Objects in space
+
+        this->BugB.render(this->window);
+
+       for(auto i:centipedes)
+        i.render(this->window);
         for(int i=0; i<Mush.size(); i++)
         {
             Mush.at(i)->render(this->window);
@@ -272,10 +283,12 @@ void Game::render()
         }
 
 
+
         for(int i=0; i<flea.size(); i++)
         {
             this->flea.at(i)->render(this->window);
         }
+
 
     }
     this->window->display();
@@ -290,7 +303,7 @@ void Game::ShootLaser()
     {
         sf::FloatRect BugPos=this->BugB.GetBugPosition();
         this->laser.push_back(Laser(BugPos));
-        CurrentLasers++;
+        //CurrentLasers++;
         //Game::MaxLengthCentipede
         LaserDelay=0.f;
     }
@@ -301,61 +314,101 @@ void Game::ShootLaser()
 void Game::LaserCollision()
 {
 
-    for(int i=0; i<CurrentLasers; i++)
+    for(int i=0; i<laser.size(); i++)
     {
         //sf::FloatRect LaserPos=this->laser.at(i).GetLaserPosition();
 
         if(laser.at(i).GetLaserPosition().top<=0.f)
         {
             this->laser.erase(this->laser.begin()+i);
-            CurrentLasers--;
             break;
         }
 
     }
 }
-
-void Game:: LaserCollisionCentipede()
-{
+void Game::CentipedeCollisionMushroom(Centipede& centipede){
+    if(centipede.getSize()>0)
+    for(int i=0;i<Mush.size();i++)
+        if(Mush.at(i)->GetMushroomPosition().intersects(centipede.GetCentipedeHeadPosition())){
+            centipede.setHitMushroom();
+        }
+}
+void Game::LaserCollisionCentipedes(Centipede& centipede){
     bool leave=false;
-    for(int i=0; i<CurrentLasers; i++)
-    {
-        for(int j=0; j<segments.size(); j++)
-        {
-            if(this->laser.at(i).GetLaserPosition().intersects(this->segments.at(j).GetSegmentPosition()))
-            {
-                //std::cout<<"Number of segments:"+segments.size()<<std::endl;
+    for(int i=0;i<laser.size();i++){
+        for(int j=0;j<centipede.getSize();j++){
+            if(laser.at(i).GetLaserPosition().intersects(centipede.getCentipede().at(j).GetSegmentPosition())){
                 this->laser.erase(this->laser.begin()+i);
-                //std::cout<<j+"Hit"<<std::endl;
                 leave=true;
-                MakeMushroom(segments.at(j));
-                this->segments.erase(this->segments.begin()+j);
-                CurrentLasers--;
-                currentSegments--;
+                MakeMushroom(centipede.getCentipede().at(j));
 
-                if(j>0&&segments.begin()+j<=segments.end())
-                    segments.at(j-1).makeHead();
+                auto temp=centipede.getNewCentipede(j);
+                auto length=centipede.getSize()-1;
+
+                centipede.fixedHead(j);
+
+                //if(centipede.getSize()==0)
+                   // std::cerr<<"There"<<std::endl;
+                if(j!=length){
+                    centipedes.push_back(Centipede(temp));
+                }
+                //std::cerr<<j<<std::endl;
                 break;
-
-                //seg.getFillColor()==sf::Color::Green
-                //  std::cout<<j<<std::endl;
             }
         }
-        if(leave)
-        {
-            // std::cout<<"hwoosooodsdofosdsdgsd"<<std::endl;
+        if(leave)break;
+}
+
+}
+void Game::SelfCollision(){
+
+    bool collision=false;
+
+    for(int i=0;i<centipedes.size()-1;i++){
+        for(int j=i+1;j<centipedes.size();j++){
+                for(int k=0;k<centipedes.at(j).getSize();k++){
+
+                    if(centipedes.at(i).GetCentipedeHeadPosition().intersects(centipedes.at(j).getCentipede().at(k).GetSegmentPosition())){
+                        if(k==0)
+                            centipedes.at(j).moveHead();
+                        std::cout<<"Hit pos og at y";
+                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().top;
+                          std::cout<<" Hit pos og at x";
+                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().left;
+                        std::cout<<std::endl;
+                        centipedes.at(i).moveHead();
+
+                        std::cout<<"Hit pos new at y";
+                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().top;
+                          std::cout<<" Hit pos new at x";
+                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().left;
+                        std::cout<<std::endl;
+                        std::cout<<"Here ";
+                        std::cout<<i;
+                        std::cout<<" Hit ";
+                        std::cout<<j;
+                        std::cout<<" segm";
+                        std::cout<<k;
+                        std::cout<<std::endl;
+                        collision=true;
+                        break;
+            }
+        }
+        if(collision){
+                collision=false;
             break;
         }
     }
-}
 
+}
+}
 
 
 void Game::LaserCollisionMushrooms()
 {
 
     bool leave=false;
-    for(int i=0; i<CurrentLasers; i++)
+    for(int i=0; i<laser.size(); i++)
     {
         for(int k=0; k<Mush.size(); k++)
         {
@@ -363,7 +416,7 @@ void Game::LaserCollisionMushrooms()
             {
 
                 this->laser.erase(this->laser.begin()+i);
-                CurrentLasers--;
+              //  CurrentLasers--;
                 leave=true;
                 Mush.at(k)->HealthLoss();
                 if(Mush.at(k)->IsHealthZero()==true)
@@ -384,40 +437,27 @@ void Game::LaserCollisionMushrooms()
 
 
 }
+void Game::CentipedeSelfCollision(){
 
+    for(auto i=0;i< segments.size();i++){
+    for(auto j=i+1;j<segments.size();j++){
+        if(segments.at(i).GetSegmentPosition().intersects(segments.at(j).GetSegmentPosition())){
+            segments.at(i).moveMushroom();
+            segments.at(j).moveMushroom();
+        }
 
-//Can make a general function where pass segments vector in
-void Game:: LaserCollisionHeads()
-{
-    bool leave=false;
-    for(int i=0; i<CurrentLasers; i++)
-    {
-        for(int j=0; j<heads.size(); j++)
-        {
-            if(this->laser.at(i).GetLaserPosition().intersects(this->heads.at(j).GetSegmentPosition()))
-            {
-                this->laser.erase(this->laser.begin()+i);
-                //std::cout<<j+"Hit"<<std::endl;
-                leave=true;
-                MakeMushroom(heads.at(j));
-                this->heads.erase(this->heads.begin()+j);
-                CurrentLasers--;
-                //currentSegments--;
-                break;
-            }
-        }
-        if(leave)
-        {
-            //std::cout<<"hwoosooodsdofosdsdgsd"<<std::endl;
-            break;
-        }
+    }
     }
 
-
 }
+
+//Can make a general function where pass segments vector in
+
 void Game::CollisionCentipedeMushroom()
 {
     bool leave=false;
+    int coun=0;
+    //int mush, int segment;
     for(int i=0; i<Mush.size(); i++)
     {
         for(int j=0; j<segments.size(); j++)
@@ -425,15 +465,22 @@ void Game::CollisionCentipedeMushroom()
             if(Mush.at(i)->GetMushroomPosition().intersects(this->segments.at(j).GetSegmentPosition()))
             {
 
-               // leave=true;
+                leave=true;
                 segments.at(j).moveMushroom();
-               // break;
+                break;
+                 //                       std::cout<<"44"<<std::endl;
+                //break;
+
+                }
+
+
             }
+            //  if(leave)break;
         }
+
     }
 
 
-}
 void Game::CollisionBugCentipede(){
 
  for(int j=0; j<segments.size(); j++)
@@ -449,36 +496,8 @@ void Game::CollisionBugCentipede(){
 
 //Makes a centipede. Segments that follow each other
 //Bug they don't all follow each other at correct intervals
-void Game::MakeCentipede()
-{
-    //int length=10;
-    float delay=40.f;
-    float pos;
-    for(int i=0; i<MaxLengthCentipede; i++)
-    {
-        pos=i*delay;
 
-        this->segments.push_back(Segment(pos));
 
-    }
-    segments.at(MaxLengthCentipede-1).makeHead();
-
-}
-void Game::MakeHeads()
-{
-    //int length=10;
-    float delay=10.f;
-    float pos;
-    for(int i=0; i<(numberOfCentipedes-MaxLengthCentipede); i++)
-    {
-        pos=i*delay+200.f;
-
-        this->heads.push_back(Segment(pos,delay));
-        heads.at(i).makeHead();
-        //std::cout<<"twice"<<std::endl;
-    }
-    // std::cout<<"Test"<<std::endl;
-}
 void Game::MakeMushroom(Segment segment)
 {
     auto temp=segment.GetSegmentPosition();
@@ -584,4 +603,9 @@ void Game::KillFlea()
 
    //  return [aa,bb];
 // }
+
+
+bool Game::IsEmpty(Centipede seg){
+    return seg.isEmpty();
+}
 
