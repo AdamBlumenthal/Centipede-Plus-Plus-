@@ -47,6 +47,9 @@ public:
     //Collisions
    // void LaserCollisionCentipede();
    // void LaserCollision();
+  // int generalCollision( std::vector <Laser> a,std::vector <Mushroom> b);
+
+
 
 
 private:

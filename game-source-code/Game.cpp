@@ -568,3 +568,24 @@ void Game::KillFlea()
 
         }
 }
+
+ //int* generalCollision( std::vector <A> a,std::vector <B> b)
+ //{
+    // int aa[a.size()];
+    // int bb[b.size()];
+
+    // for(int i=0;i<a.size();i++)
+    // {
+       //  for(int j=0;j<b.size();j++)
+        // {
+         //    if(a.getObjectPosition.intersects(b.getObjectPosiition))
+           //     {
+            //        aa[i]=1;
+            //        bb[j]=1;
+           //     }
+        // }
+   //  }
+
+   //  return [aa,bb];
+// }
+
