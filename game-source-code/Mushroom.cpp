@@ -15,6 +15,17 @@ Mushroom::Mushroom()
     this->mush.setPosition(randomx,randomy);
 
 }
+Mushroom::Mushroom(float& x, float& y)
+{
+    this->LoadTexture();
+    this->LoadSprite();
+
+   // float randomy = (rand() % 600);
+    //float randomx = (rand() % 800);
+
+    this->mush.setPosition(x,y);
+
+}
 
 Mushroom::~Mushroom()
 {
