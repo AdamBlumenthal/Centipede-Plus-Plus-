@@ -12,6 +12,7 @@
 #include "Mushroom.h"
 #include "Flea.h"
 #include "Centipede.h"
+#include "CollisionControl.h"
 
 
 
@@ -141,6 +142,7 @@ void Game::UpdateEvent()
 void Game::update()
 {
 
+    CollisionControl(BugB,laser,Mush,flea,centipedes);
 
 
     SpawnFlea();
@@ -162,7 +164,7 @@ void Game::update()
 
     this->CollisionBugPlayer();
     this->CollisionBugFlea();
-    this->CollisonLaserFlea();
+    //this->CollisonLaserFlea();
 
 
     if(centipedes.size()>0){
@@ -624,7 +626,7 @@ void Game::CollisionBugFlea()
 
 }
 
-void Game::CollisonLaserFlea()
+void Game::CollisonLaserFlea2()
 {
     bool leave=false;
 
@@ -637,7 +639,6 @@ void Game::CollisonLaserFlea()
 
                 //leave=true;
                 flea.erase(flea.begin()+j);
-
 
             }
 
