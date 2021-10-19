@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Mushroom.h"
+#include <memory>
 
 
 
@@ -20,7 +21,7 @@ class Flea
         void FleaMove();
         bool CollisionBottomWindow(sf::RenderTarget* target);
 
-        std::vector <Mushroom*> SpawnMushroomWithFlea(std::vector <Mushroom*> Mush);
+        void SpawnMushroomWithFlea(std::vector<std::shared_ptr<Mushroom>>& Mush);
 
         sf::FloatRect GetFleaPosition();
 

@@ -18,11 +18,21 @@
 class CollisionControl
 {
     public:
-        CollisionControl(BugBlaster BugB,std::vector <std::shared_ptr<Laser>>& laser,std::vector <Mushroom*> Mush,std::vector <Flea*> flea,std::vector<std::shared_ptr<Centipede>>& centipedes);
+        CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector <std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Mushroom>>& Mush,std::vector<std::shared_ptr<Flea>>& flea,std::vector<std::shared_ptr<Centipede>>& centipedes);
         virtual ~CollisionControl();
 
-       void LaserCollision(std::vector <std::shared_ptr<Laser>>& laser);
-        void LaserCollisionCentipedes(std::vector <std::shared_ptr<Laser>>& laser, std::vector<std::shared_ptr<Centipede>>& centipede);
+        void LaserCollision(std::vector <std::shared_ptr<Laser>>& laser);
+        void LaserCollisionCentipedes(std::vector <std::shared_ptr<Laser>>& laser, std::vector<std::shared_ptr<Centipede>>& centipede,std::vector<std::shared_ptr<Mushroom>>& Mush);
+
+        void CollisionMushPlayer(std::shared_ptr<BugBlaster>& BugB, std::vector<std::shared_ptr<Mushroom>>& Mush);
+
+        void LaserCollisionMushrooms(std::vector <std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Mushroom>>& Mush);
+
+        void CentipedeCollisionMushroom(std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Mushroom>>& Mush);
+
+        void CollisionBugFlea(std::shared_ptr<BugBlaster>& BugB,std::vector<std::shared_ptr<Flea>>& flea);
+        void CollisionLaserFlea(std::vector<std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Flea>>& flea);
+        void CollisionFleaEdge(std::vector<std::shared_ptr<Flea>>& flea);
 
     private:
 

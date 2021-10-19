@@ -69,14 +69,13 @@ bool Flea::CollisionBottomWindow(sf::RenderTarget* target)
 {
      if(flea.getGlobalBounds().top>=target->getSize().y)
     {
-        std::cout << "Flea is gone" <<std::endl;
        return true;
     }
 
 return false;
 }
 
- std::vector <Mushroom*> Flea::SpawnMushroomWithFlea(std::vector <Mushroom*> Mush)
+ void Flea::SpawnMushroomWithFlea(std::vector<std::shared_ptr<Mushroom>>& Mush)
  {
 
      float randomvalue = (rand() % 100);
@@ -85,10 +84,10 @@ return false;
      if(randomvalue<2)
      {
 
-         Mushroom* Tempmush=nullptr;
+         //Mushroom* Tempmush=nullptr;
 
-        Tempmush=new Mushroom(flea.getGlobalBounds().left, flea.getGlobalBounds().top);
-        Mush.push_back(Tempmush);
+        //Tempmush=new Mushroom(flea.getGlobalBounds().left, flea.getGlobalBounds().top);
+        Mush.push_back(std::make_shared<Mushroom>(flea.getGlobalBounds().left, flea.getGlobalBounds().top));
 
 
      for(int j=0; j<Length-1; j++)//Makes sure dropped mushrooms dont intersect
@@ -102,5 +101,4 @@ return false;
         }
      }
 
-return Mush;
  }

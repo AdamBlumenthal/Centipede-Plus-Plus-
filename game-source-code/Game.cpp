@@ -56,6 +56,7 @@ void Game::createWindow()
 //Gives values to private variables.
 void Game::createVarible()
 {
+    BugB=std::make_shared<BugBlaster>();
 
     //Laser controls
 
@@ -89,14 +90,14 @@ void Game::createVarible()
    // this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
     this->StartSplashText.setPosition(0,250);
 
-    Mushroom* Tempmush=nullptr;
+    //Mushroom* Tempmush=nullptr;
 
     for(int i=0; i<=MushCount; i++)
     {
         float randomy = 21+(rand() % 580);
         float randomx = (rand() % 800);
-        Tempmush=new Mushroom(randomx,randomy);
-        Mush.push_back(Tempmush);
+        //Tempmush=new Mushroom(randomx,randomy);
+        Mush.push_back(std::make_shared<Mushroom>(randomx,randomy));
 
         for(int j=0; j<i-1; j++)//Makes sure random mushrooms dont intersect, if they intersect creates new mushroom
         {
@@ -148,24 +149,24 @@ void Game::update()
     //std::cout<<laser.at(0).use_count()<<std::endl;
 
     SpawnFlea();
-    KillFlea();
+    //KillFlea();
 
     if(!pause){
     this->UpdateEvent();
 
-    this->BugB.update(this->window);
+    BugB->update(this->window);
 
 
 
     //this->UpdateEvent();
     this->ShootLaser();
    // this->LaserCollision();
-    this->LaserCollisionMushrooms();
+    //this->LaserCollisionMushrooms();
     this->CollisionBugCentipede();
     //this->MakeCentipede();
 
-    this->CollisionBugPlayer();
-    this->CollisionBugFlea();
+    //this->CollisionBugPlayer();
+    //this->CollisionBugFlea();
     //this->CollisonLaserFlea();
 
 
@@ -173,10 +174,9 @@ void Game::update()
 
         for(int i=0;i<centipedes.size();i++){
 
-            CentipedeCollisionMushroom(centipedes.at(i));
-            LaserCollisionCentipedes(centipedes.at(i));
+            //CentipedeCollisionMushroom(centipedes.at(i));
+            //LaserCollisionCentipedes(centipedes.at(i));
             //SelfCollision(centipedes.at(i),  i);
-
 
     }
 
@@ -221,7 +221,7 @@ void Game::update()
         for(int i=0; i<flea.size(); i++)
         {
             this->flea.at(i)->update(this->window);
-            Mush=this->flea.at(i)->SpawnMushroomWithFlea(Mush);
+            flea.at(i)->SpawnMushroomWithFlea(Mush);
         }
 
     }
@@ -251,8 +251,8 @@ void Game::render()
 
 
           //  this->window->clear(sf::Color::Black);
-          segments.clear();
-          heads.clear();
+          //segments.clear();
+         // heads.clear();
           Mush.clear();
           createVarible();
           start=false;
@@ -274,7 +274,7 @@ void Game::render()
        // update();
         //Render Objects in space
 
-        this->BugB.render(this->window);
+        BugB->render(this->window);
 
        for(auto i:centipedes)
         i->render(this->window);
@@ -307,7 +307,7 @@ void Game::ShootLaser()
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&laser.size()<=this->MaxLaserCount&&LaserDelay>=MaxLaserDelay)
     {
-        sf::FloatRect BugPos=this->BugB.GetBugPosition();
+        sf::FloatRect BugPos=BugB->GetBugPosition();
         laser.push_back(std::make_shared<Laser>(BugPos));
         //CurrentLasers++;
         //Game::MaxLengthCentipede
@@ -332,42 +332,42 @@ void Game::ShootLaser()
 //
 //    }
 //}
-void Game::CentipedeCollisionMushroom(std::shared_ptr<Centipede> centipede){
-    if(centipede->getSize()>0)
-    for(int i=0;i<Mush.size();i++)
-        if(Mush.at(i)->GetMushroomPosition().intersects(centipede->GetCentipedeHeadPosition())){
-            centipede->setHitMushroom();
-        }
-}
-void Game::LaserCollisionCentipedes(std::shared_ptr<Centipede> centipede){
-    bool leave=false;
-    for(int i=0;i<laser.size();i++){
-        for(int j=0;j<centipede->getSize();j++){
-            if(laser.at(i)->GetLaserPosition().intersects(centipede->getCentipede().at(j).GetSegmentPosition())){
-                this->laser.erase(laser.begin()+i);
-                leave=true;
-                MakeMushroom(centipede->getCentipede().at(j));
-
-                auto temp=centipede->getNewCentipede(j);
-                auto length=centipede->getSize()-1;
-
-                centipede->fixedHead(j);
-
-                //if(centipede.getSize()==0)
-                   // std::cerr<<"There"<<std::endl;
-                if(j!=length){
-                    std::cerr<<"There"<<std::endl;
-                    centipedes.push_back(std::make_shared<Centipede>(temp));
-
-                }
-                //std::cerr<<j<<std::endl;
-                break;
-            }
-        }
-        if(leave)break;
-}
-
-}
+//void Game::CentipedeCollisionMushroom(std::shared_ptr<Centipede> centipede){
+//    if(centipede->getSize()>0)
+//    for(int i=0;i<Mush.size();i++)
+//        if(Mush.at(i)->GetMushroomPosition().intersects(centipede->GetCentipedeHeadPosition())){
+//            centipede->setHitMushroom();
+//        }
+//}
+//void Game::LaserCollisionCentipedes(std::shared_ptr<Centipede> centipede){
+//    bool leave=false;
+//    for(int i=0;i<laser.size();i++){
+//        for(int j=0;j<centipede->getSize();j++){
+//            if(laser.at(i)->GetLaserPosition().intersects(centipede->getCentipede().at(j).GetSegmentPosition())){
+//                this->laser.erase(laser.begin()+i);
+//                leave=true;
+//                MakeMushroom(centipede->getCentipede().at(j));
+//
+//                auto temp=centipede->getNewCentipede(j);
+//                auto length=centipede->getSize()-1;
+//
+//                centipede->fixedHead(j);
+//
+//                //if(centipede.getSize()==0)
+//                   // std::cerr<<"There"<<std::endl;
+//                if(j!=length){
+//                    std::cerr<<"There"<<std::endl;
+//                    centipedes.push_back(std::make_shared<Centipede>(temp));
+//
+//                }
+//                //std::cerr<<j<<std::endl;
+//                break;
+//            }
+//        }
+//        if(leave)break;
+//}
+//
+//}
 void Game::SelfCollision(){
 }
 //    bool collision=false;
@@ -412,81 +412,67 @@ void Game::SelfCollision(){
 //}
 
 
-void Game::LaserCollisionMushrooms()
-{
-
-    bool leave=false;
-    for(int i=0; i<laser.size(); i++)
-    {
-        for(int k=0; k<Mush.size(); k++)
-        {
-            if(this->laser.at(i)->GetLaserPosition().intersects(Mush.at(k)->GetMushroomPosition()))
-            {
-
-                this->laser.erase(this->laser.begin()+i);
-              //  CurrentLasers--;
-                leave=true;
-                Mush.at(k)->HealthLoss();
-                if(Mush.at(k)->IsHealthZero()==true)
-                {
-                    Mush.erase(Mush.begin()+k);
-                    MushCount--;
-
-                }
-                break;
-            }
-        }
-        if(leave)
-        {
-            //std::cout<<"hwoosooodsdofosdsdgsd"<<std::endl;
-            break;
-        }
-    }
-
-
-}
-void Game::CentipedeSelfCollision(){
-
-    for(auto i=0;i< segments.size();i++){
-    for(auto j=i+1;j<segments.size();j++){
-        if(segments.at(i).GetSegmentPosition().intersects(segments.at(j).GetSegmentPosition())){
-            segments.at(i).moveMushroom();
-            segments.at(j).moveMushroom();
-        }
-
-    }
-    }
-
-}
+//void Game::LaserCollisionMushrooms()
+//{
+//
+//    bool leave=false;
+//    for(int i=0; i<laser.size(); i++)
+//    {
+//        for(int k=0; k<Mush.size(); k++)
+//        {
+//            if(this->laser.at(i)->GetLaserPosition().intersects(Mush.at(k)->GetMushroomPosition()))
+//            {
+//
+//                this->laser.erase(this->laser.begin()+i);
+//              //  CurrentLasers--;
+//                leave=true;
+//                Mush.at(k)->HealthLoss();
+//                if(Mush.at(k)->IsHealthZero()==true)
+//                {
+//                    Mush.erase(Mush.begin()+k);
+//                    MushCount--;
+//
+//                }
+//                break;
+//            }
+//        }
+//        if(leave)
+//        {
+//            break;
+//        }
+//    }
+//
+//
+//}
 
 //Can make a general function where pass segments vector in
 
-void Game::CollisionCentipedeMushroom()
-{
-    bool leave=false;
-    int coun=0;
-    //int mush, int segment;
-    for(int i=0; i<Mush.size(); i++)
-    {
-        for(int j=0; j<segments.size(); j++)
-        {
-            if(Mush.at(i)->GetMushroomPosition().intersects(this->segments.at(j).GetSegmentPosition()))
-            {
-
-                leave=true;
-                segments.at(j).moveMushroom();
-                break;
-                 //                       std::cout<<"44"<<std::endl;
-                //break;
-
-                }
-
-
-            }
-            //  if(leave)break;
-        }
-
-    }
+//void Game::CollisionCentipedeMushroom()
+//{
+//    bool leave=false;
+//    int coun=0;
+//    //int mush, int segment;
+//    for(int i=0; i<Mush.size(); i++)
+//    {
+//        for(int j=0; j<segments.size(); j++)
+//        {
+//            if(Mush.at(i)->GetMushroomPosition().intersects(this->segments.at(j).GetSegmentPosition()))
+//            {
+//
+//                leave=true;
+//                segments.at(j).moveMushroom();
+//                break;
+//                 //                       std::cout<<"44"<<std::endl;
+//                //break;
+//
+//                }
+//
+//
+//            }
+//            //  if(leave)break;
+//        }
+//
+//    }
 
 
 void Game::CollisionBugCentipede(){
@@ -506,54 +492,53 @@ void Game::CollisionBugCentipede(){
 //Bug they don't all follow each other at correct intervals
 
 
-void Game::MakeMushroom(Segment segment)
-{
-    auto temp=segment.GetSegmentPosition();
-//    std::cout<<temp<<std::endl;
-    Mushroom* mush=new Mushroom(temp.left, temp.top);
-    Mush.push_back(mush);
-    //delete mush;
-}
+//void Game::MakeMushroom(Segment segment)
+//{
+//    auto temp=segment.GetSegmentPosition();
+////    std::cout<<temp<<std::endl;
+//    Mush.push_back(std::make_shared<Mushroom>(temp.left, temp.top));
+//    //delete mush;
+//}
 
-void Game::CollisionBugPlayer()
-{
-
-    for(int k=0; k<Mush.size(); k++)//Checks all mushrooms
-    {
-
-        if(BugB.GetBugPosition().intersects(Mush.at(k)->GetMushroomPosition()))
-        {
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)||sf::Keyboard::isKeyPressed(sf::Keyboard::Right))//Left and right
-            {
-                if(BugB.GetBugPosition().left>=Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width
-                        && BugB.GetBugPosition().left+BugB.GetBugPosition().width>Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width)//Checks if on the right and not on the left
-                {
-                    BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width,BugB.GetBugPosition().top);
-                }
-                else if(BugB.GetBugPosition().left+BugB.GetBugPosition().width>=Mush.at(k)->GetMushroomPosition().left)//Checks if on the left
-                {
-                    BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width,BugB.GetBugPosition().top);
-                }
-            }
-
-            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)||sf::Keyboard::isKeyPressed(sf::Keyboard::Down))//Up and down
-            {
-                if (BugB.GetBugPosition().top<Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height
-                        &&BugB.GetBugPosition().top>Mush.at(k)->GetMushroomPosition().top)//Checks if below and not above
-                {
-                    BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top+Mush.at(k)->GetMushroomPosition().height);
-                }
-                else if(BugB.GetBugPosition().top+BugB.GetBugPosition().height>Mush.at(k)->GetMushroomPosition().top)//Checks if above
-                {
-                    BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top-BugB.GetBugPosition().height);
-                }
-            }
-
-        }
-
-    }
-
-}
+//void Game::CollisionBugPlayer()
+//{
+//
+//    for(int k=0; k<Mush.size(); k++)//Checks all mushrooms
+//    {
+//
+//        if(BugB.GetBugPosition().intersects(Mush.at(k)->GetMushroomPosition()))
+//        {
+//            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)||sf::Keyboard::isKeyPressed(sf::Keyboard::Right))//Left and right
+//            {
+//                if(BugB.GetBugPosition().left>=Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width
+//                        && BugB.GetBugPosition().left+BugB.GetBugPosition().width>Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width)//Checks if on the right and not on the left
+//                {
+//                    BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left+Mush.at(k)->GetMushroomPosition().width,BugB.GetBugPosition().top);
+//                }
+//                else if(BugB.GetBugPosition().left+BugB.GetBugPosition().width>=Mush.at(k)->GetMushroomPosition().left)//Checks if on the left
+//                {
+//                    BugB.SetPosition(Mush.at(k)->GetMushroomPosition().left-BugB.GetBugPosition().width,BugB.GetBugPosition().top);
+//                }
+//            }
+//
+//            if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)||sf::Keyboard::isKeyPressed(sf::Keyboard::Down))//Up and down
+//            {
+//                if (BugB.GetBugPosition().top<Mush.at(k)->GetMushroomPosition().top+BugB.GetBugPosition().height
+//                        &&BugB.GetBugPosition().top>Mush.at(k)->GetMushroomPosition().top)//Checks if below and not above
+//                {
+//                    BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top+Mush.at(k)->GetMushroomPosition().height);
+//                }
+//                else if(BugB.GetBugPosition().top+BugB.GetBugPosition().height>Mush.at(k)->GetMushroomPosition().top)//Checks if above
+//                {
+//                    BugB.SetPosition(BugB.GetBugPosition().left,Mush.at(k)->GetMushroomPosition().top-BugB.GetBugPosition().height);
+//                }
+//            }
+//
+//        }
+//
+//    }
+//
+//}
 
 void Game::SpawnFlea()
 {
@@ -568,9 +553,9 @@ void Game::SpawnFlea()
     if(PlayerAreaMush<7&&MinFleaTimeDelay<FleaTimeDelay)
     {
 
-     Flea* Tempflea=nullptr;
-     Tempflea=new Flea();
-    flea.push_back(Tempflea);
+     //Flea* Tempflea=nullptr;
+     //Tempflea=new Flea();
+    flea.push_back(std::make_shared<Flea>());
     FleaTimeDelay=0;
 
     }
@@ -578,19 +563,18 @@ void Game::SpawnFlea()
 
 }
 
-void Game::KillFlea()
-{
-     for(int h=0; h<flea.size(); h++)
-        {
-
-            if(flea.at(h)->CollisionBottomWindow(this->window))
-            {
-                flea.erase(flea.begin()+h);
-                //std::cout<<flea.size()<<std::endl;
-            }
-
-        }
-}
+//void Game::KillFlea()
+//{
+//     for(int h=0; h<flea.size(); h++)
+//        {
+//
+//            if(flea.at(h)->GetFleaPosition().top>=600)
+//            {
+//                flea.erase(flea.begin()+h);
+//                //std::cout<<flea.size()<<std::endl;
+//            }
+//        }
+//}
 
  //int* generalCollision( std::vector <A> a,std::vector <B> b)
  //{
@@ -613,41 +597,37 @@ void Game::KillFlea()
 // }
 
 
-bool Game::IsEmpty(Centipede seg){
-    return seg.isEmpty();
-}
+//void Game::CollisionBugFlea()
+//{
+//    for(int h=0; h<flea.size(); h++)
+//        {
+//            if(BugB->GetBugPosition().intersects(flea.at(h)->GetFleaPosition()))
+//            {
+//                gameOver=true;
+//                break;
+//            }
+//        }
+//
+//}
 
-void Game::CollisionBugFlea()
-{
-    for(int h=0; h<flea.size(); h++)
-        {
-            if(this->BugB.GetBugPosition().intersects(flea.at(h)->GetFleaPosition()))
-            {
-                gameOver=true;
-                break;
-            }
-        }
-
-}
-
-void Game::CollisonLaserFlea2()
-{
-    bool leave=false;
-
-    for(int i=0; i<laser.size(); i++)
-    {
-        for(int j=0; j<flea.size(); j++)
-        {
-            if(laser.at(i)->GetLaserPosition().intersects(flea.at(j)->GetFleaPosition()))
-            {
-
-                //leave=true;
-                flea.erase(flea.begin()+j);
-
-            }
-
-
-            }
-            //  if(leave)break;
-        }
-}
+//void Game::CollisonLaserFlea()
+//{
+//    bool leave=false;
+//
+//    for(int i=0; i<laser.size(); i++)
+//    {
+//        for(int j=0; j<flea.size(); j++)
+//        {
+//            if(laser.at(i)->GetLaserPosition().intersects(flea.at(j)->GetFleaPosition()))
+//            {
+//
+//                //leave=true;
+//                flea.erase(flea.begin()+j);
+//
+//            }
+//
+//
+//            }
+//            //  if(leave)break;
+//        }
+//}

@@ -32,30 +32,29 @@ public:
     void UpdateEvent();
     void ShootLaser();
     void SpawnFlea();
-    void KillFlea();
+    //void KillFlea();
 
     //collisions
-    void LaserCollision();
-    void LaserCollisionCentipede();
+    //void LaserCollision();
+    //void LaserCollisionCentipede();
 
     //new centipede
-    void LaserCollisionCentipedes(std::shared_ptr<Centipede> centipede);
-    void LaserCollisionHeads();
-    void LaserCollisionMushrooms();
-    void CollisionCentipedeMushroom();
+    //void LaserCollisionCentipedes(std::shared_ptr<Centipede> centipede);
+    //void LaserCollisionHeads();
+    //void LaserCollisionMushrooms();
+    //void CollisionCentipedeMushroom();
     void CollisionBugCentipede();
 
-    void CollisionBugPlayer();
-    void CollisionBugFlea();
-    void CollisonLaserFlea2();
+    //void CollisionBugPlayer();
+    //void CollisionBugFlea();
+    //void CollisonLaserFlea();
 
-    void checkRestCollision(int,int);
-    void CentipedeSelfCollision();
-    void CentipedeCollisionMushroom(std::shared_ptr<Centipede> centipede);
-    bool IsEmpty(Centipede);
+    //void checkRestCollision(int,int);
+    //void CentipedeSelfCollision();
+    //void CentipedeCollisionMushroom(std::shared_ptr<Centipede> centipede);
     void SelfCollision();
 
-    void MakeMushroom(Segment segment);
+    //void MakeMushroom(Segment segment);
     //Collisions
    // void LaserCollisionCentipede();
    // void LaserCollision();
@@ -93,16 +92,18 @@ private:
     sf::Font font;
     sf::Text StartSplashText;
 
-    BugBlaster BugB;//BugBlaster object
+    //BugBlaster BugB;//BugBlaster object
     //std::vector <Laser> laser;//Laser object
-    std::vector <Segment> segments;//Centipede
-    std::vector <Segment> heads;//Independent centipedes
-    std::vector <Mushroom*> Mush;
-    std::vector <Flea*> flea;//Flea object
-    std::vector<int>headCount;
+    //std::vector <Segment> segments;//Centipede
+    //std::vector <Segment> heads;//Independent centipedes
+    //std::vector <Mushroom*> Mush;
+    //std::vector <Flea*> flea;//Flea object
+    //std::vector<int>headCount;
     //std::vector<Centipede> centipedes;
+    std::shared_ptr<BugBlaster> BugB;//=std::make_shared<BugBlaster>();
     std::vector<std::shared_ptr<Laser>> laser;
     std::vector<std::shared_ptr<Centipede>> centipedes;
-
+    std::vector<std::shared_ptr<Mushroom>> Mush;
+    std::vector<std::shared_ptr<Flea>> flea;
 };
 #endif // GAMEENGINE_H_INCLUDED
