@@ -13,16 +13,16 @@
 #include "Mushroom.h"
 #include "Flea.h"
 #include "Centipede.h"
-
+#include <memory>
 
 class CollisionControl
 {
     public:
-        CollisionControl(BugBlaster BugB,std::vector <Laser> laser,std::vector <Mushroom*> Mush,std::vector <Flea*> flea,std::vector<Centipede> centipedes);
+        CollisionControl(BugBlaster BugB,std::vector <std::shared_ptr<Laser>>& laser,std::vector <Mushroom*> Mush,std::vector <Flea*> flea,std::vector<std::shared_ptr<Centipede>>& centipedes);
         virtual ~CollisionControl();
 
-       void CollisonLaserFlea(std::vector <Flea*> flea,std::vector <Laser> laser);
-
+       void LaserCollision(std::vector <std::shared_ptr<Laser>>& laser);
+        void LaserCollisionCentipedes(std::vector <std::shared_ptr<Laser>>& laser, std::vector<std::shared_ptr<Centipede>>& centipede);
 
     private:
 

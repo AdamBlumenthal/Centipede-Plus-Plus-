@@ -13,7 +13,7 @@
 #include "Flea.h"
 #include "Centipede.h"
 #include "CollisionControl.h"
-
+#include <memory>
 
 
 
@@ -143,7 +143,9 @@ void Game::update()
 {
 
     CollisionControl(BugB,laser,Mush,flea,centipedes);
-
+    //std::cerr<<"Here"<<std::endl;
+    //if(laser.size()>0)
+    //std::cout<<laser.at(0).use_count()<<std::endl;
 
     SpawnFlea();
     KillFlea();
@@ -157,7 +159,7 @@ void Game::update()
 
     //this->UpdateEvent();
     this->ShootLaser();
-    this->LaserCollision();
+   // this->LaserCollision();
     this->LaserCollisionMushrooms();
     this->CollisionBugCentipede();
     //this->MakeCentipede();
@@ -178,10 +180,10 @@ void Game::update()
 
     }
 
-    centipedes.erase(remove_if(centipedes.begin(),centipedes.end(),[](Centipede cent)->bool{return cent.isEmpty();}),centipedes.end());
+    centipedes.erase(remove_if(centipedes.begin(),centipedes.end(),[](std::shared_ptr<Centipede> cent)->bool{return cent->isEmpty();}),centipedes.end());
        // SelfCollision();
         for(int i=0;i<centipedes.size();i++)
-            centipedes.at(i).update(this->window);
+            centipedes.at(i)->update(this->window);
     }
 
 
@@ -197,7 +199,7 @@ void Game::update()
     {
 
 
-        centipedes.push_back(Centipede(12,2.f, 0.f));
+        centipedes.push_back(std::make_shared<Centipede>(12,2.f, 0.f));
         lvlBegin=false;
     }
 
@@ -206,7 +208,7 @@ void Game::update()
     {
         for(int i=0; i<laser.size(); i++)
         {
-            this->laser.at(i).update(this->window);
+           laser.at(i)->update(this->window);
         }
 
     }
@@ -275,15 +277,15 @@ void Game::render()
         this->BugB.render(this->window);
 
        for(auto i:centipedes)
-        i.render(this->window);
+        i->render(this->window);
         for(int i=0; i<Mush.size(); i++)
         {
             Mush.at(i)->render(this->window);
         }
 
-        for(auto i:this->laser)
+        for(auto i:laser)
         {
-            i.render(this->window);
+            i->render(this->window);
         }
 
 
@@ -306,7 +308,7 @@ void Game::ShootLaser()
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&laser.size()<=this->MaxLaserCount&&LaserDelay>=MaxLaserDelay)
     {
         sf::FloatRect BugPos=this->BugB.GetBugPosition();
-        this->laser.push_back(Laser(BugPos));
+        laser.push_back(std::make_shared<Laser>(BugPos));
         //CurrentLasers++;
         //Game::MaxLengthCentipede
         LaserDelay=0.f;
@@ -315,46 +317,48 @@ void Game::ShootLaser()
 }
 
 //Checks if Laser collides with objects such as edge of screen or centipede segments
-void Game::LaserCollision()
-{
-
-    for(int i=0; i<laser.size(); i++)
-    {
-        //sf::FloatRect LaserPos=this->laser.at(i).GetLaserPosition();
-
-        if(laser.at(i).GetLaserPosition().top<=0.f)
-        {
-            this->laser.erase(this->laser.begin()+i);
-            break;
-        }
-
-    }
-}
-void Game::CentipedeCollisionMushroom(Centipede& centipede){
-    if(centipede.getSize()>0)
+//void Game::LaserCollision()
+//{
+//
+//    for(int i=0; i<laser.size(); i++)
+//    {
+//        //sf::FloatRect LaserPos=this->laser.at(i).GetLaserPosition();
+//
+//        if(laser.at(i)->GetLaserPosition().top<=0.f)
+//        {
+//            this->laser.erase(this->laser.begin()+i);
+//            break;
+//        }
+//
+//    }
+//}
+void Game::CentipedeCollisionMushroom(std::shared_ptr<Centipede> centipede){
+    if(centipede->getSize()>0)
     for(int i=0;i<Mush.size();i++)
-        if(Mush.at(i)->GetMushroomPosition().intersects(centipede.GetCentipedeHeadPosition())){
-            centipede.setHitMushroom();
+        if(Mush.at(i)->GetMushroomPosition().intersects(centipede->GetCentipedeHeadPosition())){
+            centipede->setHitMushroom();
         }
 }
-void Game::LaserCollisionCentipedes(Centipede& centipede){
+void Game::LaserCollisionCentipedes(std::shared_ptr<Centipede> centipede){
     bool leave=false;
     for(int i=0;i<laser.size();i++){
-        for(int j=0;j<centipede.getSize();j++){
-            if(laser.at(i).GetLaserPosition().intersects(centipede.getCentipede().at(j).GetSegmentPosition())){
-                this->laser.erase(this->laser.begin()+i);
+        for(int j=0;j<centipede->getSize();j++){
+            if(laser.at(i)->GetLaserPosition().intersects(centipede->getCentipede().at(j).GetSegmentPosition())){
+                this->laser.erase(laser.begin()+i);
                 leave=true;
-                MakeMushroom(centipede.getCentipede().at(j));
+                MakeMushroom(centipede->getCentipede().at(j));
 
-                auto temp=centipede.getNewCentipede(j);
-                auto length=centipede.getSize()-1;
+                auto temp=centipede->getNewCentipede(j);
+                auto length=centipede->getSize()-1;
 
-                centipede.fixedHead(j);
+                centipede->fixedHead(j);
 
                 //if(centipede.getSize()==0)
                    // std::cerr<<"There"<<std::endl;
                 if(j!=length){
-                    centipedes.push_back(Centipede(temp));
+                    std::cerr<<"There"<<std::endl;
+                    centipedes.push_back(std::make_shared<Centipede>(temp));
+
                 }
                 //std::cerr<<j<<std::endl;
                 break;
@@ -365,47 +369,47 @@ void Game::LaserCollisionCentipedes(Centipede& centipede){
 
 }
 void Game::SelfCollision(){
-
-    bool collision=false;
-
-    for(int i=0;i<centipedes.size()-1;i++){
-        for(int j=i+1;j<centipedes.size();j++){
-                for(int k=0;k<centipedes.at(j).getSize();k++){
-
-                    if(centipedes.at(i).GetCentipedeHeadPosition().intersects(centipedes.at(j).getCentipede().at(k).GetSegmentPosition())){
-                        if(k==0)
-                            centipedes.at(j).moveHead();
-                        std::cout<<"Hit pos og at y";
-                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().top;
-                          std::cout<<" Hit pos og at x";
-                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().left;
-                        std::cout<<std::endl;
-                        centipedes.at(i).moveHead();
-
-                        std::cout<<"Hit pos new at y";
-                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().top;
-                          std::cout<<" Hit pos new at x";
-                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().left;
-                        std::cout<<std::endl;
-                        std::cout<<"Here ";
-                        std::cout<<i;
-                        std::cout<<" Hit ";
-                        std::cout<<j;
-                        std::cout<<" segm";
-                        std::cout<<k;
-                        std::cout<<std::endl;
-                        collision=true;
-                        break;
-            }
-        }
-        if(collision){
-                collision=false;
-            break;
-        }
-    }
-
 }
-}
+//    bool collision=false;
+//
+//    for(int i=0;i<centipedes.size()-1;i++){
+//        for(int j=i+1;j<centipedes.size();j++){
+//                for(int k=0;k<centipedes.at(j).getSize();k++){
+//
+//                    if(centipedes.at(i).GetCentipedeHeadPosition().intersects(centipedes.at(j).getCentipede().at(k).GetSegmentPosition())){
+//                        if(k==0)
+//                            centipedes.at(j).moveHead();
+//                        std::cout<<"Hit pos og at y";
+//                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().top;
+//                          std::cout<<" Hit pos og at x";
+//                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().left;
+//                        std::cout<<std::endl;
+//                        centipedes.at(i).moveHead();
+//
+//                        std::cout<<"Hit pos new at y";
+//                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().top;
+//                          std::cout<<" Hit pos new at x";
+//                        std::cout<<centipedes.at(i).getCentipede().at(0).GetSegmentPosition().left;
+//                        std::cout<<std::endl;
+//                        std::cout<<"Here ";
+//                        std::cout<<i;
+//                        std::cout<<" Hit ";
+//                        std::cout<<j;
+//                        std::cout<<" segm";
+//                        std::cout<<k;
+//                        std::cout<<std::endl;
+//                        collision=true;
+//                        break;
+//            }
+//        }
+//        if(collision){
+//                collision=false;
+//            break;
+//        }
+//    }
+//
+//}
+//}
 
 
 void Game::LaserCollisionMushrooms()
@@ -416,7 +420,7 @@ void Game::LaserCollisionMushrooms()
     {
         for(int k=0; k<Mush.size(); k++)
         {
-            if(this->laser.at(i).GetLaserPosition().intersects(Mush.at(k)->GetMushroomPosition()))
+            if(this->laser.at(i)->GetLaserPosition().intersects(Mush.at(k)->GetMushroomPosition()))
             {
 
                 this->laser.erase(this->laser.begin()+i);
@@ -486,16 +490,16 @@ void Game::CollisionCentipedeMushroom()
 
 
 void Game::CollisionBugCentipede(){
-
- for(int j=0; j<segments.size(); j++)
-        {
-            if(this->BugB.GetBugPosition().intersects(this->segments.at(j).GetSegmentPosition()))
-            {
-                gameOver=true;
-                break;
-            }
-        }
 }
+// for(int j=0; j<segments.size(); j++)
+//        {
+//            if(this->BugB.GetBugPosition().intersects(this->segments.at(j).GetSegmentPosition()))
+//            {
+//                gameOver=true;
+//                break;
+//            }
+//        }
+//}
 //std::cout<<"Number of segments:"+segments.size()<<std::endl
 
 //Makes a centipede. Segments that follow each other
@@ -634,7 +638,7 @@ void Game::CollisonLaserFlea2()
     {
         for(int j=0; j<flea.size(); j++)
         {
-            if(laser.at(i).GetLaserPosition().intersects(flea.at(j)->GetFleaPosition()))
+            if(laser.at(i)->GetLaserPosition().intersects(flea.at(j)->GetFleaPosition()))
             {
 
                 //leave=true;

@@ -9,7 +9,7 @@
 #include "Mushroom.h"
 #include "Flea.h"
 #include "Centipede.h"
-
+#include <memory>
 
 
 class Game
@@ -39,7 +39,7 @@ public:
     void LaserCollisionCentipede();
 
     //new centipede
-    void LaserCollisionCentipedes(Centipede& centipede);
+    void LaserCollisionCentipedes(std::shared_ptr<Centipede> centipede);
     void LaserCollisionHeads();
     void LaserCollisionMushrooms();
     void CollisionCentipedeMushroom();
@@ -51,7 +51,7 @@ public:
 
     void checkRestCollision(int,int);
     void CentipedeSelfCollision();
-    void CentipedeCollisionMushroom(Centipede& centipede);
+    void CentipedeCollisionMushroom(std::shared_ptr<Centipede> centipede);
     bool IsEmpty(Centipede);
     void SelfCollision();
 
@@ -94,14 +94,15 @@ private:
     sf::Text StartSplashText;
 
     BugBlaster BugB;//BugBlaster object
-    std::vector <Laser> laser;//Laser object
+    //std::vector <Laser> laser;//Laser object
     std::vector <Segment> segments;//Centipede
     std::vector <Segment> heads;//Independent centipedes
     std::vector <Mushroom*> Mush;
     std::vector <Flea*> flea;//Flea object
     std::vector<int>headCount;
-    std::vector<Centipede> centipedes;
-
+    //std::vector<Centipede> centipedes;
+    std::vector<std::shared_ptr<Laser>> laser;
+    std::vector<std::shared_ptr<Centipede>> centipedes;
 
 };
 #endif // GAMEENGINE_H_INCLUDED
