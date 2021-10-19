@@ -46,6 +46,8 @@ public:
     void CollisionBugCentipede();
 
     void CollisionBugPlayer();
+    void CollisionBugFlea();
+    void CollisonLaserFlea();
 
     void checkRestCollision(int,int);
     void CentipedeSelfCollision();

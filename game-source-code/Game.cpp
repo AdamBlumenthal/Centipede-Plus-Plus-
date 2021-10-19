@@ -161,6 +161,8 @@ void Game::update()
     //this->MakeCentipede();
 
     this->CollisionBugPlayer();
+    this->CollisionBugFlea();
+    this->CollisonLaserFlea();
 
 
     if(centipedes.size()>0){
@@ -215,7 +217,7 @@ void Game::update()
         for(int i=0; i<flea.size(); i++)
         {
             this->flea.at(i)->update(this->window);
-            Mush=this->flea.at(i)->SpawnMushroom(Mush);
+            Mush=this->flea.at(i)->SpawnMushroomWithFlea(Mush);
         }
 
     }
@@ -578,7 +580,7 @@ void Game::KillFlea()
             if(flea.at(h)->CollisionBottomWindow(this->window))
             {
                 flea.erase(flea.begin()+h);
-                std::cout<<flea.size()<<std::endl;
+                //std::cout<<flea.size()<<std::endl;
             }
 
         }
@@ -609,3 +611,38 @@ bool Game::IsEmpty(Centipede seg){
     return seg.isEmpty();
 }
 
+void Game::CollisionBugFlea()
+{
+    for(int h=0; h<flea.size(); h++)
+        {
+            if(this->BugB.GetBugPosition().intersects(flea.at(h)->GetFleaPosition()))
+            {
+                gameOver=true;
+                break;
+            }
+        }
+
+}
+
+void Game::CollisonLaserFlea()
+{
+    bool leave=false;
+
+    for(int i=0; i<laser.size(); i++)
+    {
+        for(int j=0; j<flea.size(); j++)
+        {
+            if(laser.at(i).GetLaserPosition().intersects(flea.at(j)->GetFleaPosition()))
+            {
+
+                //leave=true;
+                flea.erase(flea.begin()+j);
+
+
+            }
+
+
+            }
+            //  if(leave)break;
+        }
+}

@@ -20,7 +20,7 @@ class Flea
         void FleaMove();
         bool CollisionBottomWindow(sf::RenderTarget* target);
 
-        std::vector <Mushroom*> SpawnMushroom(std::vector <Mushroom*> Mush);
+        std::vector <Mushroom*> SpawnMushroomWithFlea(std::vector <Mushroom*> Mush);
 
         sf::FloatRect GetFleaPosition();
 

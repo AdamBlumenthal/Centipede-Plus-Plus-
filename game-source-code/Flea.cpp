@@ -76,7 +76,7 @@ bool Flea::CollisionBottomWindow(sf::RenderTarget* target)
 return false;
 }
 
- std::vector <Mushroom*> Flea::SpawnMushroom(std::vector <Mushroom*> Mush)
+ std::vector <Mushroom*> Flea::SpawnMushroomWithFlea(std::vector <Mushroom*> Mush)
  {
 
      float randomvalue = (rand() % 100);
