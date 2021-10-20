@@ -45,7 +45,7 @@ const bool Game::IsRunning() const
 //Creates Window
 void Game::createWindow()
 {
-    this->videomode.height=600;
+    this->videomode.height=700;
     this->videomode.width=800;
     this->window=new sf::RenderWindow(videomode, "SFML Centipede", sf::Style::Titlebar | sf::Style::Close);
     this->window->setFramerateLimit(60);
@@ -85,8 +85,13 @@ void Game::createVarible()
     this->StartSplashText.setFont(this->font);
     this->StartSplashText.setCharacterSize(25);
     this->StartSplashText.setFillColor(sf::Color::White);
-   // this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
     this->StartSplashText.setPosition(0,250);
+
+    //Lives text
+    LivesText.setFont(this->font);
+    LivesText.setCharacterSize(25);
+    LivesText.setFillColor(sf::Color::White);
+    LivesText.setPosition(200,650);
 
     //Mushroom* Tempmush=nullptr;
 
@@ -206,7 +211,6 @@ void Game::update()
     }
 
     if(Collision.DidPlayerLoseLife()){
-
         Lives--;
         centipedes.clear();
         if(Lives==0){
@@ -266,7 +270,12 @@ void Game::render()
             else
                 pause=true;
         }
-       // update();
+        //Display lives remaining
+
+        LivesText.setString("Lives Remaining:"+std::to_string(Lives));
+        this->window->draw(LivesText);
+
+
         //Render Objects in space
 
         BugB->render(this->window);

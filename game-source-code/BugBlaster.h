@@ -5,7 +5,9 @@
 
 
 
-//enum Movement(Up,Down, Right, Left);
+enum class Movement{Up,Down, Right, Left};
+
+
 class BugBlaster
 {
 public:
@@ -13,7 +15,8 @@ public:
     virtual ~BugBlaster();
 
     //functions
-    void KeyInput();
+    Movement BugBlasterGetInputs();
+    void KeyInputResults(Movement movement);
     void update(sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
 

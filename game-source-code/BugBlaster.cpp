@@ -34,23 +34,23 @@ void BugBlaster::createBug()
 
 //functions
 //Checks for user input that will move the bug
-void BugBlaster::KeyInput()
+void BugBlaster::KeyInputResults(Movement movement)
 {
     //Key movements
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if(movement==Movement::Up)
     {
         this->bug.move(0.f,-this->MoveSpeed);//Up
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    else if(movement==Movement::Down)
     {
         this->bug.move(0.f,this->MoveSpeed);//Down
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if(movement==Movement::Left)
     {
         this->bug.move(-this->MoveSpeed,0.f);//Left
     }
-    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    else if(movement==Movement::Right)
     {
         this->bug.move(this->MoveSpeed,0.f);//Right
     }
@@ -74,9 +74,9 @@ void BugBlaster::WindowCollision(sf::RenderTarget* target)
     {
         this->bug.setPosition(bug.getGlobalBounds().left,450.f);
     }
-    else if(bug.getGlobalBounds().top+bug.getGlobalBounds().height>=target->getSize().y)
+    else if(bug.getGlobalBounds().top+bug.getGlobalBounds().height>=target->getSize().y-100.f)
     {
-        this->bug.setPosition(bug.getGlobalBounds().left,target->getSize().y-bug.getGlobalBounds().height);
+        this->bug.setPosition(bug.getGlobalBounds().left,target->getSize().y-bug.getGlobalBounds().height-100.f);
     }
 
 
@@ -93,7 +93,9 @@ void BugBlaster::update(sf::RenderTarget* target)
 {
 
     //Key movements
-    this->KeyInput();
+    auto movement=BugBlasterGetInputs();
+
+    this->KeyInputResults(movement);
 
     //collision
     this->WindowCollision(target);
@@ -107,4 +109,28 @@ void BugBlaster::render(sf::RenderTarget* target)
 void BugBlaster::SetPosition(float x,float y)
 {
     this->bug.setPosition(x,y);
+}
+
+ Movement BugBlaster::BugBlasterGetInputs()
+{
+
+
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        return Movement::Up;
+    }
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+       return Movement::Down;
+    }
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+      return Movement::Left;
+    }
+    else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+      return Movement::Right;
+    }
+
+
 }

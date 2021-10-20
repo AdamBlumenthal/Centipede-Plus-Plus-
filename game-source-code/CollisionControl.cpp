@@ -200,7 +200,7 @@ void CollisionControl::CollisionBugFlea(std::shared_ptr<BugBlaster>& BugB,std::v
             if(BugB->GetBugPosition().intersects(flea.at(h)->GetFleaPosition()))
             {
                 LostLife=true;
-                std::cout<<"Dead"<<std::endl;
+                flea.erase(flea.begin()+h);
                 break;
             }
         }
@@ -235,7 +235,6 @@ void CollisionControl::CollisionFleaEdge(std::vector<std::shared_ptr<Flea>>& fle
             if(flea.at(h)->GetFleaPosition().top>=600)
             {
                 flea.erase(flea.begin()+h);
-                //std::cout<<flea.size()<<std::endl;
             }
         }
 }
@@ -249,7 +248,7 @@ void CollisionControl::CollisionBugCentipede(std::shared_ptr<BugBlaster>& BugB,s
         {
             if(BugB->GetBugPosition().intersects(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition()))
             {
-                std::cout<<"Dead"<<std::endl;
+                //std::cout<<"Dead"<<std::endl;
                 LostLife=true;
                 leave=true;
                 break;
