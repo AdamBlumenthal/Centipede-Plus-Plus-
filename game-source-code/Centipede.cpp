@@ -33,7 +33,7 @@ void Centipede::checkCentipedeBounds(){
      if(hitMushroom==true){
         segments.at(0).moveMushroom();
         hitMushroom=false;
-        std::cout<<"Here in hit"<<std::endl;
+
 
     }
     else if(segments.at(0).GetSegmentPosition().left-1==0&&segments.at(0).getMoveSpeed()<0)

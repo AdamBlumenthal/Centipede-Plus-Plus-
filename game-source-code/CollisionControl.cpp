@@ -25,6 +25,7 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
 
     //programme crashes this order
     CentipedeCollisionMushroom(centipedes,Mush);
+    CentipedeSelfCollision(centipedes);
     LaserCollisionCentipedes(laser, centipedes,Mush);
    // CentipedeCollisionMushroom(centipedes,Mush);
 
@@ -33,6 +34,7 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
     CollisionMushPlayer(BugB,Mush);
     CollisionBugCentipede(BugB,centipedes);
 
+    CentipedeSelfCollision(centipedes);
 
     CollisionBugFlea(BugB,flea);
     CollisionLaserFlea(laser,flea);
@@ -107,18 +109,18 @@ void CollisionControl::LaserCollisionMushrooms(std::vector <std::shared_ptr<Lase
             {
 
                 laser.erase(laser.begin()+i);
-                if(laser.size()>0){
-                    i--;
-                }
+                //if(laser.size()>0){
+                //    i--;
+                //}
                 Mush.at(k)->HealthLoss();
                 if(Mush.at(k)->IsHealthZero()==true)
                 {
                     Mush.erase(Mush.begin()+k);
-                    leave=true;
-                    break;
+
 
                 }
-
+                 leave=true;
+                    break;
             }
         }
         if(leave)
@@ -263,4 +265,38 @@ void CollisionControl::CollisionBugCentipede(std::shared_ptr<BugBlaster>& BugB,s
 bool CollisionControl::DidPlayerLoseLife()
 {
     return LostLife;
+}
+
+//Centipede collisons
+void CollisionControl::CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes)
+{
+
+    for(int k=0; k<centipedes.size(); k++)
+    {
+        bool breakMiddleLoop=false;
+        for(int i=k+1; i<centipedes.size(); i++)
+        {
+            for(int j=0; j<centipedes.at(i)->getSize();j++){
+
+                if(centipedes.at(k)->GetCentipedeHeadPosition().intersects(centipedes.at(i)->getCentipede().at(j).GetSegmentPosition())){
+                    centipedes.at(k)->setHitMushroom();
+                    if(j==0&&i<centipedes.size()-1){
+                        centipedes.at(i)->setHitMushroom();
+                        i++;
+                    }
+                  //  breakMiddleLoop=true;
+                    break;
+                }
+
+
+
+            }
+           // if(breakMiddleLoop){
+            //    breakMiddleLoop=false;
+            //    break;
+           // }
+
+        }
+
+    }
 }

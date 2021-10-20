@@ -74,7 +74,7 @@ void Game::createVarible()
 
 
     //Mushroom controls
-    this->MushCount=20;
+    this->MushCount=10;
 
     //Load font
     if (!this->font.loadFromFile("resources/arial.ttf"))
@@ -162,6 +162,7 @@ void Game::update()
 
 
         centipedes.push_back(std::make_shared<Centipede>(12,2.f, 0.f));
+        centipedes.push_back(std::make_shared<Centipede>(12,2.f, 400.f));
         lvlBegin=false;
     }
 
