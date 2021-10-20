@@ -19,28 +19,6 @@ Segment::Segment(float& pos, float& mSpeed):position(pos),movespeed(mSpeed)
 //Movement with in bounds for the segments
 void Segment::moveDirections()
 {
-
-    //int gameWidth=800;
-   // int gameHeight=600;
-    //     if(this->segment1.getPosition().x==0&&movespeed<0)
-  //  {
-       // this-> segment1.setPosition(this->segment1.getPosition().x,this->segment1.getPosition().y);
-       //this->movespeed=(-1)*movespeed;
-        //this->segment1.move(0,20.f);
-    //    moveMushroom();
-   // }
-
-    //else if(this->segment1.getPosition().x +20.f >= gameWidth)
-   // {
-//this-> segment1.setPosition(this->segment1.getPosition().x,this->segment1.getPosition().y);
-       ///// this->movespeed=(-1)*movespeed;
-      //  this->segment1.move(0,20.f);
-     // moveMushroom();
-  //  }
-    //else if(this->segment1.getPosition().y+20.f>=gameHeight||(this->segment1.getPosition().y+20.f==0&&verticalSpeed<0)){
-      //      verticalSpeed=(-1)*verticalSpeed;
-     //           moveMushroom();
-      //      }
     this->segment1.move(movespeed,0);
 }
 void Segment::moveMushroom(){

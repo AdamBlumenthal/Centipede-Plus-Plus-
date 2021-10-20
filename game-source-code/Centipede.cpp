@@ -14,15 +14,16 @@ Centipede::Centipede(std::vector<Segment> seg){
     segments=seg;
     for(int i=0;i<seg.size();i++)
     //std::cerr<<i<<std::endl;
-    hitMushroom=false;
+    hitMushroom=true;
     segments.at(0).makeHead();
     }
 Centipede::Centipede(int l, float d, float p ):length(l),direction(d) {
     segments.clear();
-    float m=0;
+    float pos;
     hitMushroom=false;
     for(auto i=0; i<length;i++){
-    segments.push_back(Segment(m, direction));
+            pos=p+(-18)*i;
+    segments.push_back(Segment(pos, direction));
     }
     segments.at(0).makeHead();
 }
@@ -33,6 +34,7 @@ void Centipede::checkCentipedeBounds(){
      if(hitMushroom==true){
         segments.at(0).moveMushroom();
         hitMushroom=false;
+        std::cout<<"Here in hit"<<std::endl;
 
     }
     else if(segments.at(0).GetSegmentPosition().left-1==0&&segments.at(0).getMoveSpeed()<0)
@@ -55,20 +57,15 @@ void Centipede::checkCentipedeBounds(){
 
 void Centipede::Move(){
 
-    if(!segments.empty()){checkCentipedeBounds();
+    if(!segments.empty()){
+            checkCentipedeBounds();
 
 segments.at(0).moveDirections();
 
 if(segments.size()>1){
 
-for(int i=1;i<segments.size()-1;i++){
+for(int i=1;i<segments.size();i++){
 
-    if(segments.at(i).GetSegmentPosition().intersects(segments.at(i+1).GetSegmentPosition())
-       &&segments.at(i).GetSegmentPosition().intersects(segments.at(i-1).GetSegmentPosition())
-       ){
-
-        break;
-    }
     if(segments.at(i).GetSegmentPosition().top
        !=segments.at(i-1).GetSegmentPosition().top
        &&
@@ -80,15 +77,9 @@ for(int i=1;i<segments.size()-1;i++){
         segments.at(i).moveDirections();
 
 }
- if(!segments.at(segments.size()-1).GetSegmentPosition().intersects(segments.at(segments.size()-2).GetSegmentPosition())
-       ){
 
-        if(segments.at(segments.size()-1).GetSegmentPosition().top!=segments.at(segments.size()-2).GetSegmentPosition().top
-       &&abs(segments.at(segments.size()-1).GetSegmentPosition().left-segments.at(segments.size()-2).GetSegmentPosition().left)==segments.at(0).GetSegmentPosition().width){
-           segments.at(segments.size()-1).moveMushroom();
-           }
-    segments.at(segments.size()-1).moveDirections();
-    }
+
+
 
 
 
@@ -106,6 +97,7 @@ void Centipede::update(sf::RenderTarget* target)
         //std::cout<<i*10<<std::endl;
      //}
    this->Move();
+   //setHitMushroom();
 }
 //Rednders segment
 void Centipede::render(sf::RenderTarget* target)

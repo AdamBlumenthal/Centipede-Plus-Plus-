@@ -20,12 +20,18 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
 {
 
     LaserCollision(laser);
+
+
+    //programme crashes this order
+    CentipedeCollisionMushroom(centipedes,Mush);
     LaserCollisionCentipedes(laser, centipedes,Mush);
+   // CentipedeCollisionMushroom(centipedes,Mush);
+
     LaserCollisionMushrooms(laser,Mush);
 
     CollisionMushPlayer(BugB,Mush);
 
-    CentipedeCollisionMushroom(centipedes,Mush);
+
 
     CollisionBugFlea(BugB,flea);
     CollisionLaserFlea(laser,flea);
@@ -63,11 +69,12 @@ for(int k=0;k<centipedes.size();k++){
             if(laser.at(i)->GetLaserPosition().intersects(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition())){
                 laser.erase(laser.begin()+i);
                 leave=true;
-                Mush.push_back(std::make_shared<Mushroom>(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left,centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top));
+
+
 
                 auto temp=centipedes.at(k)->getNewCentipede(j);
                 auto length=centipedes.at(k)->getSize()-1;
-
+                 Mush.push_back(std::make_shared<Mushroom>(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left,centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top));
                 centipedes.at(k)->fixedHead(j);
 
                 //if(centipede.getSize()==0)
@@ -75,9 +82,11 @@ for(int k=0;k<centipedes.size();k++){
                 if(j!=length){
                    // std::cerr<<"There"<<std::endl;
                     centipedes.push_back(std::make_shared<Centipede>(temp));
+                  //  k++;
 
                 }
                 //std::cerr<<j<<std::endl;
+
                 break;
             }
         }
@@ -230,4 +239,14 @@ void CollisionControl::CollisionFleaEdge(std::vector<std::shared_ptr<Flea>>& fle
         }
 }
 
-
+//void Game::CollisionBugCentipede(){
+//}//
+// for(int j=0; j<segments.size(); j++)
+//        {
+//            if(this->BugB.GetBugPosition().intersects(this->segments.at(j).GetSegmentPosition()))
+//            {
+//                gameOver=true;
+//                break;
+//            }
+//        }
+//}

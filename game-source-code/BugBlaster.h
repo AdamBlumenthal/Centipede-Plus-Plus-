@@ -5,7 +5,7 @@
 
 
 
-
+//enum Movement(Up,Down, Right, Left);
 class BugBlaster
 {
 public:
