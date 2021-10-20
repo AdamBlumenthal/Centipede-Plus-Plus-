@@ -41,7 +41,7 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
 
 CollisionControl::CollisionControl()
 {
-    //dtor
+    LostLife=false;
 }
 
 void CollisionControl::LaserCollision(std::vector <std::shared_ptr<Laser>>& laser)
@@ -54,7 +54,7 @@ void CollisionControl::LaserCollision(std::vector <std::shared_ptr<Laser>>& lase
         if(laser.at(i)->GetLaserPosition().top<=0.f)
         {
             laser.erase(laser.begin()+i);
-           std::cout<<laser.size()<<std::endl;
+
             break;
         }
 
@@ -78,15 +78,12 @@ for(int k=0;k<centipedes.size();k++){
                  Mush.push_back(std::make_shared<Mushroom>(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left,centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top));
                 centipedes.at(k)->fixedHead(j);
 
-                //if(centipede.getSize()==0)
-                   // std::cerr<<"There"<<std::endl;
+
                 if(j!=length){
-                   // std::cerr<<"There"<<std::endl;
+
                     centipedes.push_back(std::make_shared<Centipede>(temp));
-                  //  k++;
 
                 }
-                //std::cerr<<j<<std::endl;
 
                 break;
             }
@@ -110,15 +107,18 @@ void CollisionControl::LaserCollisionMushrooms(std::vector <std::shared_ptr<Lase
             {
 
                 laser.erase(laser.begin()+i);
-                leave=true;
+                if(laser.size()>0){
+                    i--;
+                }
                 Mush.at(k)->HealthLoss();
                 if(Mush.at(k)->IsHealthZero()==true)
                 {
                     Mush.erase(Mush.begin()+k);
-
+                    leave=true;
+                    break;
 
                 }
-                break;
+
             }
         }
         if(leave)
@@ -199,6 +199,7 @@ void CollisionControl::CollisionBugFlea(std::shared_ptr<BugBlaster>& BugB,std::v
         {
             if(BugB->GetBugPosition().intersects(flea.at(h)->GetFleaPosition()))
             {
+
                 LostLife=true;
                 flea.erase(flea.begin()+h);
                 break;

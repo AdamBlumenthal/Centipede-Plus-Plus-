@@ -102,3 +102,8 @@ return false;
      }
 
  }
+
+void Flea::setFleaPosition(float x, float y){
+
+    flea.setPosition(x,y);
+}

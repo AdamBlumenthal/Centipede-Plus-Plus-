@@ -25,7 +25,7 @@ class Flea
 
         sf::FloatRect GetFleaPosition();
 
-
+        void setFleaPosition(float, float);
 
     private:
 

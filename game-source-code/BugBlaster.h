@@ -5,7 +5,7 @@
 
 
 
-enum class Movement{Up,Down, Right, Left};
+enum class Movement{NoMove,Up,Down, Right, Left};
 
 
 class BugBlaster
