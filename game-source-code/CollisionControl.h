@@ -36,7 +36,7 @@ class CollisionControl
         void CollisionLaserFlea(std::vector<std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Flea>>& flea);
         void CollisionFleaEdge(std::vector<std::shared_ptr<Flea>>& flea);
 
-        void CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes);
+        //void CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes);
 
         bool DidPlayerLoseLife();
 

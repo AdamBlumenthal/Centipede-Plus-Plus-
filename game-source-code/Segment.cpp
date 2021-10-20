@@ -23,7 +23,7 @@ void Segment::moveDirections()
 }
 void Segment::moveMushroom(){
         movespeed=(-1)*movespeed;
-       // std::cout<<movespeed<<std::endl;
+
         this->segment1.move(0,verticalSpeed);
        // this->segment1.move(movespeed,0);
 }
@@ -49,9 +49,7 @@ sf::RectangleShape Segment::getSegment()
 //Updates Segment
 void Segment::update(sf::RenderTarget* target)
 {
-    //Changes in position
-    //this->moveDirections();
-   // std::cout<<20<<std::endl;
+
 
 }
 //Rednders segment

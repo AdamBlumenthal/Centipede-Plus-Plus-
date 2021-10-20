@@ -335,9 +335,7 @@ TEST_CASE("Player and Centipede collision")
 TEST_CASE("Player and Centipede did not collide")
 {
     std::shared_ptr<BugBlaster> BugB=std::make_shared<BugBlaster>(0.f,0.f);
-    //std::vector <std::shared_ptr<Laser>> laser;
-    // std::vector<std::shared_ptr<Mushroom>> Mush;
-    //std::vector<std::shared_ptr<Flea>> flea;
+
     std::vector<std::shared_ptr<Centipede>> centipedes;
     centipedes.push_back(std::make_shared<Centipede>(1,2.f, 80));
 

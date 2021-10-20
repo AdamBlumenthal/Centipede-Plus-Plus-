@@ -94,12 +94,7 @@ for(int i=1;i<segments.size();i++){
 }
 void Centipede::update(sf::RenderTarget* target)
 {
-    //Changes in position
-    //for(auto i=0;i<segments.size();i++)
-      //  this->segments.at(i).update(target);
-    //segments.at(i).update(target);
-        //std::cout<<i*10<<std::endl;
-     //}
+
    this->Move();
    //setHitMushroom();
 }

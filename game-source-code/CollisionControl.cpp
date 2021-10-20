@@ -25,7 +25,7 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
 
     //programme crashes this order
     CentipedeCollisionMushroom(centipedes,Mush);
-    CentipedeSelfCollision(centipedes);
+    //CentipedeSelfCollision(centipedes);
     LaserCollisionCentipedes(laser, centipedes,Mush);
    // CentipedeCollisionMushroom(centipedes,Mush);
 
@@ -34,7 +34,7 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
     CollisionMushPlayer(BugB,Mush);
     CollisionBugCentipede(BugB,centipedes);
 
-    CentipedeSelfCollision(centipedes);
+   // CentipedeSelfCollision(centipedes);
 
     CollisionBugFlea(BugB,flea);
     CollisionLaserFlea(laser,flea);
@@ -251,7 +251,7 @@ void CollisionControl::CollisionBugCentipede(std::shared_ptr<BugBlaster>& BugB,s
         {
             if(BugB->GetBugPosition().intersects(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition()))
             {
-                //std::cout<<"Dead"<<std::endl;
+
                 LostLife=true;
                 leave=true;
                 break;
@@ -268,35 +268,35 @@ bool CollisionControl::DidPlayerLoseLife()
 }
 
 //Centipede collisons
-void CollisionControl::CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes)
-{
-
-    for(int k=0; k<centipedes.size(); k++)
-    {
-        bool breakMiddleLoop=false;
-        for(int i=k+1; i<centipedes.size(); i++)
-        {
-            for(int j=0; j<centipedes.at(i)->getSize();j++){
-
-                if(centipedes.at(k)->GetCentipedeHeadPosition().intersects(centipedes.at(i)->getCentipede().at(j).GetSegmentPosition())){
-                    centipedes.at(k)->setHitMushroom();
-                    if(j==0&&i<centipedes.size()-1){
-                        centipedes.at(i)->setHitMushroom();
-                        i++;
-                    }
-                  //  breakMiddleLoop=true;
-                    break;
-                }
-
-
-
-            }
-           // if(breakMiddleLoop){
-            //    breakMiddleLoop=false;
-            //    break;
-           // }
-
-        }
-
-    }
-}
+//void CollisionControl::CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes)
+//{
+//
+//    for(int k=0; k<centipedes.size(); k++)
+//    {
+//        bool breakMiddleLoop=false;
+//        for(int i=k+1; i<centipedes.size(); i++)
+//        {
+//            for(int j=0; j<centipedes.at(i)->getSize();j++){
+//
+//                if(centipedes.at(k)->GetCentipedeHeadPosition().intersects(centipedes.at(i)->getCentipede().at(j).GetSegmentPosition())){
+//                    centipedes.at(k)->setHitMushroom();
+//                    if(j==0&&i<centipedes.size()-1){
+//                        centipedes.at(i)->setHitMushroom();
+//                        i++;
+//                    }
+//                  //  breakMiddleLoop=true;
+//                    break;
+//                }
+//
+//
+//
+//            }
+//           // if(breakMiddleLoop){
+//            //    breakMiddleLoop=false;
+//            //    break;
+//           // }
+//
+//        }
+//
+//    }
+//}
