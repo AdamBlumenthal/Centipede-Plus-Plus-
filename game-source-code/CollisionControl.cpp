@@ -18,6 +18,7 @@
 CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector <std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Mushroom>>& Mush,std::vector<std::shared_ptr<Flea>>& flea,
                                    std::vector<std::shared_ptr<Centipede>>& centipedes)
 {
+    LostLife=false;
 
     LaserCollision(laser);
 
@@ -30,7 +31,7 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
     LaserCollisionMushrooms(laser,Mush);
 
     CollisionMushPlayer(BugB,Mush);
-
+    CollisionBugCentipede(BugB,centipedes);
 
 
     CollisionBugFlea(BugB,flea);
@@ -38,7 +39,7 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
     CollisionFleaEdge(flea);
 }
 
-CollisionControl::~CollisionControl()
+CollisionControl::CollisionControl()
 {
     //dtor
 }
@@ -198,7 +199,7 @@ void CollisionControl::CollisionBugFlea(std::shared_ptr<BugBlaster>& BugB,std::v
         {
             if(BugB->GetBugPosition().intersects(flea.at(h)->GetFleaPosition()))
             {
-                //gameOver=true;
+                LostLife=true;
                 std::cout<<"Dead"<<std::endl;
                 break;
             }
@@ -239,14 +240,27 @@ void CollisionControl::CollisionFleaEdge(std::vector<std::shared_ptr<Flea>>& fle
         }
 }
 
-//void Game::CollisionBugCentipede(){
-//}//
-// for(int j=0; j<segments.size(); j++)
-//        {
-//            if(this->BugB.GetBugPosition().intersects(this->segments.at(j).GetSegmentPosition()))
-//            {
-//                gameOver=true;
-//                break;
-//            }
-//        }
-//}
+void CollisionControl::CollisionBugCentipede(std::shared_ptr<BugBlaster>& BugB,std::vector<std::shared_ptr<Centipede>>& centipedes)
+{
+    for(int k=0; k<centipedes.size(); k++)
+    {
+        bool leave=false;
+        for(int j=0; j<centipedes.at(k)->getSize(); j++)
+        {
+            if(BugB->GetBugPosition().intersects(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition()))
+            {
+                std::cout<<"Dead"<<std::endl;
+                LostLife=true;
+                leave=true;
+                break;
+            }
+        }
+        if(leave)break;
+
+    }
+}
+
+bool CollisionControl::DidPlayerLoseLife()
+{
+    return LostLife;
+}
