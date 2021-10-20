@@ -12,8 +12,7 @@ segments.clear();
 Centipede::Centipede(std::vector<Segment> seg){
     segments.clear();
     segments=seg;
-    for(int i=0;i<seg.size();i++)
-    //std::cerr<<i<<std::endl;
+
     hitMushroom=true;
     segments.at(0).makeHead();
     }
@@ -48,8 +47,8 @@ void Centipede::checkCentipedeBounds(){
 
       segments.at(0).moveMushroom();
     }
-    else if(segments.at(0).GetSegmentPosition().top+20.f>=gameHeight||(segments.at(0).GetSegmentPosition().top+20.f==450.f)){
-            //verticalSpeed=(-1)*verticalSpeed;
+    else if(segments.at(0).GetSegmentPosition().top+segments.at(0).GetSegmentPosition().height>gameHeight||(segments.at(0).GetSegmentPosition().top<450.f&&segments.at(0).getVerticalSpeed()<0)){
+            segments.at(0).setVerticalSpeed();
             segments.at(0).moveMushroom();
             }
 
@@ -71,7 +70,12 @@ for(int i=1;i<segments.size();i++){
        &&
        (abs(segments.at(i).GetSegmentPosition().left-segments.at(i-1).GetSegmentPosition().left)==segments.at(0).GetSegmentPosition().width
         ||abs(segments.at(i).GetSegmentPosition().top-segments.at(i-1).GetSegmentPosition().top)>=38.f)){
+
+            if(segments.at(i).getVerticalSpeed()!=segments.at(i-1).getVerticalSpeed()){
+                segments.at(i).setVerticalSpeed();
+            }
            segments.at(i).moveMushroom();
+
 
        }
         segments.at(i).moveDirections();

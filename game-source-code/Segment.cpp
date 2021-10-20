@@ -66,3 +66,7 @@ sf::FloatRect Segment::GetSegmentPosition()
     return SegmentBounds;
 }
 
+void Segment::setVerticalSpeed(){
+
+    verticalSpeed=(-1)*verticalSpeed;
+}

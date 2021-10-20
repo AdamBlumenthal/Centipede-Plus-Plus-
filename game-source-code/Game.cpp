@@ -48,9 +48,7 @@ void Game::createWindow()
     this->videomode.height=600;
     this->videomode.width=800;
     this->window=new sf::RenderWindow(videomode, "SFML Centipede", sf::Style::Titlebar | sf::Style::Close);
-    this->window->setFramerateLimit(30);
-
-
+    this->window->setFramerateLimit(60);
 
 };
 //Gives values to private variables.

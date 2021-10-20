@@ -11,7 +11,9 @@ public:
     void moveDirections();
     void moveMushroom();
     void moveBlock();
+    void setVerticalSpeed();
     bool isHead(){return head;};
+    float getVerticalSpeed(){return verticalSpeed;};
     sf::RectangleShape getSegment();
     void update(sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
