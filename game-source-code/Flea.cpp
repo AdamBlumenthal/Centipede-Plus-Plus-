@@ -81,7 +81,7 @@ return false;
      float randomvalue = (rand() % 100);
      int Length=Mush.size();
 
-     if(randomvalue<2)
+     if(randomvalue<2&&flea.getGlobalBounds().top<680)
      {
 
          //Mushroom* Tempmush=nullptr;

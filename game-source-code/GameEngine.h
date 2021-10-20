@@ -95,6 +95,7 @@ private:
     sf::Font font;
     sf::Text StartSplashText;
     sf::Text LivesText;
+    sf::RectangleShape BotLine;
 
     CollisionControl Collision;
     //BugBlaster BugB;//BugBlaster object

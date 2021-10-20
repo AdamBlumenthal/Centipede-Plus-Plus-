@@ -93,6 +93,10 @@ void Game::createVarible()
     LivesText.setFillColor(sf::Color::White);
     LivesText.setPosition(200,650);
 
+    BotLine.setFillColor(sf::Color::Cyan);
+    BotLine.setSize(sf::Vector2f(800.f,1.f));
+    BotLine.setPosition(0,600);
+
     //Mushroom* Tempmush=nullptr;
 
     for(int i=0; i<MushCount; i++)
@@ -231,7 +235,7 @@ void Game::render()
     //Splash Screen displayed
     if(start)
     {
-         this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
+         this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot\n Tab to Pause");
 
         this->window->draw(this->StartSplashText);
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
@@ -241,7 +245,7 @@ void Game::render()
         }
     }
     else if(gameOver){
-          this->StartSplashText.setString("Game Over\n Press Enter to restart \n Press Escape to Quit\n Arrow Keys to move\n Space to Shoot");
+          this->StartSplashText.setString("Game Over\n Press Enter to restart \n Press Escape to Quit\n Arrow Keys to move\n Space to Shoot\n Tab to Pause");
         this->window->draw(this->StartSplashText);
         Mush.clear();
         centipedes.clear();
@@ -273,6 +277,7 @@ void Game::render()
 
         LivesText.setString("Lives Remaining:"+std::to_string(Lives));
         this->window->draw(LivesText);
+        this->window->draw(BotLine);
 
 
         //Render Objects in space
