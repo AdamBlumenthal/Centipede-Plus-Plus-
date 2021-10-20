@@ -48,7 +48,7 @@ void Game::createWindow()
     this->videomode.height=600;
     this->videomode.width=800;
     this->window=new sf::RenderWindow(videomode, "SFML Centipede", sf::Style::Titlebar | sf::Style::Close);
-    this->window->setFramerateLimit(30);
+    this->window->setFramerateLimit(60);
 
 
 
@@ -60,13 +60,14 @@ void Game::createVarible()
 
     //Laser controls
 
-    this->MaxLaserCount=10;
-    this->MaxLaserDelay=26.f;
-    this->LaserDelay=this->MaxLaserDelay;
+    MaxLaserCount=10;
+    MaxLaserDelay=26.f;
+    LaserDelay=MaxLaserDelay;
     //this->CurrentLasers=0;
     //centipedes.push_back(Centipede(0,0.f,0.f));
-    this->MaxLengthCentipede=12;
+    MaxLengthCentipede=12;
     //Game controls
+    Lives=3;
     lvlBegin=false;
     start=true;
     gameOver=false;
@@ -94,7 +95,7 @@ void Game::createVarible()
 
     for(int i=0; i<MushCount; i++)
     {
-        float randomy = 21+(rand() % 580);
+        float randomy = 21+(rand() % 560);
         float randomx = (rand() % 800);
         //Tempmush=new Mushroom(randomx,randomy);
         Mush.push_back(std::make_shared<Mushroom>(randomx,randomy));
@@ -158,7 +159,7 @@ void Game::update()
        // SelfCollision();
         for(int i=0;i<centipedes.size();i++){
             centipedes.at(i)->update(this->window);
-            std::cout<<centipedes.size()<<std::endl;
+
         }
 
     }
@@ -199,9 +200,11 @@ void Game::update()
         }
 
     }
-    CollisionControl(BugB,laser,Mush,flea,centipedes);
+    Collision=CollisionControl(BugB,laser,Mush,flea,centipedes);
     }
 
+    if(Collision.DidPlayerLoseLife()){
+        Lives--;}
 
 
 }

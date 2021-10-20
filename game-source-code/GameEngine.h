@@ -9,6 +9,7 @@
 #include "Mushroom.h"
 #include "Flea.h"
 #include "Centipede.h"
+#include "CollisionControl.h"
 #include <memory>
 
 
@@ -83,6 +84,8 @@ private:
     int MinFleaTimeDelay;
     int FleaTimeDelay;
 
+    int Lives;
+
     bool start;
     bool gameOver;
     bool centMush;
@@ -92,6 +95,7 @@ private:
     sf::Font font;
     sf::Text StartSplashText;
 
+    CollisionControl Collision;
     //BugBlaster BugB;//BugBlaster object
     //std::vector <Laser> laser;//Laser object
     //std::vector <Segment> segments;//Centipede
