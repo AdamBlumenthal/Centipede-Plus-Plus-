@@ -189,8 +189,11 @@ void Game::update()
         }
 
     }
-    else
+    else{
         gameOver=true;
+        this->StartSplashText.setString("Game Over - You Win\n Well Played \n Press Enter to restart \n Press Escape to Quit\n Arrow Keys to move\n Space to Shoot\n Tab to Pause");
+    }
+
 
 
 
@@ -220,6 +223,7 @@ void Game::update()
         centipedes.clear();
         if(Lives==0){
                 gameOver=true;
+                this->StartSplashText.setString("Game Over - You Lose\n Better Luck Next Time \n Press Enter to restart \n Press Escape to Quit\n Arrow Keys to move\n Space to Shoot\n Tab to Pause");
         }
         else {
                 lvlBegin=true;
@@ -245,7 +249,7 @@ void Game::render()
         }
     }
     else if(gameOver){
-          this->StartSplashText.setString("Game Over\n Press Enter to restart \n Press Escape to Quit\n Arrow Keys to move\n Space to Shoot\n Tab to Pause");
+
         this->window->draw(this->StartSplashText);
         Mush.clear();
         centipedes.clear();
