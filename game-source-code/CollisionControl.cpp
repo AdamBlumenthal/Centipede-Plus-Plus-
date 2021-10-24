@@ -13,10 +13,11 @@
 #include "Mushroom.h"
 #include "Flea.h"
 #include "Centipede.h"
+#include "Bomb.h"
 
 
 CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector <std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Mushroom>>& Mush,std::vector<std::shared_ptr<Flea>>& flea,
-                                   std::vector<std::shared_ptr<Centipede>>& centipedes)
+                                   std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Bomb>>& bomb)
 {
     LostLife=false;
 
@@ -39,6 +40,10 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
     CollisionBugFlea(BugB,flea);
     CollisionLaserFlea(laser,flea);
     CollisionFleaEdge(flea);
+
+    //Bomb collisions
+    CollisionLaserBomb(laser,Mush,flea,centipedes,bomb);
+    CollisionCentipedeBomb(centipedes,bomb);
 }
 
 CollisionControl::CollisionControl()
@@ -265,6 +270,114 @@ void CollisionControl::CollisionBugCentipede(std::shared_ptr<BugBlaster>& BugB,s
 bool CollisionControl::DidPlayerLoseLife()
 {
     return LostLife;
+}
+
+//Bomb Collisons
+void CollisionControl::CollisionLaserBomb(std::vector <std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Mushroom>>& Mush,std::vector<std::shared_ptr<Flea>>& flea,std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Bomb>>& bomb)
+{
+     for(int i=0; i<laser.size(); i++)
+    {
+        bool leave=false;
+        for(int k=0; k<bomb.size(); k++)
+        {
+            if(laser.at(i)->GetLaserPosition().intersects(bomb.at(k)->GetBombPosition()))
+            {
+                laser.erase(laser.begin()+i);
+                BombCentipede(bomb,centipedes,k);
+                BombMushroom(bomb,Mush,k);
+                BombFlea(bomb,flea,k);
+                bomb.erase(bomb.begin()+k);
+                leave=true;
+                break;
+
+            }
+        }
+    if(leave)break;
+    }
+
+
+}
+void CollisionControl::BombMushroom(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Mushroom>>& Mush,int k)
+{
+    for(int i=0;i<Mush.size();i++)
+    {
+        if(Mush.at(i)->GetMushroomPosition().left+Mush.at(i)->GetMushroomPosition().width>bomb.at(k)->GetBombPosition().left-40
+           &&Mush.at(i)->GetMushroomPosition().left<bomb.at(k)->GetBombPosition().left+bomb.at(k)->GetBombPosition().width+40
+           &&Mush.at(i)->GetMushroomPosition().top+Mush.at(i)->GetMushroomPosition().height>bomb.at(k)->GetBombPosition().top-40
+           &&Mush.at(i)->GetMushroomPosition().top<bomb.at(k)->GetBombPosition().top+bomb.at(k)->GetBombPosition().height+40)
+        {
+            Mush.erase(Mush.begin()+i);
+            i--;
+        }
+    }
+
+}
+void CollisionControl::BombFlea(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Flea>>& flea,int k)
+{
+    for(int i=0;i<flea.size();i++)
+    {
+        if(flea.at(i)->GetFleaPosition().left+flea.at(i)->GetFleaPosition().width>bomb.at(k)->GetBombPosition().left-40
+           &&flea.at(i)->GetFleaPosition().left<bomb.at(k)->GetBombPosition().left+bomb.at(k)->GetBombPosition().width+40
+           &&flea.at(i)->GetFleaPosition().top+flea.at(i)->GetFleaPosition().height>bomb.at(k)->GetBombPosition().top-40
+           &&flea.at(i)->GetFleaPosition().top<bomb.at(k)->GetBombPosition().top+bomb.at(k)->GetBombPosition().height+40)
+        {
+            flea.erase(flea.begin()+i);
+            i--;
+        }
+    }
+
+}
+void CollisionControl::BombCentipede(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Centipede>>& centipedes,int i)
+{
+    for(int k=0; k<centipedes.size(); k++)
+    {
+        bool leave=false;
+        for(int j=0; j<centipedes.at(k)->getSize(); j++)
+        {
+            if(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left+centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().width>bomb.at(i)->GetBombPosition().left-40
+           &&centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left<bomb.at(i)->GetBombPosition().left+bomb.at(i)->GetBombPosition().width+40
+           &&centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top+centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().height>bomb.at(i)->GetBombPosition().top-40
+           &&centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top<bomb.at(i)->GetBombPosition().top+bomb.at(i)->GetBombPosition().height+40)
+            {
+
+                leave=true;
+                auto temp=centipedes.at(k)->getNewCentipede(j);
+                auto length=centipedes.at(k)->getSize()-1;
+                centipedes.at(k)->fixedHead(j);
+
+
+                if(j!=length)
+                {
+
+                    centipedes.push_back(std::make_shared<Centipede>(temp));
+
+                }
+
+                break;
+            }
+        }
+        if(leave)break;
+
+    }
+
+}
+
+void CollisionControl::CollisionCentipedeBomb(std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Bomb>>& bomb)
+{
+
+    for(int k=0; k<centipedes.size(); k++)
+    {
+
+        for(int i=0; i<bomb.size(); i++)
+        {
+            if(bomb.at(i)->GetBombPosition().intersects(centipedes.at(k)->GetCentipedeHeadPosition()))
+            {
+                centipedes.at(k)->setHitMushroom();
+            }
+        }
+
+    }
+
 }
 
 //Centipede collisons

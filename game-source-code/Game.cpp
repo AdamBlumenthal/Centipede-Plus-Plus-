@@ -13,6 +13,7 @@
 #include "Flea.h"
 #include "Centipede.h"
 #include "CollisionControl.h"
+#include "Bomb.h"
 #include <memory>
 
 
@@ -102,7 +103,7 @@ void Game::createVarible()
     for(int i=0; i<MushCount; i++)
     {
         float randomy = 21+(rand() % 560);
-        float randomx = (rand() % 800);
+        float randomx = (rand() % 780);
         //Tempmush=new Mushroom(randomx,randomy);
         Mush.push_back(std::make_shared<Mushroom>(randomx,randomy));
 
@@ -123,6 +124,9 @@ void Game::createVarible()
     MinFleaTimeDelay=100;
     FleaTimeDelay=0;
 
+    //Bomb controls
+    MinBombTimeDelay=300;
+    BombTimeDelay=0;
 
 }
 
@@ -177,6 +181,7 @@ void Game::update()
     BugB->update(window);
     ShootLaser();
     SpawnFlea();
+    SpawnBomb();
     if(centipedes.size()>0){
 
 
@@ -215,7 +220,7 @@ void Game::update()
         }
 
     }
-    Collision=CollisionControl(BugB,laser,Mush,flea,centipedes);
+    Collision=CollisionControl(BugB,laser,Mush,flea,centipedes,bomb);
     }
 
     if(Collision.DidPlayerLoseLife()){
@@ -254,11 +259,11 @@ void Game::render()
         Mush.clear();
         centipedes.clear();
         flea.clear();
+
       if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
 
-
-
+        bomb.clear();
           Mush.clear();
           createVarible();
           start=false;
@@ -304,7 +309,11 @@ void Game::render()
 
         for(int i=0; i<flea.size(); i++)
         {
-            this->flea.at(i)->render(this->window);
+            flea.at(i)->render(this->window);
+        }
+        for(int i=0; i<bomb.size(); i++)
+        {
+            bomb.at(i)->render(this->window);
         }
 
 
@@ -343,6 +352,31 @@ void Game::SpawnFlea()
     }
     FleaTimeDelay++;
 
+}
+
+void Game::SpawnBomb()
+{
+    int randomnum=rand()%100;
+    float randomy = 21+(rand() % 460);
+    float randomx = (rand() % 780);
+
+    if(randomnum<2&&MinBombTimeDelay<BombTimeDelay&&bomb.size()<4)
+    {
+    bomb.push_back(std::make_shared<Bomb>(randomx,randomy));
+    BombTimeDelay=0;
+
+    for(int j=0; j<Mush.size()-1; j++)//Makes sure random mushrooms dont intersect with bombs
+        {
+            if(Mush.at(j)->GetMushroomPosition().intersects(bomb.at(bomb.size()-1)->GetBombPosition()))
+            {
+                bomb.pop_back();
+            }
+
+
+        }
+    }
+
+    BombTimeDelay++;
 }
 
 

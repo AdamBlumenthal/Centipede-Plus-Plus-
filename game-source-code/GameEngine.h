@@ -10,6 +10,7 @@
 #include "Flea.h"
 #include "Centipede.h"
 #include "CollisionControl.h"
+#include "Bomb.h"
 #include <memory>
 
 
@@ -34,6 +35,8 @@ public:
     void ShootLaser();
     void SpawnFlea();
     //void KillFlea();
+
+    void SpawnBomb();
 
     //collisions
     //void LaserCollision();
@@ -84,6 +87,10 @@ private:
     int MinFleaTimeDelay;
     int FleaTimeDelay;
 
+    //Bomb varibles
+    int MinBombTimeDelay;
+    int BombTimeDelay;
+
     int Lives;
 
     bool start;
@@ -111,5 +118,7 @@ private:
     std::vector<std::shared_ptr<Centipede>> centipedes;
     std::vector<std::shared_ptr<Mushroom>> Mush;
     std::vector<std::shared_ptr<Flea>> flea;
+    std::vector<std::shared_ptr<Bomb>> bomb;
+
 };
 #endif // GAMEENGINE_H_INCLUDED
