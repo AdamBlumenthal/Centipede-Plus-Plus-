@@ -184,9 +184,10 @@ void CollisionControl::CentipedeCollisionMushroom(std::vector<std::shared_ptr<Ce
 
         for(int i=0; i<Mush.size(); i++)
         {
-            if(Mush.at(i)->GetMushroomPosition().intersects(centipedes.at(k)->GetCentipedeHeadPosition()))
+            if(Mush.at(i)->GetMushroomPosition().intersects(centipedes.at(k)->GetCentipedeHeadPosition())&&centipedes.at(k)->getMoves().at(1)!=MoveCentipede::Down)
             {
                 centipedes.at(k)->setHitMushroom();
+                std::cout<<"Inside Mush"<<std::endl;
             }
         }
 

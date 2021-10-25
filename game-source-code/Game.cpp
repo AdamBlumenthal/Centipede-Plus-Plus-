@@ -74,7 +74,7 @@ void Game::createVarible()
 
 
     //Mushroom controls
-    this->MushCount=30;
+    this->MushCount=40;
 
     //Load font
     if (!this->font.loadFromFile("resources/arial.ttf"))
@@ -176,7 +176,7 @@ void Game::update()
 
     BugB->update(window);
     ShootLaser();
-    SpawnFlea();
+    //SpawnFlea();
     if(centipedes.size()>0){
 
 

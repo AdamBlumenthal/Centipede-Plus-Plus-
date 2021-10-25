@@ -3,6 +3,7 @@
 #include <vector>
 #include "CentipedeSegment.h"
 #include <SFML/Graphics.hpp>
+#include <string>
 
 
 class Centipede{
@@ -16,6 +17,7 @@ public:
         void setHitMushroom();
         int getSize();
         bool isEmpty();
+        std::vector<MoveCentipede> getMoves(){return moves;};
 
         std::vector<Segment> getCentipede();
         std::vector<Segment> getNewCentipede(int pos);
@@ -26,11 +28,14 @@ public:
 
 private:
     std::vector<Segment> segments;
+    std::vector<MoveCentipede> moves;
     int length;
     float direction;
     static float segmentSize;
 
     bool hitMushroom;
+    bool leftOrRight;
+    bool upOrDown;
    // float position;
 };
 

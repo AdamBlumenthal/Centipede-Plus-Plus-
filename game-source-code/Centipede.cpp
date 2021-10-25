@@ -4,6 +4,7 @@
 #include "CentipedeSegment.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <string>
 //Size of segment
 float Centipede::segmentSize=20.f;
 Centipede::Centipede(){
@@ -21,64 +22,69 @@ Centipede::Centipede(int l, float d, float p ):length(l),direction(d) {
     float pos;
     hitMushroom=false;
     for(auto i=0; i<length;i++){
-            pos=p+(-18)*i;
+            //pos=p+(-18)*i;
     segments.push_back(Segment(pos, direction));
     }
     segments.at(0).makeHead();
+    leftOrRight=true;
+std::vector<MoveCentipede> temp(length*9,MoveCentipede::NoMove);
+moves=temp;
+moves.insert(moves.begin(),MoveCentipede::Right);
 }
 //Moves Centipede and checks screen bounds with relation to head
 void Centipede::checkCentipedeBounds(){
     int gameWidth=800;//constants throughout the game
     int gameHeight=600;//constants
      if(hitMushroom==true){
-        segments.at(0).moveMushroom();
-        hitMushroom=false;
 
+        moves.at(0)=MoveCentipede::Down;
+
+        leftOrRight=!leftOrRight;
+    hitMushroom=false;
 
     }
-    else if(segments.at(0).GetSegmentPosition().left-1==0&&segments.at(0).getMoveSpeed()<0)
+    else if(segments.at(0).GetSegmentPosition().left-1==0&&moves.at(0)!=MoveCentipede::Right)
     {
-        segments.at(0).moveMushroom();
+        //segments.at(0).moveMushroom();
+       moves.at(0)=MoveCentipede::Down;
+       // segments.at(0).moveDirections(moves.at(0));
+    leftOrRight=!leftOrRight;//if(leftOrRight)
 
     }
 
     else if(segments.at(0).GetSegmentPosition().left +segments.at(0).GetSegmentPosition().width-1 == gameWidth)
     {
 
-      segments.at(0).moveMushroom();
+     // segments.at(0).moveMushroom
+   moves.at(0)=MoveCentipede::Down;
+      //  segments.at(0).moveDirections(moves.at(0));
+    leftOrRight=!leftOrRight;
+     //  if(leftOrRight)
+    //moves.insert(moves.begin(),MoveCentipede::Right);
+    //else
+   // moves.insert(moves.begin(),MoveCentipede::Left);
     }
     else if(segments.at(0).GetSegmentPosition().top+segments.at(0).GetSegmentPosition().height>gameHeight||(segments.at(0).GetSegmentPosition().top<450.f&&segments.at(0).getVerticalSpeed()<0)){
-            segments.at(0).setVerticalSpeed();
-            segments.at(0).moveMushroom();
+            //segments.at(0).setVerticalSpeed();
+           // segments.at(0).moveMushroom();
+           moves.at(0)=MoveCentipede::Down;
+            leftOrRight=!leftOrRight;
             }
 
 }
 
 void Centipede::Move(){
+if(moves.at(1)!=MoveCentipede::Down)
+checkCentipedeBounds();
+for(int i=0;i<segments.size();i++){
+    segments.at(i).moveDirections(moves.at(i*9));
+}
+if(leftOrRight)
+    moves.insert(moves.begin(),MoveCentipede::Right);
+else if(!leftOrRight)
+    moves.insert(moves.begin(),MoveCentipede::Left);
 
-    if(!segments.empty()){
-            checkCentipedeBounds();
-
-segments.at(0).moveDirections();
-
-if(segments.size()>1){
-
-for(int i=1;i<segments.size();i++){
-
-    if(segments.at(i).GetSegmentPosition().top
-       !=segments.at(i-1).GetSegmentPosition().top
-       &&
-       (abs(segments.at(i).GetSegmentPosition().left-segments.at(i-1).GetSegmentPosition().left)==segments.at(0).GetSegmentPosition().width
-        ||abs(segments.at(i).GetSegmentPosition().top-segments.at(i-1).GetSegmentPosition().top)>=38.f)){
-
-            if(segments.at(i).getVerticalSpeed()!=segments.at(i-1).getVerticalSpeed()){
-                segments.at(i).setVerticalSpeed();
-            }
-           segments.at(i).moveMushroom();
-
-
-       }
-        segments.at(i).moveDirections();
+    moves.pop_back();
 
 }
 
@@ -87,11 +93,7 @@ for(int i=1;i<segments.size();i++){
 
 
 
-}
-    }
 
-
-}
 void Centipede::update(sf::RenderTarget* target)
 {
 
