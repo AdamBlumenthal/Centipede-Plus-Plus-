@@ -11,7 +11,7 @@ Flea::Flea()
     this->LoadTexture();
     this->LoadSprite();
 
-    float randomx = (rand() % 800);
+    float randomx = (rand() % 780);
 
     this->flea.setPosition(randomx,0);
 

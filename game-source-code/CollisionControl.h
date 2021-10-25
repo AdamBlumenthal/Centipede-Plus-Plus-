@@ -14,12 +14,13 @@
 #include "Flea.h"
 #include "Centipede.h"
 #include "CollisionControl.h"
+#include "Bomb.h"
 #include <memory>
 
 class CollisionControl
 {
     public:
-        CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector <std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Mushroom>>& Mush,std::vector<std::shared_ptr<Flea>>& flea,std::vector<std::shared_ptr<Centipede>>& centipedes);
+        CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector <std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Mushroom>>& Mush,std::vector<std::shared_ptr<Flea>>& flea,std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Bomb>>& bomb);
         CollisionControl();
 
         void LaserCollision(std::vector <std::shared_ptr<Laser>>& laser);
@@ -36,6 +37,12 @@ class CollisionControl
         void CollisionLaserFlea(std::vector<std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Flea>>& flea);
         void CollisionFleaEdge(std::vector<std::shared_ptr<Flea>>& flea);
 
+        //Bomb
+        void CollisionLaserBomb(std::vector <std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Mushroom>>& Mush,std::vector<std::shared_ptr<Flea>>& flea,std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Bomb>>& bomb);
+        void BombMushroom(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Mushroom>>& Mush,int k);
+        void BombFlea(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Flea>>& flea,int k);
+        void BombCentipede(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Centipede>>& centipedes,int i);
+        void CollisionCentipedeBomb(std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Bomb>>& bomb);
         //void CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes);
 
         bool DidPlayerLoseLife();
@@ -46,3 +53,4 @@ class CollisionControl
 };
 
 #endif // COLLISIONCONTROL_H
+
