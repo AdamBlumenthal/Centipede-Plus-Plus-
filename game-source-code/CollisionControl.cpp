@@ -25,7 +25,8 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
 
 
     //programme crashes this order
-    //CentipedeCollisionMushroom(centipedes,Mush);
+    CentipedeCollisionMushroom(centipedes,Mush);
+    CollisionCentipedeBomb(centipedes,bomb);
     //CentipedeSelfCollision(centipedes);
     LaserCollisionCentipedes(laser, centipedes,Mush);
    // CentipedeCollisionMushroom(centipedes,Mush);
@@ -41,9 +42,8 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
     CollisionLaserFlea(laser,flea);
     CollisionFleaEdge(flea);
 
-    //Bomb collisions
-    CollisionLaserBomb(laser,Mush,flea,centipedes,bomb);
-    CollisionCentipedeBomb(centipedes,bomb);
+    //Bomb
+     CollisionLaserBomb(laser,Mush,flea,centipedes,bomb);
 }
 
 CollisionControl::CollisionControl()
@@ -69,40 +69,28 @@ void CollisionControl::LaserCollision(std::vector <std::shared_ptr<Laser>>& lase
 }
 
 void CollisionControl::LaserCollisionCentipedes(std::vector <std::shared_ptr<Laser>>& laser, std::vector<std::shared_ptr<Centipede>>& centipedes,
-                                              std::vector<std::shared_ptr<Mushroom>>& Mush){
-
+                                                std::vector<std::shared_ptr<Mushroom>>& Mush){
 for(int k=0;k<centipedes.size();k++){
     bool leave=false;
-    std::cout<<"Here7"<<std::endl;
     for(int i=0;i<laser.size();i++){
         for(int j=0;j<centipedes.at(k)->getSize();j++){
             if(laser.at(i)->GetLaserPosition().intersects(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition())){
                 laser.erase(laser.begin()+i);
                 leave=true;
 
-                std::cout<<"Centipede size before:";
-                std::cout<<centipedes.size()<<std::endl;
-                std::cout<<k<<std::endl;
 
-                std::cout<<"Here1"<<std::endl;
+
                 auto temp=centipedes.at(k)->getNewCentipede(j);
-                std::cout<<"Here2"<<std::endl;
                 auto length=centipedes.at(k)->getSize()-1;
-                std::cout<<"Here3"<<std::endl;
                  Mush.push_back(std::make_shared<Mushroom>(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left,centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top));
-                std::cout<<"Here4"<<std::endl;
                 centipedes.at(k)->fixedHead(j);
-                std::cout<<"Here5"<<std::endl;
+
 
                 if(j!=length){
 
                     centipedes.push_back(std::make_shared<Centipede>(temp));
-                    std::cout<<"Here6"<<std::endl;
 
                 }
-                 std::cout<<"Centipede size after:";
-                std::cout<<centipedes.size()<<std::endl;
-                std::cout<<k<<std::endl;
 
                 break;
             }
@@ -284,7 +272,6 @@ bool CollisionControl::DidPlayerLoseLife()
     return LostLife;
 }
 
-//Bomb Collisons
 void CollisionControl::CollisionLaserBomb(std::vector <std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Mushroom>>& Mush,std::vector<std::shared_ptr<Flea>>& flea,std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Bomb>>& bomb)
 {
      for(int i=0; i<laser.size(); i++)
@@ -309,6 +296,7 @@ void CollisionControl::CollisionLaserBomb(std::vector <std::shared_ptr<Laser>>& 
 
 
 }
+
 void CollisionControl::BombMushroom(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Mushroom>>& Mush,int k)
 {
     for(int i=0;i<Mush.size();i++)
@@ -339,6 +327,7 @@ void CollisionControl::BombFlea(std::vector<std::shared_ptr<Bomb>>& bomb,std::ve
     }
 
 }
+
 void CollisionControl::BombCentipede(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Centipede>>& centipedes,int i)
 {
     for(int k=0; k<centipedes.size(); k++)

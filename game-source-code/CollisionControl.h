@@ -37,13 +37,12 @@ class CollisionControl
         void CollisionLaserFlea(std::vector<std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Flea>>& flea);
         void CollisionFleaEdge(std::vector<std::shared_ptr<Flea>>& flea);
 
-        //Bomb Collisions
+        //Bomb
         void CollisionLaserBomb(std::vector <std::shared_ptr<Laser>>& laser,std::vector<std::shared_ptr<Mushroom>>& Mush,std::vector<std::shared_ptr<Flea>>& flea,std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Bomb>>& bomb);
-        void CollisionCentipedeBomb(std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Bomb>>& bomb);
-
         void BombMushroom(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Mushroom>>& Mush,int k);
         void BombFlea(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Flea>>& flea,int k);
-        void BombCentipede(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Centipede>>& centipedes,int k);
+        void BombCentipede(std::vector<std::shared_ptr<Bomb>>& bomb,std::vector<std::shared_ptr<Centipede>>& centipedes,int i);
+        void CollisionCentipedeBomb(std::vector<std::shared_ptr<Centipede>>& centipedes,std::vector<std::shared_ptr<Bomb>>& bomb);
         //void CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes);
 
         bool DidPlayerLoseLife();
@@ -51,7 +50,7 @@ class CollisionControl
     private:
         bool LostLife;
 
-
 };
 
 #endif // COLLISIONCONTROL_H
+
