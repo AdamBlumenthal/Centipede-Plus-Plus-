@@ -2,6 +2,8 @@
 #define CENTIPEDESEGMENT_H_INCLUDED
 #include <SFML/Graphics.hpp>
 
+enum class MoveCentipede{NoMove,Up,Down, Right, Left};
+
 class Segment
 {
 
