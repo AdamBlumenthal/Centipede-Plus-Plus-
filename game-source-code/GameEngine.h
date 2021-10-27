@@ -78,10 +78,10 @@ private:
     int MaxLengthCentipede;
     int currentSegments;
     int MaxLaserCount;
-    float MaxLaserDelay;
+    float MinLaserDelay;
     float LaserDelay;
-   // int CurrentLasers;
 
+    //Mushroom starting value
     int MushCount;
 
     //Flea varibles

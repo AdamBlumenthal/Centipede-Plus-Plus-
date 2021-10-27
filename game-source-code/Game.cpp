@@ -57,13 +57,13 @@ void Game::createVarible()
     BugB=std::make_shared<BugBlaster>();
 
     //Laser controls
-
     MaxLaserCount=10;
-    MaxLaserDelay=26.f;
-    LaserDelay=MaxLaserDelay;
-    //this->CurrentLasers=0;
-    //centipedes.push_back(Centipede(0,0.f,0.f));
+    MinLaserDelay=15.f;
+    LaserDelay=MinLaserDelay;
+
+    //Centipede controls
     MaxLengthCentipede=12;
+
     //Game controls
     Lives=3;
     lvlBegin=false;
@@ -75,7 +75,7 @@ void Game::createVarible()
 
 
     //Mushroom controls
-    this->MushCount=40;
+    MushCount=40;
 
     //Load font
     if (!this->font.loadFromFile("resources/arial.ttf"))
@@ -97,6 +97,7 @@ void Game::createVarible()
     BotLine.setFillColor(sf::Color::Cyan);
     BotLine.setSize(sf::Vector2f(800.f,1.f));
     BotLine.setPosition(0,600);
+
 
     //Create random mushrooms
     SpawnMushroomField();
@@ -157,9 +158,6 @@ void Game::update()
     }
 
 
-
-
-
     BugB->update(window);
     ShootLaser();
     SpawnFlea();
@@ -182,15 +180,12 @@ void Game::update()
     }
 
 
-
-
     if (laser.size()>=1)
     {
         for(int i=0; i<laser.size(); i++)
         {
            laser.at(i)->update(this->window);
         }
-
 
     }
     if (flea.size()>=1)
@@ -291,7 +286,6 @@ void Game::render()
         }
 
 
-
         for(int i=0; i<flea.size(); i++)
         {
             flea.at(i)->render(this->window);
@@ -301,7 +295,6 @@ void Game::render()
             bomb.at(i)->render(this->window);
         }
 
-
     }
     this->window->display();
 
@@ -310,7 +303,7 @@ void Game::render()
 //Creates the laser beams
 void Game::ShootLaser()
 {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&laser.size()<=this->MaxLaserCount&&LaserDelay>=MaxLaserDelay)
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&laser.size()<=MaxLaserCount&&LaserDelay>=MinLaserDelay)
     {
         sf::FloatRect BugPos=BugB->GetBugPosition();
         laser.push_back(std::make_shared<Laser>(BugPos));
@@ -343,7 +336,7 @@ void Game::SpawnFlea()
 void Game::SpawnBomb()
 {
     int randomnum=rand()%100;
-    float randomy = 21+(rand() % 460);
+    float randomy = 20+(rand() % 21)*20;
     float randomx = (rand() % 780);
 
     if(randomnum<2&&MinBombTimeDelay<BombTimeDelay&&bomb.size()<4)
@@ -357,7 +350,6 @@ void Game::SpawnBomb()
             {
                 bomb.pop_back();
             }
-
         }
     }
 
@@ -379,12 +371,9 @@ void Game::SpawnBomb()
                 i--;
             }
 
-
         }
 
     }
-
-
 
  }
 
