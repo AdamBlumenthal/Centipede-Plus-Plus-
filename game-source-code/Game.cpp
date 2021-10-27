@@ -68,14 +68,14 @@ void Game::createVarible()
     Lives=3;
     lvlBegin=false;
     start=true;
-    gameOver=false;
+    gameOver=true;
     centMush=false;
     pause=false;
     currentSegments=MaxLengthCentipede;
 
 
     //Mushroom controls
-    this->MushCount=30;
+    this->MushCount=40;
 
     //Load font
     if (!this->font.loadFromFile("resources/arial.ttf"))
@@ -102,8 +102,10 @@ void Game::createVarible()
 
     for(int i=0; i<MushCount; i++)
     {
-        float randomy = 21+(rand() % 560);
-        float randomx = (rand() % 780);
+
+        float randomy = 20+(rand() % 28)*20;
+        float randomx =20 + (rand() % 38)*20;
+
         //Tempmush=new Mushroom(randomx,randomy);
         Mush.push_back(std::make_shared<Mushroom>(randomx,randomy));
 
@@ -172,6 +174,7 @@ void Game::update()
         centipedes.push_back(std::make_shared<Centipede>(12,2.f, 0.f));
 
         lvlBegin=false;
+
     }
 
 
@@ -220,7 +223,9 @@ void Game::update()
         }
 
     }
+
     Collision=CollisionControl(BugB,laser,Mush,flea,centipedes,bomb);
+
     }
 
     if(Collision.DidPlayerLoseLife()){
@@ -251,6 +256,7 @@ void Game::render()
         {
             start=false;
             lvlBegin=true;
+            gameOver=false;
         }
     }
     else if(gameOver){

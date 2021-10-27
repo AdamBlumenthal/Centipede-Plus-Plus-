@@ -10,7 +10,7 @@ class Segment
 public:
     Segment(float& position);
     Segment(float& position, float& movespeed);
-    void moveDirections();
+    void moveDirections(MoveCentipede dir);
     void moveMushroom();
     void moveBlock();
     void setVerticalSpeed();

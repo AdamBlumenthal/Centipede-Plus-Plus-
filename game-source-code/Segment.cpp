@@ -17,14 +17,32 @@ Segment::Segment(float& pos, float& mSpeed):position(pos),movespeed(mSpeed)
     head=false;
 }
 //Movement with in bounds for the segments
-void Segment::moveDirections()
+void Segment::moveDirections(MoveCentipede dir)
 {
-    this->segment1.move(movespeed,0);
+    if(dir==MoveCentipede::Up){
+            segment1.move(0,(-1)*verticalSpeed);
+
+    }
+    else if(dir==MoveCentipede::Down){
+            segment1.move(0,verticalSpeed);
+
+    }
+    else if(dir==MoveCentipede::Left){
+            segment1.move((-1)*movespeed,0);
+    }
+    else if(dir==MoveCentipede::Right){
+            segment1.move(movespeed,0);
+    }
+    else if(dir==MoveCentipede::NoMove){
+        segment1.move(0,0);
+    }
+
+
 }
 void Segment::moveMushroom(){
         movespeed=(-1)*movespeed;
 
-        this->segment1.move(0,verticalSpeed);
+        //this->segment1.move(0,verticalSpeed);
        // this->segment1.move(movespeed,0);
 }
 // Create a segment of the centipede
@@ -33,7 +51,7 @@ void Segment::makeSegment(float& position)
     this->segment1.setSize(sf::Vector2f(18.f, 18.f));
     this->segment1.setFillColor(sf::Color::Blue);
     this->segment1.setOutlineColor(sf::Color::Yellow);
-    this->segment1.setPosition(position,0);
+    this->segment1.setPosition(position,1);
     this->segment1.setOutlineThickness(1.f);
 }
 void Segment::makeHead()

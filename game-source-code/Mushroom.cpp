@@ -42,7 +42,7 @@ void Mushroom::LoadSprite()
     this->mush.setTexture(this->mushtext);
 
     //Scaling image
-    this->mush.scale(0.01f,0.01f);
+    this->mush.scale(0.009f,0.009f);
 
     //Set Health start
     MushHealth=4;
