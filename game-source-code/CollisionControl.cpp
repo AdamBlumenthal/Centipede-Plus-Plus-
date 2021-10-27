@@ -25,7 +25,7 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
 
     //programme crashes this order
     CentipedeCollisionMushroom(centipedes,Mush);
-    CentipedeSelfCollision(centipedes);
+    //CentipedeSelfCollision(centipedes);
     //CentipedeSelfCollision(centipedes);
     LaserCollisionCentipedes(laser, centipedes,Mush);
    // CentipedeCollisionMushroom(centipedes,Mush);
@@ -72,23 +72,28 @@ for(int k=0;k<centipedes.size();k++){
         for(int j=0;j<centipedes.at(k)->getSize();j++){
             if(laser.at(i)->GetLaserPosition().intersects(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition())){
                 laser.erase(laser.begin()+i);
-                leave=true;
+              leave=true;
+                Mush.push_back(std::make_shared<Mushroom>(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left,centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top));
 
-
-
-                auto temp=centipedes.at(k)->getNewCentipede(j);
-                auto tempMoves=centipedes.at(k)->getMovesNew(j);
-                auto length=centipedes.at(k)->getSize()-1;
-                 Mush.push_back(std::make_shared<Mushroom>(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left,centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top));
+//
+//
+//
+                    if(j<centipedes.at(k)->getSize()-1){
+                    auto temp=centipedes.at(k)->getNewCentipede(j);
+                    auto tempMoves=centipedes.at(k)->getMovesNew(j);
+                    centipedes.push_back(std::make_shared<Centipede>(temp, tempMoves));
+                    }
+//                auto length=centipedes.at(k)->getSize()-1;
+              //   Mush.push_back(std::make_shared<Mushroom>(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left,centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top));
                 centipedes.at(k)->fixedHead(j);
                 centipedes.at(k)->fixedMoves(j);
+//
+//
+//                if(j!=length){
+//
 
-
-                if(j!=length){
-
-                    centipedes.push_back(std::make_shared<Centipede>(temp, tempMoves));
-
-                }
+//
+//                }
 
                 break;
             }

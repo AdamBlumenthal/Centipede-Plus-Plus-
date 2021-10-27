@@ -50,7 +50,7 @@ Centipede::Centipede(int l, float d, float p ):length(l),direction(d) {
     segments.at(0).makeHead();
     leftOrRight=true;
     upOrDown=true;
-std::vector<MoveCentipede> temp(length*9,MoveCentipede::NoMove);
+std::vector<MoveCentipede> temp(length*9-8,MoveCentipede::NoMove);
 moves=temp;
 moves.insert(moves.begin(),MoveCentipede::Right);
 }
@@ -97,7 +97,7 @@ for(int i=0;i<segments.size();i++){
     segments.at(i).moveDirections(moves.at(i*9));
 }
 leftOrRight ? moves.insert(moves.begin(),MoveCentipede::Right) : moves.insert(moves.begin(),MoveCentipede::Left);
-std::cout<<GetCentipedeHeadPosition().top<<std::endl;
+
 moves.pop_back();
 
 }
@@ -123,21 +123,14 @@ void Centipede::render(sf::RenderTarget* target)
 
 std::vector<Segment> Centipede::getNewCentipede(int pos){
 
-    auto centi=segments;
-    centi.clear();
-    //segments.clear();
-    for(int i=pos+1;i<segments.size();i++)
-        centi.push_back(segments.at(i));
+    std::vector<Segment> centi(segments.begin()+pos+1,segments.end());
 
     return centi;
 }
 std::vector<MoveCentipede> Centipede::getMovesNew(int pos){
 
     std::vector<MoveCentipede> m(moves.begin()+(pos+1)*9,moves.end());
-    //m.clear();
-    //segments.clear();
-    //for(int i=pos+1;i<moves.size();i++)
-     //  m.push_back(moves.at(i));
+
 
     return m;
 }
@@ -160,19 +153,14 @@ std::vector<Segment> Centipede::getCentipede(){
     return segments;
 }
 void Centipede::fixedHead(int pos){
-    auto temp=segments;
-    temp.clear();
-    //segments.clear();
-    for(int i=0;i<pos;i++)
-        temp.push_back(segments.at(i));
 
-    segments=temp;
-
-
+    segments.erase(segments.begin()+pos,segments.end());
 }
 void Centipede::fixedMoves(int pos){
-    std::vector<MoveCentipede>temp(moves.begin(),moves.begin()+pos*9);
-    moves=temp;
+
+
+    moves.erase(moves.begin()+(pos)*9,moves.end());
+
 
 }
 bool Centipede::isEmpty(){

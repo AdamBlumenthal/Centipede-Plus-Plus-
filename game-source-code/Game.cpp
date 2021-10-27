@@ -102,7 +102,7 @@ void Game::createVarible()
     for(int i=0; i<MushCount; i++)
     {
         float randomy = 20+(rand() % 28)*20;
-        float randomx =20 + (rand() % 38)*20;
+        float randomx =21 + (rand() % 38)*20;
         //Tempmush=new Mushroom(randomx,randomy);
         Mush.push_back(std::make_shared<Mushroom>(randomx,randomy));
 
