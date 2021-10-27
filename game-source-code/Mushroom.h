@@ -9,10 +9,10 @@ class Mushroom
 {
     public:
         Mushroom(float x, float y);
+        Mushroom();
         virtual ~Mushroom();
 
     //functions
-    void update(sf::RenderTarget* target);
     void render(sf::RenderTarget* target);
     bool inPlayerArea();
 

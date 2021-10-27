@@ -34,6 +34,7 @@ public:
     void UpdateEvent();
     void ShootLaser();
     void SpawnFlea();
+    void SpawnMushroomField();
     //void KillFlea();
 
     void SpawnBomb();

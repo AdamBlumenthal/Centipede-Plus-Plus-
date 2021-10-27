@@ -98,29 +98,8 @@ void Game::createVarible()
     BotLine.setSize(sf::Vector2f(800.f,1.f));
     BotLine.setPosition(0,600);
 
-    //Mushroom* Tempmush=nullptr;
-
-    for(int i=0; i<MushCount; i++)
-    {
-
-        float randomy = 20+(rand() % 28)*20;
-        float randomx =20 + (rand() % 38)*20;
-
-        //Tempmush=new Mushroom(randomx,randomy);
-        Mush.push_back(std::make_shared<Mushroom>(randomx,randomy));
-
-        for(int j=0; j<i-1; j++)//Makes sure random mushrooms dont intersect, if they intersect creates new mushroom
-        {
-            if(Mush.at(j)->GetMushroomPosition().intersects(Mush.at(i)->GetMushroomPosition()))
-            {
-                Mush.pop_back();
-                i--;
-            }
-
-
-        }
-
-    }
+    //Create random mushrooms
+    SpawnMushroomField();
 
     //Flea controls
     MinFleaTimeDelay=100;
@@ -344,14 +323,15 @@ void Game::ShootLaser()
 void Game::SpawnFlea()
 {
     int PlayerAreaMush=0;
-
+    int randomchance=rand()%100;
+        std::cout<<randomchance<<std::endl;
     for(int k=0; k<Mush.size(); k++)
     {
         if(Mush.at(k)->inPlayerArea())
             PlayerAreaMush++;
     }
 
-    if(PlayerAreaMush<7&&MinFleaTimeDelay<FleaTimeDelay)
+    if(PlayerAreaMush<7&&MinFleaTimeDelay<FleaTimeDelay&&randomchance<2)
     {
     flea.push_back(std::make_shared<Flea>());
     FleaTimeDelay=0;
@@ -378,11 +358,34 @@ void Game::SpawnBomb()
                 bomb.pop_back();
             }
 
-
         }
     }
 
     BombTimeDelay++;
 }
+
+ void Game::SpawnMushroomField()
+ {
+     for(int i=0; i<MushCount; i++)
+    {
+        //Tempmush=new Mushroom(randomx,randomy);
+        Mush.push_back(std::make_shared<Mushroom>());
+
+        for(int j=0; j<i-1; j++)//Makes sure random mushrooms dont intersect, if they intersect creates new mushroom
+        {
+            if(Mush.at(j)->GetMushroomPosition().intersects(Mush.at(i)->GetMushroomPosition()))
+            {
+                Mush.pop_back();
+                i--;
+            }
+
+
+        }
+
+    }
+
+
+
+ }
 
 

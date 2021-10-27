@@ -13,14 +13,23 @@ Mushroom::Mushroom(float x, float y)
 
 }
 
+Mushroom::Mushroom()
+{
+    this->LoadTexture();
+    this->LoadSprite();
+
+    float randomy = 20+(rand() % 28)*20;
+    float randomx =20 + (rand() % 38)*20;
+
+    this->mush.setPosition(randomx,randomy);
+
+}
+
+
+
 Mushroom::~Mushroom()
 {
     //dtor
-}
-
-void Mushroom::update(sf::RenderTarget* target)
-{
-
 }
 
 void Mushroom::render(sf::RenderTarget* target)
