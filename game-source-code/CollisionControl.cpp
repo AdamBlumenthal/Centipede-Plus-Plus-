@@ -25,6 +25,7 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
 
     //programme crashes this order
     CentipedeCollisionMushroom(centipedes,Mush);
+    CentipedeSelfCollision(centipedes);
     //CentipedeSelfCollision(centipedes);
     LaserCollisionCentipedes(laser, centipedes,Mush);
    // CentipedeCollisionMushroom(centipedes,Mush);
@@ -76,14 +77,16 @@ for(int k=0;k<centipedes.size();k++){
 
 
                 auto temp=centipedes.at(k)->getNewCentipede(j);
+                auto tempMoves=centipedes.at(k)->getMovesNew(j);
                 auto length=centipedes.at(k)->getSize()-1;
                  Mush.push_back(std::make_shared<Mushroom>(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left,centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top));
                 centipedes.at(k)->fixedHead(j);
+                centipedes.at(k)->fixedMoves(j);
 
 
                 if(j!=length){
 
-                    centipedes.push_back(std::make_shared<Centipede>(temp));
+                    centipedes.push_back(std::make_shared<Centipede>(temp, tempMoves));
 
                 }
 
@@ -184,10 +187,10 @@ void CollisionControl::CentipedeCollisionMushroom(std::vector<std::shared_ptr<Ce
 
         for(int i=0; i<Mush.size(); i++)
         {
-            if(Mush.at(i)->GetMushroomPosition().intersects(centipedes.at(k)->GetCentipedeHeadPosition())&&centipedes.at(k)->getMoves().at(1)!=MoveCentipede::Down)
+            if(Mush.at(i)->GetMushroomPosition().intersects(centipedes.at(k)->GetCentipedeHeadPosition())&&!(centipedes.at(k)->getMoves().at(1)==MoveCentipede::Down||centipedes.at(k)->getMoves().at(1)==MoveCentipede::Up))
             {
                 centipedes.at(k)->setHitMushroom();
-                std::cout<<"Inside Mush"<<std::endl;
+
             }
         }
 
@@ -269,35 +272,37 @@ bool CollisionControl::DidPlayerLoseLife()
 }
 
 //Centipede collisons
-//void CollisionControl::CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes)
-//{
-//
-//    for(int k=0; k<centipedes.size(); k++)
-//    {
-//        bool breakMiddleLoop=false;
-//        for(int i=k+1; i<centipedes.size(); i++)
-//        {
-//            for(int j=0; j<centipedes.at(i)->getSize();j++){
-//
-//                if(centipedes.at(k)->GetCentipedeHeadPosition().intersects(centipedes.at(i)->getCentipede().at(j).GetSegmentPosition())){
-//                    centipedes.at(k)->setHitMushroom();
-//                    if(j==0&&i<centipedes.size()-1){
-//                        centipedes.at(i)->setHitMushroom();
-//                        i++;
-//                    }
-//                  //  breakMiddleLoop=true;
-//                    break;
-//                }
-//
-//
-//
-//            }
-//           // if(breakMiddleLoop){
-//            //    breakMiddleLoop=false;
-//            //    break;
-//           // }
-//
-//        }
-//
-//    }
-//}
+void CollisionControl::CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes)
+{
+
+    for(int k=0; k<centipedes.size(); k++)
+    {
+        bool breakMiddleLoop=false;
+        for(int i=k+1; i<centipedes.size(); i++)
+        {
+            for(int j=0; j<centipedes.at(i)->getSize();j++){
+                if(centipedes.at(k)->GetCentipedeHeadPosition().intersects(centipedes.at(i)->getCentipede().at(j).GetSegmentPosition())
+                   &&
+                   !(centipedes.at(k)->getMoves().at(1)==MoveCentipede::Down||centipedes.at(k)->getMoves().at(1)==MoveCentipede::Up))
+                   {
+
+
+                    centipedes.at(k)->setHitMushroom();
+                    if(j==0){
+                        centipedes.at(i)->setHitMushroom();
+
+                    }
+                    breakMiddleLoop=true;
+                   break;
+              }
+
+
+
+           }
+          if(breakMiddleLoop){
+            breakMiddleLoop=false;
+             break;
+           }
+      }
+    }
+}

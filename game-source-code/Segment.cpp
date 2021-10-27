@@ -51,7 +51,7 @@ void Segment::makeSegment(float& position)
     this->segment1.setSize(sf::Vector2f(18.f, 18.f));
     this->segment1.setFillColor(sf::Color::Blue);
     this->segment1.setOutlineColor(sf::Color::Yellow);
-    this->segment1.setPosition(position,0);
+    this->segment1.setPosition(position,1);
     this->segment1.setOutlineThickness(1.f);
 }
 void Segment::makeHead()

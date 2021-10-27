@@ -9,7 +9,7 @@
 class Centipede{
 public:
         Centipede();
-        Centipede(std::vector<Segment> segments);
+        Centipede(std::vector<Segment> segments, std::vector<MoveCentipede> m);
         Centipede(int, float, float);
         void checkCentipedeBounds();
         void Move();
@@ -18,12 +18,13 @@ public:
         int getSize();
         bool isEmpty();
         std::vector<MoveCentipede> getMoves(){return moves;};
-
+        std::vector<MoveCentipede> getMovesNew(int pos);
         std::vector<Segment> getCentipede();
         std::vector<Segment> getNewCentipede(int pos);
         void update(sf::RenderTarget* target);
         void render(sf::RenderTarget* target);
         void fixedHead(int pos);
+        void fixedMoves(int pos);
         sf::FloatRect GetCentipedeHeadPosition();
 
 private:

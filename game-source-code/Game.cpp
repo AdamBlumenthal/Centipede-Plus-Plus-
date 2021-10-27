@@ -67,7 +67,7 @@ void Game::createVarible()
     Lives=3;
     lvlBegin=false;
     start=true;
-    gameOver=false;
+    gameOver=true;
     centMush=false;
     pause=false;
     currentSegments=MaxLengthCentipede;
@@ -101,8 +101,8 @@ void Game::createVarible()
 
     for(int i=0; i<MushCount; i++)
     {
-        float randomy = 21+(rand() % 560);
-        float randomx = (rand() % 800);
+        float randomy = 20+(rand() % 28)*20;
+        float randomx =20 + (rand() % 38)*20;
         //Tempmush=new Mushroom(randomx,randomy);
         Mush.push_back(std::make_shared<Mushroom>(randomx,randomy));
 
@@ -168,6 +168,7 @@ void Game::update()
         centipedes.push_back(std::make_shared<Centipede>(12,2.f, 0.f));
 
         lvlBegin=false;
+
     }
 
 
@@ -176,7 +177,7 @@ void Game::update()
 
     BugB->update(window);
     ShootLaser();
-    //SpawnFlea();
+    SpawnFlea();
     if(centipedes.size()>0){
 
 
@@ -215,7 +216,7 @@ void Game::update()
         }
 
     }
-    Collision=CollisionControl(BugB,laser,Mush,flea,centipedes);
+ Collision=CollisionControl(BugB,laser,Mush,flea,centipedes);
     }
 
     if(Collision.DidPlayerLoseLife()){
@@ -246,6 +247,7 @@ void Game::render()
         {
             start=false;
             lvlBegin=true;
+            gameOver=false;
         }
     }
     else if(gameOver){
