@@ -15,7 +15,29 @@ Centipede::Centipede(std::vector<Segment> seg, std::vector<MoveCentipede> m){
     segments=seg;
     moves=m;
     hitMushroom=true;
+    upOrDown=true;
+    leftOrRight=true;
+    for(int i=0;i<moves.size();i++){
+        if(moves.at(i)==MoveCentipede::Down){
+            upOrDown=true;
+             break;
+        }
+         if(moves.at(i)==MoveCentipede::Up){
+            upOrDown=false;
+            break;
+        }
+    }for(int i=0;i<moves.size();i++){
+        if(moves.at(i)==MoveCentipede::Right){
+            leftOrRight=true;
+             break;
+        }
+         if(moves.at(i)==MoveCentipede::Left){
+            leftOrRight=false;
+            break;
+        }
+    }
     segments.at(0).makeHead();
+   // moves.insert(moves.begin(),MoveCentipede::Down);
     }
 Centipede::Centipede(int l, float d, float p ):length(l),direction(d) {
     segments.clear();
@@ -111,7 +133,7 @@ std::vector<Segment> Centipede::getNewCentipede(int pos){
 }
 std::vector<MoveCentipede> Centipede::getMovesNew(int pos){
 
-    std::vector<MoveCentipede> m(moves.begin()+pos*9+9,moves.end());
+    std::vector<MoveCentipede> m(moves.begin()+(pos+1)*9,moves.end());
     //m.clear();
     //segments.clear();
     //for(int i=pos+1;i<moves.size();i++)
