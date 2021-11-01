@@ -13,10 +13,9 @@ class Flea
 {
     public:
         Flea();
-        virtual ~Flea();
 
         //functions
-        void update(sf::RenderTarget* target);
+        void update();
         void render(sf::RenderTarget* target);
         void FleaMove();
         bool CollisionBottomWindow(sf::RenderTarget* target);

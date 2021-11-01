@@ -35,38 +35,10 @@ public:
     void ShootLaser();
     void SpawnFlea();
     void SpawnMushroomField();
-    //void KillFlea();
 
     void SpawnBomb();
 
-    //collisions
-    //void LaserCollision();
-    //void LaserCollisionCentipede();
-
-    //new centipede
-    //void LaserCollisionCentipedes(std::shared_ptr<Centipede> centipede);
-    //void LaserCollisionHeads();
-    //void LaserCollisionMushrooms();
-    //void CollisionCentipedeMushroom();
-    void CollisionBugCentipede();
-
-    //void CollisionBugPlayer();
-    //void CollisionBugFlea();
-    //void CollisonLaserFlea();
-
-    //void checkRestCollision(int,int);
-    //void CentipedeSelfCollision();
-    //void CentipedeCollisionMushroom(std::shared_ptr<Centipede> centipede);
     void SelfCollision();
-
-    //void MakeMushroom(Segment segment);
-    //Collisions
-   // void LaserCollisionCentipede();
-   // void LaserCollision();
-  // int generalCollision( std::vector <Laser> a,std::vector <Mushroom> b);
-
-
-
 
 private:
 

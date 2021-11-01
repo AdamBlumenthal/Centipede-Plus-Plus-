@@ -11,14 +11,11 @@ class Laser
 {
 public:
     Laser(sf::FloatRect BugBounds);
-    virtual ~Laser();
 
-    //Varibles
-    float MoveSpeed;
 
     //functions
     void LaserMove();
-    void update(sf::RenderTarget* target);
+    void update();
     void render(sf::RenderTarget* target);
     void SetPositionLaser(sf::FloatRect BugBounds);
 
@@ -35,6 +32,10 @@ private:
 
     void createVarible();
     void createLaser();
+
+    //Varibles
+    float MoveSpeed;
+
 
 
 

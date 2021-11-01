@@ -3,43 +3,37 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
+//Will set a known startpoint
 Mushroom::Mushroom(float x, float y)
 {
-    this->LoadTexture();
-    this->LoadSprite();
+    LoadTexture();
+    LoadSprite();
 
-    this->mush.setPosition(x,y);
+    mush.setPosition(x,y);
 
 }
-
+//Will set a random startpoint
 Mushroom::Mushroom()
 {
-    this->LoadTexture();
-    this->LoadSprite();
+    LoadTexture();
+    LoadSprite();
 
     float randomy = 20+(rand() % 28)*20;
     float randomx =20 + (rand() % 38)*20;
 
-    this->mush.setPosition(randomx,randomy);
+    mush.setPosition(randomx,randomy);
 
 }
 
-
-
-Mushroom::~Mushroom()
-{
-    //dtor
-}
 
 void Mushroom::render(sf::RenderTarget* target)
 {
-    target->draw(this->mush);
+    target->draw(mush);
 }
 
 void Mushroom::LoadTexture()
 {
-    if(!this->mushtext.loadFromFile("resources/Mushroomsprite1.png"))
+    if(!mushtext.loadFromFile("resources/Mushroomsprite1.png"))
     {
         std::cout << "Mushroom.cpp Failed to load Sprite" <<std::endl;
     }
@@ -48,10 +42,10 @@ void Mushroom::LoadTexture()
 
 void Mushroom::LoadSprite()
 {
-    this->mush.setTexture(this->mushtext);
+    mush.setTexture(mushtext);
 
     //Scaling image
-    this->mush.scale(0.009f,0.009f);
+    mush.scale(0.009f,0.009f);
 
     //Set Health start
     MushHealth=4;
@@ -91,5 +85,14 @@ sf::Sprite Mushroom::getMushroom()
         return true;
         else
             return false;
+}
+
+bool Mushroom::MushroomInPlayerStart(std::shared_ptr<BugBlaster> Bug)
+{
+    if(mush.getGlobalBounds().intersects(Bug->GetBugPosition()))
+        return true;
+
+    else
+        return false;
 }
 

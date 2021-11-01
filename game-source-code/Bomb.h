@@ -10,12 +10,8 @@ class Bomb
 {
     public:
         Bomb(float x,float y);
-        virtual ~Bomb();
 
-        void update(sf::RenderTarget* target);
         void render(sf::RenderTarget* target);
-
-        void RescaleBomb();
 
         sf::FloatRect GetBombPosition();
 

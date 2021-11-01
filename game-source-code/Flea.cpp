@@ -5,39 +5,33 @@
 #include <iostream>
 #include "Mushroom.h"
 
+//Construnctor
 Flea::Flea()
 {
-    //ctor
-    this->LoadTexture();
-    this->LoadSprite();
+
+    LoadTexture();
+    LoadSprite();
 
     float randomx = 20+(rand() % 38)*20;
 
-    this->flea.setPosition(randomx,0);
+    flea.setPosition(randomx,0);
 
 }
 
-Flea::~Flea()
+
+void Flea::update()
 {
-    //dtor
-}
-
-void Flea::update(sf::RenderTarget* target)
-{
-    this->FleaMove();
-
-
-
+    FleaMove();
 }
 
 void Flea::render(sf::RenderTarget* target)
 {
-    target->draw(this->flea);
+    target->draw(flea);
 }
 
 void Flea::LoadTexture()
 {
-    if(!this->fleatext.loadFromFile("resources/Flea.png"))
+    if(!fleatext.loadFromFile("resources/Flea.png"))
     {
         std::cout << "Flea.cpp Failed to load Sprite" <<std::endl;
     }
@@ -46,10 +40,10 @@ void Flea::LoadTexture()
 
 void Flea::LoadSprite()
 {
-    this->flea.setTexture(this->fleatext);
+    flea.setTexture(fleatext);
 
     //Scaling image
-    this->flea.scale(0.1f,0.1f);
+    flea.scale(0.1f,0.1f);
 
     MoveSpeed=5.f;
 }
@@ -62,7 +56,7 @@ sf::FloatRect Flea::GetFleaPosition()
 
 void Flea::FleaMove()
 {
-    this->flea.move(0.f,this->MoveSpeed);//Downwards
+    flea.move(0.f,MoveSpeed);//Downwards
 }
 
 bool Flea::CollisionBottomWindow(sf::RenderTarget* target)
@@ -83,10 +77,6 @@ return false;
 
      if(randomvalue<2&&flea.getGlobalBounds().top<680)
      {
-
-         //Mushroom* Tempmush=nullptr;
-
-        //Tempmush=new Mushroom(flea.getGlobalBounds().left, flea.getGlobalBounds().top);
         Mush.push_back(std::make_shared<Mushroom>(flea.getGlobalBounds().left, flea.getGlobalBounds().top));
 
 

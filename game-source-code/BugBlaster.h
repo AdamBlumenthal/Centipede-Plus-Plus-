@@ -12,7 +12,6 @@ class BugBlaster
 {
 public:
     BugBlaster(float x=350.f,float y=450.f);
-    virtual ~BugBlaster();
 
     //functions
     Movement BugBlasterGetInputs();

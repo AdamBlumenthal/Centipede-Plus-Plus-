@@ -3,6 +3,8 @@
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "BugBlaster.h"
+#include <memory>
 
 
 class Mushroom
@@ -10,11 +12,11 @@ class Mushroom
     public:
         Mushroom(float x, float y);
         Mushroom();
-        virtual ~Mushroom();
 
     //functions
     void render(sf::RenderTarget* target);
     bool inPlayerArea();
+    bool MushroomInPlayerStart(std::shared_ptr<BugBlaster> Bug);
 
     sf::FloatRect GetMushroomPosition();
     sf::Sprite getMushroom();
@@ -31,7 +33,7 @@ class Mushroom
         void LoadSprite();
         void LoadTexture();
 
-        //Varibles
+        //Control Variables
         int MushHealth;
 
 
