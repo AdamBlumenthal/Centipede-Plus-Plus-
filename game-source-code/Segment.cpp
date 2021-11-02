@@ -6,83 +6,66 @@
 Segment::Segment(float& pos):position(pos)
 {
     movespeed=2.f;
-    verticalSpeed=20.f;
-    this->makeSegment(pos);
-    head=false;
+    makeSegment(pos);
 }
 Segment::Segment(float& pos, float& mSpeed):position(pos),movespeed(mSpeed)
 {
-    verticalSpeed=20.f;
-    this->makeSegment(pos);
-    head=false;
+    makeSegment(pos);
+
 }
 //Movement with in bounds for the segments
 void Segment::moveDirections(MoveCentipede dir)
 {
     if(dir==MoveCentipede::Up){
-            segment1.move(0,(-1)*verticalSpeed);
+            segment.move(0,(-1)*verticalSpeed);
 
     }
     else if(dir==MoveCentipede::Down){
-            segment1.move(0,verticalSpeed);
+            segment.move(0,verticalSpeed);
 
     }
     else if(dir==MoveCentipede::Left){
-            segment1.move((-1)*movespeed,0);
+            segment.move((-1)*movespeed,0);
     }
     else if(dir==MoveCentipede::Right){
-            segment1.move(movespeed,0);
+            segment.move(movespeed,0);
     }
     else if(dir==MoveCentipede::NoMove){
-        segment1.move(0,0);
+        segment.move(0,0);
     }
 
 
 }
-void Segment::moveMushroom(){
-        movespeed=(-1)*movespeed;
 
-        //this->segment1.move(0,verticalSpeed);
-       // this->segment1.move(movespeed,0);
-}
 // Create a segment of the centipede
 void Segment::makeSegment(float& position)
 {
-    this->segment1.setSize(sf::Vector2f(18.f, 18.f));
-    this->segment1.setFillColor(sf::Color::Blue);
-    this->segment1.setOutlineColor(sf::Color::Yellow);
-    this->segment1.setPosition(position,1);
-    this->segment1.setOutlineThickness(1.f);
+    segment.setSize(sf::Vector2f(18.f, 18.f));
+    segment.setFillColor(sf::Color::Blue);
+    segment.setOutlineColor(sf::Color::Yellow);
+    segment.setPosition(position,1);
+    segment.setOutlineThickness(1.f);
 }
 void Segment::makeHead()
 {
-    this->segment1.setFillColor(sf::Color::Red);
-    head=true;
+    segment.setFillColor(sf::Color::Red);
+
 }
 //Get Shape of segment
 sf::RectangleShape Segment::getSegment()
 {
-    return segment1;
+    return segment;
 }
-//Updates Segment
-void Segment::update(sf::RenderTarget* target)
-{
 
-
-}
-//Rednders segment
+//Renders segment
 void Segment::render(sf::RenderTarget* target)
 {
-    target->draw(this->segment1);
+    target->draw(segment);
 }
 //Gets position
 sf::FloatRect Segment::GetSegmentPosition()
 {
-    sf::FloatRect SegmentBounds=segment1.getGlobalBounds();
-    return SegmentBounds;
+
+    return segment.getGlobalBounds();
 }
 
-void Segment::setVerticalSpeed(){
-
-    verticalSpeed=(-1)*verticalSpeed;
-}

@@ -5,8 +5,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <string>
-//Size of segment
-float Centipede::segmentSize=20.f;
+
+
 Centipede::Centipede(){
 segments.clear();
 }
@@ -166,6 +166,4 @@ void Centipede::fixedMoves(int pos){
 bool Centipede::isEmpty(){
     return segments.empty();
 }
-void Centipede::moveHead(){
-    segments.at(0).moveMushroom();
-}
+

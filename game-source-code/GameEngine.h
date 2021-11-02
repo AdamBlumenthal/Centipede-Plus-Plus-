@@ -13,7 +13,7 @@
 #include "Bomb.h"
 #include <memory>
 
-/** \file Mushroom.h
+/** \file GameEngine.h
     \brief Contains code for constructing the Game class
  */
 
