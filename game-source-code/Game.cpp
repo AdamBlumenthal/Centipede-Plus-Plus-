@@ -23,8 +23,8 @@ int Game::numberOfCentipedes=12;
 //Constructor
 Game::Game()
 {
-    this->createVarible();
-    this->createWindow();
+    createVarible();
+    createWindow();
 
 }
 
@@ -46,10 +46,10 @@ const bool Game::IsRunning() const
 //Creates Window
 void Game::createWindow()
 {
-    this->videomode.height=700;
-    this->videomode.width=800;
-    this->window=new sf::RenderWindow(videomode, "SFML Centipede", sf::Style::Titlebar | sf::Style::Close);
-    this->window->setFramerateLimit(60);
+    videomode.height=700;
+    videomode.width=800;
+    window=new sf::RenderWindow(videomode, "SFML Centipede", sf::Style::Titlebar | sf::Style::Close);
+    window->setFramerateLimit(60);
 };
 //Gives values to private variables.
 void Game::createVarible()
@@ -78,7 +78,7 @@ void Game::createVarible()
     MushCount=40;
 
     //Load font
-    if (!this->font.loadFromFile("resources/arial.ttf"))
+    if (!font.loadFromFile("resources/arial.ttf"))
     {
         std::cout << "ERROR::GAME::Failed to load font" << "\n";
     }
@@ -176,7 +176,7 @@ void Game::update()
     }
     else{
         gameOver=true;
-        this->StartSplashText.setString("Game Over - You Win\n Well Played \n Press Enter to restart \n Press Escape to Quit\n Arrow Keys to move\n Space to Shoot\n Tab to Pause");
+        StartSplashText.setString("Game Over - You Win\n Well Played \n Press Enter to restart \n Press Escape to Quit\n Arrow Keys to move\n Space to Shoot\n Tab to Pause");
     }
 
 
@@ -192,7 +192,7 @@ void Game::update()
     {
         for(int i=0; i<flea.size(); i++)
         {
-            this->flea.at(i)->update();
+            flea.at(i)->update();
             flea.at(i)->SpawnMushroomWithFlea(Mush);
         }
 
@@ -225,7 +225,7 @@ void Game::render()
     {
          this->StartSplashText.setString("SFML Centipede: Press Enter to start,Press Escape to Quit\n Arrow Keys to move\n Space to Shoot\n Tab to Pause");
 
-        this->window->draw(this->StartSplashText);
+        this->window->draw(StartSplashText);
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
             start=false;
@@ -336,14 +336,14 @@ void Game::SpawnBomb()
 {
     int randomnum=rand()%100;
     float randomy = 20+(rand() % 21)*20;
-    float randomx = (rand() % 780);
+    float randomx = 20+(rand() % 38)*20;
 
     if(randomnum<2&&MinBombTimeDelay<BombTimeDelay&&bomb.size()<4)
     {
     bomb.push_back(std::make_shared<Bomb>(randomx,randomy));
     BombTimeDelay=0;
 
-    for(int i=0;i<bomb.size()-1;i++)////Makes sure random previous bombs dont intersect with new bomb
+    for(int i=0;i<bomb.size()-1;i++)//Makes sure random previous bombs dont intersect with new bomb
     {
     for(int j=0; j<Mush.size(); j++)//Makes sure random mushrooms dont intersect with bomb
         {

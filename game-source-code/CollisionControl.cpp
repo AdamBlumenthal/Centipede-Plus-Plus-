@@ -23,8 +23,6 @@ CollisionControl::CollisionControl(std::shared_ptr<BugBlaster>& BugB,std::vector
 
     LaserCollision(laser);
 
-
-    //programme crashes this order
     CentipedeCollisionMushroom(centipedes,Mush);
     CollisionCentipedeBomb(centipedes,bomb);
 
@@ -58,7 +56,6 @@ void CollisionControl::LaserCollision(std::vector <std::shared_ptr<Laser>>& lase
 
     for(int i=0; i<laser.size(); i++)
     {
-        //sf::FloatRect LaserPos=this->laser.at(i).GetLaserPosition();
 
         if(laser.at(i)->GetLaserPosition().top<=0.f)
         {
@@ -112,9 +109,7 @@ void CollisionControl::LaserCollisionMushrooms(std::vector <std::shared_ptr<Lase
             {
 
                 laser.erase(laser.begin()+i);
-                //if(laser.size()>0){
-                //    i--;
-                //}
+
                 Mush.at(k)->HealthLoss();
                 if(Mush.at(k)->IsHealthZero()==true)
                 {
@@ -301,6 +296,7 @@ void CollisionControl::BombMushroom(std::vector<std::shared_ptr<Bomb>>& bomb,std
 {
     for(int i=0;i<Mush.size();i++)
     {
+        //See if Mushroom intersects whith the explosion area around the bomb
         if(Mush.at(i)->GetMushroomPosition().left+Mush.at(i)->GetMushroomPosition().width>bomb.at(k)->GetBombPosition().left-40
            &&Mush.at(i)->GetMushroomPosition().left<bomb.at(k)->GetBombPosition().left+bomb.at(k)->GetBombPosition().width+40
            &&Mush.at(i)->GetMushroomPosition().top+Mush.at(i)->GetMushroomPosition().height>bomb.at(k)->GetBombPosition().top-40
@@ -316,6 +312,7 @@ void CollisionControl::BombFlea(std::vector<std::shared_ptr<Bomb>>& bomb,std::ve
 {
     for(int i=0;i<flea.size();i++)
     {
+        //See if Flea intersects whith the explosion area around the bomb
         if(flea.at(i)->GetFleaPosition().left+flea.at(i)->GetFleaPosition().width>bomb.at(k)->GetBombPosition().left-40
            &&flea.at(i)->GetFleaPosition().left<bomb.at(k)->GetBombPosition().left+bomb.at(k)->GetBombPosition().width+40
            &&flea.at(i)->GetFleaPosition().top+flea.at(i)->GetFleaPosition().height>bomb.at(k)->GetBombPosition().top-40
@@ -334,25 +331,13 @@ void CollisionControl::BombCentipede(std::vector<std::shared_ptr<Bomb>>& bomb,st
     {
         for(int j=0; j<centipedes.at(k)->getSize(); j++)
         {
+            //See if Centipede intersects whith the explosion area around the bomb
             if(centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left+centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().width>bomb.at(i)->GetBombPosition().left-40
            &&centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().left<bomb.at(i)->GetBombPosition().left+bomb.at(i)->GetBombPosition().width+40
            &&centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top+centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().height>bomb.at(i)->GetBombPosition().top-40
            &&centipedes.at(k)->getCentipede().at(j).GetSegmentPosition().top<bomb.at(i)->GetBombPosition().top+bomb.at(i)->GetBombPosition().height+40)
             {
 
-//                auto temp=centipedes.at(k)->getNewCentipede(j);
-//                auto tempMoves=centipedes.at(k)->getMovesNew(j);
-//                auto length=centipedes.at(k)->getSize()-1;
-//                centipedes.at(k)->fixedHead(j);
-//                centipedes.at(k)->fixedMoves(j);
-//
-//                if(j!=length)
-//                {
-//
-//                    centipedes.push_back(std::make_shared<Centipede>(temp,tempMoves));
-//
-//                }
-//                std::cout<<centipedes.size()<<std::endl;
                     if(j<centipedes.at(k)->getSize()-1){
                     auto temp=centipedes.at(k)->getNewCentipede(j);
                     auto tempMoves=centipedes.at(k)->getMovesNew(j);
@@ -390,8 +375,9 @@ void CollisionControl::CollisionCentipedeBomb(std::vector<std::shared_ptr<Centip
 //Centipede collisons
 void CollisionControl::CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes)
 {
-
-    for(int k=0; k<centipedes.size(); k++)
+if(centipedes.size()>1)
+{
+    for(int k=0; k<centipedes.size()-1; k++)
     {
         bool breakMiddleLoop=false;
         for(int i=k+1; i<centipedes.size(); i++)
@@ -421,4 +407,5 @@ void CollisionControl::CentipedeSelfCollision(std::vector<std::shared_ptr<Centip
            }
       }
     }
+}
 }

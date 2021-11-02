@@ -50,7 +50,7 @@ void Mushroom::LoadSprite()
     //Set Health start
     MushHealth=4;
 }
-
+//Called when hit by Laser
 void Mushroom::HealthLoss()
 {
     MushHealth--;
@@ -67,6 +67,7 @@ sf::Sprite Mushroom::getMushroom()
     return mush;
 }
 
+//Checks if Health is Zero
  bool Mushroom::IsHealthZero()
  {
      if(MushHealth<=0)
@@ -78,7 +79,7 @@ sf::Sprite Mushroom::getMushroom()
          return false;
      }
  }
-
+//Used to count mushrooms in Player area
  bool Mushroom::inPlayerArea()
 {
     if(mush.getPosition().y>450)
@@ -86,7 +87,7 @@ sf::Sprite Mushroom::getMushroom()
         else
             return false;
 }
-
+//Does mushroom intersect with the PLayer
 bool Mushroom::MushroomInPlayerStart(std::shared_ptr<BugBlaster> Bug)
 {
     if(mush.getGlobalBounds().intersects(Bug->GetBugPosition()))

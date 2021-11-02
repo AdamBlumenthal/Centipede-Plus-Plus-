@@ -13,9 +13,9 @@ Bomb::Bomb(float x, float y)
 
 }
 
-void Bomb::render(sf::RenderTarget* target)
+void Bomb::render(sf::RenderTarget* window)
 {
-    target->draw(bomb);
+    window->draw(bomb);
 }
 
 void Bomb::LoadTexture()
