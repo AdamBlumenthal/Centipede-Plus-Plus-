@@ -24,12 +24,12 @@ TEST_CASE("Outline Thickness of Segment ")
     auto seg=segment.getSegment();
     CHECK(seg.getOutlineThickness()==1.f);
 }
-TEST_CASE("Segment y position starts at zero")
+TEST_CASE("Segment y position starts at 1(Allows for outline to be visable)")
 {
     float argument=0.f;
     Segment segment(argument);
     auto seg=segment.getSegment();
-    CHECK(seg.getPosition().y==0.f);
+    CHECK(seg.getPosition().y==1.f);
 }
 TEST_CASE("Fill Colour of sement is not green")
 {
@@ -67,13 +67,13 @@ TEST_CASE("Test laser starts on bug blaster")
     auto laserBeam=laser.getLaser();
     CHECK(bug.getPosition().y==laserBeam.getPosition().y);
 }
-TEST_CASE("Width of bug is 24 times greater than width of laser")
+TEST_CASE("Width of bug is 20 times greater than width of laser")
 {
     BugBlaster bugBlast;
     auto bug=bugBlast.getBug();
     Laser laser(bug.getGlobalBounds());
     auto laserBeam=laser.getLaser();
-    CHECK(bug.getGlobalBounds().width==24*laserBeam.getGlobalBounds().width);
+    CHECK(bug.getGlobalBounds().width==20*laserBeam.getGlobalBounds().width);
 }
 
 TEST_CASE("The colour of the outline of segments is the same colour as laser beams")
@@ -133,8 +133,9 @@ TEST_CASE("Bug Moves Down by set movespeed")
 }
 TEST_CASE("Bug reamins in the same position without direction given")
 {
+    auto move_=Movement::NoMove;
     BugBlaster bugBlast(0,0);
-    bugBlast.KeyInputResults(Movement::NoMove);
+    bugBlast.KeyInputResults(move_);
     CHECK(bugBlast.GetBugPosition().top==0);
     CHECK(bugBlast.GetBugPosition().left==0);
 }
@@ -169,81 +170,71 @@ TEST_CASE("Laser does not move horizontally"){
 }
 
 //Centipede Movement
-TEST_CASE("Centipede moves across by set movespeed to the right originally for 1 segment of a centipede")
-{
-    Centipede centipede(1,2.f,0.f);
-    centipede.Move();
-    //While movement speed is 2 there is a -1.f offset because of the outline
-    CHECK(centipede.GetCentipedeHeadPosition().left==1.f);
-}
-TEST_CASE("Centipede moves across by set movespeed to the right originally for multiple segments test case 10")
-{
-    Centipede centipede(10,2.f,200.f);
-    centipede.Move();
-    //While movement speed is 2 there is a -1.f offset because of the outline
-    for(int i=0;i<10;i++){
-
-    CHECK(centipede.getCentipede().at(i).GetSegmentPosition().left==201.f-18.f*i);
-}
-}
-TEST_CASE("Segment moves down when hit by Mushroom/Wall by set vertical movespeed")
-{
-    //While movement speed is 2 there is a -1.f offset because of the outline
-    float argument=1.f;
-    Segment segment(argument);
-    segment.moveMushroom();
-    CHECK(segment.GetSegmentPosition().top==19.f);
-    segment.moveDirections();
-    //remember the -1 offset starting position
-    CHECK(segment.GetSegmentPosition().left==-2.f);
-}
-TEST_CASE("Centipede moves in opposite directiona after hitting wall/mushroom i.e. left"){
-     Centipede centipede(1,2.f,100.f);
-    centipede.setHitMushroom();
-    centipede.Move();
-    //While movement speed is 2 there is a -1.f offset because of the outline
-    CHECK(centipede.GetCentipedeHeadPosition().top==19.f);
-    CHECK(centipede.GetCentipedeHeadPosition().left==97.f);
-    centipede.Move();
-    CHECK(centipede.GetCentipedeHeadPosition().left==95.f);
-
-}
-
-TEST_CASE("Centipede segments follow head after wall/mushroom collisions length=2"){
-     Centipede centipede(2,2.f,100.f);
-
-    centipede.setHitMushroom();
-    centipede.Move();
-    auto headPos=centipede.GetCentipedeHeadPosition();
-    for(int i=0;i<9;i++)
-    centipede.Move();
-
-    //While movement speed is 2 there is a -1.f offset because of the outline
-    CHECK(centipede.getCentipede().at(1).GetSegmentPosition().top==headPos.top);
-    CHECK(centipede.getCentipede().at(1).GetSegmentPosition().left==headPos.left);
-    //CHECK(centipede.GetCentipedeHeadPosition().left==97.f);
-    //centipede.Move();
-    //CHECK(centipede.GetCentipedeHeadPosition().left==95.f);
-
-}
-TEST_CASE("Centipede switches directions after hitting mushrooms i.e. 2 changes"){
-     Centipede centipede(1,2.f,100.f);
-    centipede.setHitMushroom();
-    centipede.Move();
-    //While movement speed is 2 there is a -1.f offset because of the outline
-    CHECK(centipede.GetCentipedeHeadPosition().top==19.f);
-    CHECK(centipede.GetCentipedeHeadPosition().left==97.f);
-    centipede.Move();
-    CHECK(centipede.GetCentipedeHeadPosition().left==95.f);
-    centipede.setHitMushroom();
-    centipede.Move();
-    //While movement speed is 2 there is a -1.f offset because of the outline
-    CHECK(centipede.GetCentipedeHeadPosition().top==39.f);
-    CHECK(centipede.GetCentipedeHeadPosition().left==97.f);
-    centipede.Move();
-    CHECK(centipede.GetCentipedeHeadPosition().left==99.f);
-
-}
+//TEST_CASE("Centipede moves across by set movespeed to the right originally for 1 segment of a centipede")
+//{
+//    Centipede centipede(1,2.f,0.f);
+//    centipede.Move();
+//    //While movement speed is 2 there is a -1.f offset because of the outline
+//    CHECK(centipede.GetCentipedeHeadPosition().left==1.f);
+//}
+//TEST_CASE("Centipede moves across by set movespeed to the right originally for multiple segments test case 10")
+//{
+//    Centipede centipede(10,2.f,200.f);
+//    centipede.Move();
+//    //While movement speed is 2 there is a -1.f offset because of the outline
+//    for(int i=0;i<10;i++){
+//
+//    CHECK(centipede.getCentipede().at(i).GetSegmentPosition().left==201.f-18.f*i);
+//}
+//}
+//
+//TEST_CASE("Centipede moves in opposite directiona after hitting wall/mushroom i.e. left"){
+//     Centipede centipede(1,2.f,100.f);
+//    centipede.setHitMushroom();
+//    centipede.Move();
+//    //While movement speed is 2 there is a -1.f offset because of the outline
+//    CHECK(centipede.GetCentipedeHeadPosition().top==19.f);
+//    CHECK(centipede.GetCentipedeHeadPosition().left==97.f);
+//    centipede.Move();
+//    CHECK(centipede.GetCentipedeHeadPosition().left==95.f);
+//
+//}
+//
+//TEST_CASE("Centipede segments follow head after wall/mushroom collisions length=2"){
+//     Centipede centipede(2,2.f,100.f);
+//
+//    centipede.setHitMushroom();
+//    centipede.Move();
+//    auto headPos=centipede.GetCentipedeHeadPosition();
+//    for(int i=0;i<9;i++)
+//    centipede.Move();
+//
+//    //While movement speed is 2 there is a -1.f offset because of the outline
+//    CHECK(centipede.getCentipede().at(1).GetSegmentPosition().top==headPos.top);
+//    CHECK(centipede.getCentipede().at(1).GetSegmentPosition().left==headPos.left);
+//    //CHECK(centipede.GetCentipedeHeadPosition().left==97.f);
+//    //centipede.Move();
+//    //CHECK(centipede.GetCentipedeHeadPosition().left==95.f);
+//
+//}
+//TEST_CASE("Centipede switches directions after hitting mushrooms i.e. 2 changes"){
+//     Centipede centipede(1,2.f,100.f);
+//    centipede.setHitMushroom();
+//    centipede.Move();
+//    //While movement speed is 2 there is a -1.f offset because of the outline
+//    CHECK(centipede.GetCentipedeHeadPosition().top==19.f);
+//    CHECK(centipede.GetCentipedeHeadPosition().left==97.f);
+//    centipede.Move();
+//    CHECK(centipede.GetCentipedeHeadPosition().left==95.f);
+//    centipede.setHitMushroom();
+//    centipede.Move();
+//    //While movement speed is 2 there is a -1.f offset because of the outline
+//    CHECK(centipede.GetCentipedeHeadPosition().top==39.f);
+//    CHECK(centipede.GetCentipedeHeadPosition().left==97.f);
+//    centipede.Move();
+//    CHECK(centipede.GetCentipedeHeadPosition().left==99.f);
+//
+//}
 //TEST_CASE("Centipede moves down when hit mushroom/wall")
 //{
 //    Centipede centipede(1,2.f,0.f);
@@ -254,57 +245,57 @@ TEST_CASE("Centipede switches directions after hitting mushrooms i.e. 2 changes"
 //    CHECK(centipede.GetCentipedeHeadPosition().left==-3.f);
 //
 //}
-TEST_CASE("Centipede moves then hits wall and moves down - this one involves the collision")
-{
-    Centipede centipede(1,2.f,782.f);
-    centipede.Move();
-    //While movement speed is 2 there is a -1.f offset because of the outline
-    CHECK(centipede.GetCentipedeHeadPosition().top==19.f);
-    // centipede.Move();
-    //CHECK(centipede.GetCentipedeHeadPosition().left==-3.f);
-
-}
-TEST_CASE("Centipede switches directiona after reaching bottom of play area")
-{
-    Centipede centipede(1,2.f,200.f);
-    for(int i=0; i<30; i++)
-    {
-        centipede.moveHead();
-       centipede.Move();
-
-    }
-        CHECK(centipede.getCentipede().at(0).getVerticalSpeed()<0);
-
-
-}
-TEST_CASE("Centipede train follows directiona after reaching bottom of play area")
-{
-    Centipede centipede(2,2.f,400.f);
-    for(int i=0; i<35; i++)
-    {
-        centipede.moveHead();
-        //centipede.checkCentipedeBounds();
-        centipede.Move();
-
-    }
-        CHECK(centipede.getCentipede().at(1).getVerticalSpeed()<0);
-
-
-}
-TEST_CASE("Centipede remains in play area after the bottom of the bottom of the playable area")
-{
-    Centipede centipede(1,2.f,400.f);
-    for(int i=0; i<80; i++)
-    {
-        centipede.moveHead();
-        centipede.checkCentipedeBounds();
-        if(i>30){
-        CHECK(centipede.GetCentipedeHeadPosition().top<600.f);
-        CHECK(centipede.GetCentipedeHeadPosition().top>450.f);
-        }
-    }
-
-}
+//TEST_CASE("Centipede moves then hits wall and moves down - this one involves the collision")
+//{
+//    Centipede centipede(1,2.f,782.f);
+//    centipede.Move();
+//    //While movement speed is 2 there is a -1.f offset because of the outline
+//    CHECK(centipede.GetCentipedeHeadPosition().top==19.f);
+//    // centipede.Move();
+//    //CHECK(centipede.GetCentipedeHeadPosition().left==-3.f);
+//
+//}
+//TEST_CASE("Centipede switches direction after reaching bottom of play area")
+//{
+//    Centipede centipede(1,2.f,200.f);
+//    for(int i=0; i<30; i++)
+//    {
+//        centipede.moveHead();
+//       centipede.Move();
+//
+//    }
+//        CHECK(centipede.getCentipede().at(0).verticalSpeed()<0);
+//
+//
+//}
+//TEST_CASE("Centipede train follows direction after reaching bottom of play area")
+//{
+//    Centipede centipede(2,2.f,400.f);
+//    for(int i=0; i<35; i++)
+//    {
+//        centipede.moveHead();
+//        //centipede.checkCentipedeBounds();
+//        centipede.Move();
+//
+//    }
+//        CHECK(centipede.getCentipede().at(1).getVerticalSpeed()<0);
+//
+//
+//}
+//TEST_CASE("Centipede remains in play area after the bottom of the bottom of the playable area")
+//{
+//    Centipede centipede(1,2.f,400.f);
+//    for(int i=0; i<80; i++)
+//    {
+//        centipede.moveHead();
+//        centipede.checkCentipedeBounds();
+//        if(i>30){
+//        CHECK(centipede.GetCentipedeHeadPosition().top<600.f);
+//        CHECK(centipede.GetCentipedeHeadPosition().top>450.f);
+//        }
+//    }
+//
+//}
 //Mushroom no movement
 TEST_CASE("Tests that input arguments create the mushroom at that point")
 {
@@ -312,16 +303,19 @@ TEST_CASE("Tests that input arguments create the mushroom at that point")
    CHECK(mush.GetMushroomPosition().left==50.f);
     CHECK(mush.GetMushroomPosition().top==50.f);
 }
-
+//Bomb no movement
+TEST_CASE("Tests that input arguments create the Bomb at that point")
+{
+   Bomb bomb(50,50);
+   CHECK(bomb.GetBombPosition().left==50.f);
+    CHECK(bomb.GetBombPosition().top==50.f);
+}
 //Collision Class Tests
 
 
 TEST_CASE("Player and Centipede collision")
 {
     std::shared_ptr<BugBlaster> BugB=std::make_shared<BugBlaster>(0.f,0.f);
-    //std::vector <std::shared_ptr<Laser>> laser;
-    // std::vector<std::shared_ptr<Mushroom>> Mush;
-    //std::vector<std::shared_ptr<Flea>> flea;
     std::vector<std::shared_ptr<Centipede>> centipedes;
     centipedes.push_back(std::make_shared<Centipede>(1,2.f, 0));
 
@@ -334,7 +328,7 @@ TEST_CASE("Player and Centipede collision")
 
 TEST_CASE("Player and Centipede did not collide")
 {
-    std::shared_ptr<BugBlaster> BugB=std::make_shared<BugBlaster>(0.f,0.f);
+    std::shared_ptr<BugBlaster> BugB=std::make_shared<BugBlaster>(50.f,50.f);
 
     std::vector<std::shared_ptr<Centipede>> centipedes;
     centipedes.push_back(std::make_shared<Centipede>(1,2.f, 80));
@@ -362,21 +356,20 @@ TEST_CASE("Player and Flea collide")
 }
 TEST_CASE("Centipede and Mushroom collide")
 {
-
+    std::shared_ptr<sf::RenderWindow> window;
     std::vector<std::shared_ptr<Mushroom>> Mush;
-    auto x=79.f;
+    auto x=50.f;
     auto y=0.f;
     Mush.push_back(std::make_shared<Mushroom>(x,y));
 
     std::vector<std::shared_ptr<Centipede>> centipedes;
-    centipedes.push_back(std::make_shared<Centipede>(1,2.f, 78));
-
+    centipedes.push_back(std::make_shared<Centipede>(1,2.f, 31.f));
+    centipedes.at(0)->update(window);
     CollisionControl collision;
-
     collision.CentipedeCollisionMushroom(centipedes,Mush);
-    centipedes.at(0)->Move();
-    CHECK(centipedes.at(0)->GetCentipedeHeadPosition().top+1==20.f);
-//
+    centipedes.at(0)->update(window);
+    CHECK(centipedes.at(0)->getMoves().at(0)==Movement::Left);
+
 }
 
 TEST_CASE("Laser collision with top of playable area")
@@ -481,6 +474,127 @@ TEST_CASE("Flea collision with bottom of playable area")
     collision.CollisionFleaEdge(flea);
     CHECK(flea.empty());
 
+
+}
+TEST_CASE("Laser collision Bomb destroys Bomb")
+{
+    std::shared_ptr<BugBlaster> BugB=std::make_shared<BugBlaster>(50.f,1.f);
+    std::vector <std::shared_ptr<Laser>> laser;
+
+    std::vector <std::shared_ptr<Flea>> flea;
+    flea.push_back(std::make_shared<Flea>());
+
+    std::vector<std::shared_ptr<Centipede>> centipedes;
+    centipedes.push_back(std::make_shared<Centipede>(1,2.f,60.f));
+
+    std::vector<std::shared_ptr<Mushroom>> Mush;
+    Mush.push_back(std::make_shared<Mushroom>(40.f,0.f));
+
+    std::vector<std::shared_ptr<Bomb>> bomb;
+    bomb.push_back(std::make_shared<Bomb>(50.f, 0.f));
+
+    laser.push_back(std::make_shared<Laser>(BugB->GetBugPosition()));
+    CollisionControl collision;
+    collision.CollisionLaserBomb(laser,Mush,flea,centipedes,bomb);
+    CHECK(bomb.empty());
+
+}
+TEST_CASE("Laser collision Bomb destroys Laser")
+{
+    std::shared_ptr<BugBlaster> BugB=std::make_shared<BugBlaster>(50.f,1.f);
+    std::vector <std::shared_ptr<Laser>> laser;
+
+    std::vector <std::shared_ptr<Flea>> flea;
+    flea.push_back(std::make_shared<Flea>());
+
+    std::vector<std::shared_ptr<Centipede>> centipedes;
+    centipedes.push_back(std::make_shared<Centipede>(1,2.f,60.f));
+
+    std::vector<std::shared_ptr<Mushroom>> Mush;
+    Mush.push_back(std::make_shared<Mushroom>(40.f,0.f));
+
+    std::vector<std::shared_ptr<Bomb>> bomb;
+    bomb.push_back(std::make_shared<Bomb>(50.f, 0.f));
+
+    laser.push_back(std::make_shared<Laser>(BugB->GetBugPosition()));
+    CollisionControl collision;
+    collision.CollisionLaserBomb(laser,Mush,flea,centipedes,bomb);
+    CHECK(laser.empty());
+
+}
+TEST_CASE("Bomb destroys Centipedes around it")
+{
+
+    std::vector<std::shared_ptr<Centipede>> centipedes;
+    centipedes.push_back(std::make_shared<Centipede>(1,2.f,108.f));
+
+    std::vector<std::shared_ptr<Bomb>> bomb;
+    bomb.push_back(std::make_shared<Bomb>(50.f, 0.f));
+
+    CollisionControl collision;
+    collision.BombCentipede(bomb,centipedes,0);
+     CHECK(centipedes.at(0)->isEmpty());
+
+}
+TEST_CASE("Bomb destroys Mushrooms around it")
+{
+
+    std::vector<std::shared_ptr<Bomb>> bomb;
+    bomb.push_back(std::make_shared<Bomb>(100.f, 100.f));
+
+    std::vector<std::shared_ptr<Mushroom>> Mush;
+    Mush.push_back(std::make_shared<Mushroom>(50.f,100.f));
+    Mush.push_back(std::make_shared<Mushroom>(150.f,100.f));
+    Mush.push_back(std::make_shared<Mushroom>(100.f,50.f));
+    Mush.push_back(std::make_shared<Mushroom>(100.f,150.f));
+
+    CollisionControl collision;
+    collision.BombMushroom(bomb,Mush,0);
+     CHECK(Mush.empty());
+                //BombFlea(bomb,flea,k);
+
+}
+TEST_CASE("Bomb destroys Fleas around it")
+{
+    std::vector<std::shared_ptr<Bomb>> bomb;
+    bomb.push_back(std::make_shared<Bomb>(100.f, 100.f));
+
+    std::vector <std::shared_ptr<Flea>> flea;
+    flea.push_back(std::make_shared<Flea>());
+    flea.push_back(std::make_shared<Flea>());
+    flea.at(0)->setFleaPosition(50.f,100.f);
+    flea.at(1)->setFleaPosition(100.f,150.f);
+
+    CollisionControl collision;
+    collision.BombFlea(bomb,flea,0);
+     CHECK(flea.empty());
+
+}
+
+TEST_CASE("Laser collision Bomb destroys all objects around bomb")
+{
+    std::shared_ptr<BugBlaster> BugB=std::make_shared<BugBlaster>(50.f,1.f);
+    std::vector <std::shared_ptr<Laser>> laser;
+
+    std::vector <std::shared_ptr<Flea>> flea;
+    flea.push_back(std::make_shared<Flea>());
+    flea.at(0)->setFleaPosition(40.f,0.f);
+
+    std::vector<std::shared_ptr<Centipede>> centipedes;
+    centipedes.push_back(std::make_shared<Centipede>(1,2.f,70.f));
+
+    std::vector<std::shared_ptr<Mushroom>> Mush;
+    Mush.push_back(std::make_shared<Mushroom>(40.f,0.f));
+
+    std::vector<std::shared_ptr<Bomb>> bomb;
+    bomb.push_back(std::make_shared<Bomb>(50.f, 0.f));
+
+    laser.push_back(std::make_shared<Laser>(BugB->GetBugPosition()));
+    CollisionControl collision;
+    collision.CollisionLaserBomb(laser,Mush,flea,centipedes,bomb);
+    CHECK(flea.empty());
+    CHECK(Mush.empty());
+    CHECK(centipedes.at(0)->isEmpty());
 
 }
 

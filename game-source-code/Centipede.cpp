@@ -41,7 +41,7 @@ Centipede::Centipede(std::vector<Segment> seg, std::vector<Movement> m){
     }
 Centipede::Centipede(int l, float d, float p ):length(l),direction(d) {
     segments.clear();
-    float pos;
+    float pos=p;
     hitMushroom=false;
     for(auto i=0; i<length;i++){
             //pos=p+(-18)*i;

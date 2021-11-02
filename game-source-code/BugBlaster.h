@@ -8,7 +8,7 @@
  */
 
 
-enum class Movement{Up=1,Down, Right, Left};
+enum class Movement{Up,Down, Right, Left,NoMove};
 
 /** \class BugBlaster
     \brief Creates a Green square what can be controled by the arrow keys on the keyboard.
