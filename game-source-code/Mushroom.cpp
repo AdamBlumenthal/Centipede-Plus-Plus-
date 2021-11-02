@@ -25,7 +25,7 @@ Mushroom::Mushroom()
 }
 
 
-void Mushroom::render(sf::RenderTarget* target)
+void Mushroom::render(std::shared_ptr<sf::RenderWindow> target)
 {
     target->draw(mush);
 }

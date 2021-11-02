@@ -2,12 +2,15 @@
 #define BUGBLASTER_H
 
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 /** \file BugBlaster.h
     \brief Contains code for constructing the BugBlaster class and the Movement enum
  */
 
-enum class Movement{NoMove,Up,Down, Right, Left};
+//Creates a directional movement enum
+enum class Movement{Up=1,Down, Right, Left};
+
 
 /** \class BugBlaster
     \brief Creates a Green square what can be controlled by the arrow keys on the keyboard.
@@ -37,18 +40,18 @@ public:
     /** \brief Updates the player position from the movement and collisions
         \param target The render window which is passed on for collision calculations
     */
-    void update(sf::RenderTarget* target);
+    void update(std::shared_ptr<sf::RenderWindow> target);
     /** \brief Renders the BugBlaster in the window
         \param target The window in which the bug will rendered
 
     */
-    void render(sf::RenderTarget* target);
+    void render(std::shared_ptr<sf::RenderWindow> target);
 /** \brief Stops the player from moving outside the player bounds
         \param target The window in which the bug has been bounded
 
     */
 
-    void WindowCollision(sf::RenderTarget* target);
+    void WindowCollision(std::shared_ptr<sf::RenderWindow> target);
     /** \brief Sets a new position for the BugBlaster object
         \param x The new x-axis position
         \param y The new y-axis position
@@ -70,7 +73,7 @@ private:
     void createVarible();
     void createBug();
 
-    //Varibles
+    //Variables
     float MoveSpeed;
 
 

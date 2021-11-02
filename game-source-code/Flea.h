@@ -30,7 +30,7 @@ class Flea
         \param target The window in which the Flea will render
 
     */
-        void render(sf::RenderTarget* target);
+        void render(std::shared_ptr<sf::RenderWindow> target);
     /** \brief Moves the Flea down by the set movement speed
     */
         void FleaMove();
@@ -38,7 +38,7 @@ class Flea
         \param target The window in which the game occurs
         \return A bool that is true if the Flea is below the player area,false if the Flea is outside the area
     */
-        bool CollisionBottomWindow(sf::RenderTarget* target);
+        bool CollisionBottomWindow(std::shared_ptr<sf::RenderWindow> target);
         /** \brief Randomly spawns mushrooms at the Flea position
         \param Mush the vector of mushrooms that has to be added too
     */

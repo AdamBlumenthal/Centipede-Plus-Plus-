@@ -12,7 +12,7 @@
 #include "Bomb.h"
 #include <memory>
 
-/** \file Mushroom.h
+/** \file GameEngine.h
     \brief Contains code for constructing the Game class
  */
 
@@ -79,7 +79,7 @@ public:
 
 private:
 
-    sf::RenderWindow* window;
+    std::shared_ptr<sf::RenderWindow> window;
     sf::Event event;
     sf::VideoMode videomode;
     static int numberOfCentipedes;

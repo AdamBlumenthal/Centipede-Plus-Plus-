@@ -23,7 +23,7 @@ void Flea::update()
     FleaMove();
 }
 
-void Flea::render(sf::RenderTarget* target)
+void Flea::render(std::shared_ptr<sf::RenderWindow> target)
 {
     target->draw(flea);
 }
@@ -58,7 +58,7 @@ void Flea::FleaMove()
     flea.move(0.f,MoveSpeed);//Downwards
 }
 
-bool Flea::CollisionBottomWindow(sf::RenderTarget* target)
+bool Flea::CollisionBottomWindow(std::shared_ptr<sf::RenderWindow> target)
 {
      if(flea.getGlobalBounds().top>=target->getSize().y)
     {
