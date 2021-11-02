@@ -1,4 +1,6 @@
-#include <SFML/Audio.hpp>
+/** \file CentipedeMain.cpp
+    \brief Contains the main function
+ */
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <cstdlib>
@@ -7,7 +9,12 @@
 #include "GameEngine.h"
 #include <time.h>
 
-
+/** \fn int main()
+ *  \brief This function contains the game loop of updates and drawing to the window
+ *
+ *  \return The application exit code: 0 for successful completion; a negative number to indicate an error
+ *
+ */
 
 int main()
 {

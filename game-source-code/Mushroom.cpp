@@ -1,6 +1,5 @@
 #include "Mushroom.h"
 
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
 //Will set a known startpoint
@@ -88,7 +87,7 @@ sf::Sprite Mushroom::getMushroom()
             return false;
 }
 //Does mushroom intersect with the PLayer
-bool Mushroom::MushroomInPlayerStart(std::shared_ptr<BugBlaster> Bug)
+bool Mushroom::MushroomInPlayerStart(std::shared_ptr<BugBlaster>& Bug)
 {
     if(mush.getGlobalBounds().intersects(Bug->GetBugPosition()))
         return true;

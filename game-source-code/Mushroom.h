@@ -1,7 +1,6 @@
 #ifndef MUSHROOM_H
 #define MUSHROOM_H
 
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "BugBlaster.h"
 #include <memory>
@@ -36,15 +35,15 @@ class Mushroom
     */
     void render(sf::RenderTarget* target);
     /** \brief Checks if the mushroom position is within the Player area
-        \return bool which is true if Mushroom is within the player area
+        \return bool true if Mushroom is within the player area,false is outside Player area
 
     */
     bool inPlayerArea();
     /** \brief Checks if the mushroom position is intersectiong with the player position
         \param Bug The BugBlaster object controled by the player
-        \return bool which is true if the Mushroom intersects wiht the player
+        \return bool true if the Mushroom intersects with the player,false if there is no intersection
     */
-    bool MushroomInPlayerStart(std::shared_ptr<BugBlaster> Bug);
+    bool MushroomInPlayerStart(std::shared_ptr<BugBlaster>& Bug);
 /** \brief Fetches the Mushroom object position from the class
         \return Gets the Mushroom position stored as an sf::FloatRect
     */

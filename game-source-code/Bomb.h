@@ -1,7 +1,6 @@
 #ifndef BOMB_H
 #define BOMB_H
 
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
 

@@ -1,6 +1,5 @@
 #ifndef GAMEENGINE_H_INCLUDED
 #define GAMEENGINE_H_INCLUDED
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "BugBlaster.h"
 #include "Laser.h"
@@ -38,6 +37,9 @@ public:
     virtual ~Game();
 
     //Checks
+    /** \brief Checks if game is still running
+        \return bool true if game is running,false if game has terminated
+    */
     const bool IsRunning() const;
 
     //Functions

@@ -1,6 +1,5 @@
 #ifndef FLEA_H
 #define FLEA_H
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "Mushroom.h"
@@ -37,7 +36,7 @@ class Flea
         void FleaMove();
     /** \brief Checks if the Flea has moved below the window player area bottom
         \param target The window in which the game occurs
-        \return A bool that is true if the Flea is below the player area
+        \return A bool that is true if the Flea is below the player area,false if the Flea is outside the area
     */
         bool CollisionBottomWindow(sf::RenderTarget* target);
         /** \brief Randomly spawns mushrooms at the Flea position

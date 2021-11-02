@@ -1,4 +1,3 @@
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "BugBlaster.h"
 

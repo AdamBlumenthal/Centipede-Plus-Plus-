@@ -1,17 +1,16 @@
 #ifndef BUGBLASTER_H
 #define BUGBLASTER_H
-#include <SFML/Audio.hpp>
+
 #include <SFML/Graphics.hpp>
 
 /** \file BugBlaster.h
-    \brief Contains code for constructing the BugBlaster class and the movement enum
+    \brief Contains code for constructing the BugBlaster class and the Movement enum
  */
-
 
 enum class Movement{NoMove,Up,Down, Right, Left};
 
 /** \class BugBlaster
-    \brief Creates a Green square what can be controled by the arrow keys on the keyboard.
+    \brief Creates a Green square what can be controlled by the arrow keys on the keyboard.
     The movement is limited to a rectangle at the bottom of the screen.
  */
 
@@ -32,7 +31,7 @@ public:
 
     Movement BugBlasterGetInputs();
     /** \brief Changes the player position based on the movent speed and given direction
-        \param movement player movemnet direction as type class enum Movement
+        \param movement player movement direction as type class enum Movement
     */
     void KeyInputResults(Movement movement);
     /** \brief Updates the player position from the movement and collisions

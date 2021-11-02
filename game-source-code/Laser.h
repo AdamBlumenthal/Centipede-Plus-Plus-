@@ -1,6 +1,5 @@
 #ifndef LASER_H
 #define LASER_H
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "BugBlaster.h"
