@@ -62,7 +62,6 @@ void Game::createVarible()
     LaserDelay=MinLaserDelay;
 
     //Centipede controls
-    MaxLengthCentipede=12;
 
     //Game controls
     Lives=3;
@@ -71,7 +70,6 @@ void Game::createVarible()
     gameOver=true;
     centMush=false;
     pause=false;
-    currentSegments=MaxLengthCentipede;
 
 
     //Mushroom controls
@@ -139,18 +137,11 @@ void Game::update()
     if(!gameOver){
     if(!pause){
 
-     if(currentSegments==0)
-    {
-        MaxLengthCentipede--;
-        currentSegments=MaxLengthCentipede;
-        lvlBegin=true;
-    }
-    if(MaxLengthCentipede==0)gameOver=true;
 
     if(lvlBegin)
     {
 
-
+        centipedes.clear();
         centipedes.push_back(std::make_shared<Centipede>(12,2.f, 0.f));
 
         lvlBegin=false;
@@ -168,7 +159,7 @@ void Game::update()
 
     centipedes.erase(remove_if(centipedes.begin(),centipedes.end(),[](std::shared_ptr<Centipede> cent)->bool{return cent->isEmpty();}),centipedes.end());
        // SelfCollision();
-        for(int i=0;i<centipedes.size();i++){
+    for(int i=0;i<centipedes.size();i++){
             centipedes.at(i)->update(this->window);
 
         }
@@ -180,23 +171,19 @@ void Game::update()
     }
 
 
-    if (laser.size()>=1)
-    {
+
         for(int i=0; i<laser.size(); i++)
         {
            laser.at(i)->update(this->window);
         }
 
-    }
-    if (flea.size()>=1)
-    {
+
         for(int i=0; i<flea.size(); i++)
         {
             this->flea.at(i)->update(this->window);
             flea.at(i)->SpawnMushroomWithFlea(Mush);
         }
 
-    }
 
     Collision=CollisionControl(BugB,laser,Mush,flea,centipedes,bomb);
 
@@ -239,7 +226,7 @@ void Game::render()
         Mush.clear();
         centipedes.clear();
         flea.clear();
-
+        laser.clear();
       if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
         {
 
@@ -303,7 +290,7 @@ void Game::render()
 //Creates the laser beams
 void Game::ShootLaser()
 {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&laser.size()<=MaxLaserCount&&LaserDelay>=MinLaserDelay)
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)&&laser.size()<MaxLaserCount&&LaserDelay>MinLaserDelay)
     {
         sf::FloatRect BugPos=BugB->GetBugPosition();
         laser.push_back(std::make_shared<Laser>(BugPos));
@@ -317,7 +304,7 @@ void Game::SpawnFlea()
 {
     int PlayerAreaMush=0;
     int randomchance=rand()%100;
-        std::cout<<randomchance<<std::endl;
+      //  std::cout<<randomchance<<std::endl;
     for(int k=0; k<Mush.size(); k++)
     {
         if(Mush.at(k)->inPlayerArea())
@@ -335,20 +322,24 @@ void Game::SpawnFlea()
 
 void Game::SpawnBomb()
 {
+
     int randomnum=rand()%100;
     float randomy = 20+(rand() % 21)*20;
-    float randomx = (rand() % 780);
+    float randomx =20+ (rand() % 38)*20;
 
     if(randomnum<2&&MinBombTimeDelay<BombTimeDelay&&bomb.size()<4)
     {
     bomb.push_back(std::make_shared<Bomb>(randomx,randomy));
     BombTimeDelay=0;
 
-    for(int j=0; j<Mush.size()-1; j++)//Makes sure random mushrooms dont intersect with bombs
+    for(int j=0; j<Mush.size(); j++)//Makes sure random mushrooms dont intersect with bombs
         {
             if(Mush.at(j)->GetMushroomPosition().intersects(bomb.at(bomb.size()-1)->GetBombPosition()))
             {
                 bomb.pop_back();
+
+                BombTimeDelay=MinBombTimeDelay;
+                break;
             }
         }
     }

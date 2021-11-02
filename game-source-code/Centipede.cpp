@@ -65,8 +65,8 @@ void Centipede::checkCentipedeBounds(){
 
    // }
 
-     if((segments.at(0).GetSegmentPosition().left-1==0&&moves.at(0)!=MoveCentipede::Right)
-            ||segments.at(0).GetSegmentPosition().left +segments.at(0).GetSegmentPosition().width-1 == gameWidth)
+     if((segments.at(0).GetSegmentPosition().left-1<=0&&moves.at(0)!=MoveCentipede::Right)
+            ||segments.at(0).GetSegmentPosition().left +segments.at(0).GetSegmentPosition().width-1 >= gameWidth)
     {
     leftOrRight=!leftOrRight;
     upOrDown ? moves.at(0)=MoveCentipede::Down : moves.at(0)=MoveCentipede::Up;

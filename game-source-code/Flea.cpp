@@ -90,7 +90,7 @@ return false;
         Mush.push_back(std::make_shared<Mushroom>(flea.getGlobalBounds().left, flea.getGlobalBounds().top));
 
 
-     for(int j=0; j<Length-1; j++)//Makes sure dropped mushrooms dont intersect
+     for(int j=0; j<Length; j++)//Makes sure dropped mushrooms dont intersect
         {
             if(Mush.at(Length)->GetMushroomPosition().intersects(Mush.at(j)->GetMushroomPosition()))
             {
