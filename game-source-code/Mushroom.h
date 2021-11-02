@@ -34,7 +34,7 @@ class Mushroom
         \param window The window in which the mushroom will rendered
 
     */
-    void render(sf::RenderTarget* target);
+    void render(std::shared_ptr<sf::RenderWindow> target);
     /** \brief Checks if the mushroom position is within the Player area
         \return bool which is true if Mushroom is within the player area
 

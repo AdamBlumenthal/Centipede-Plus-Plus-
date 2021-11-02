@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "BugBlaster.h"
+#include <memory>
 
 /** \file Laser.h
     \brief Contains code for constructing the Laser class
@@ -35,7 +36,7 @@ public:
         \param target The window in which the Laser will be drawn
 
     */
-    void render(sf::RenderTarget* target);
+    void render(std::shared_ptr<sf::RenderWindow> target);
     /** \brief Sets a new position for the laser based on the player position
        \param BugBounds The current position of the BugBlaster.
        So the Laser can spawn at the Player

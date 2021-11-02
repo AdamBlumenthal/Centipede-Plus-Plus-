@@ -48,7 +48,7 @@ void Game::createWindow()
 {
     videomode.height=700;
     videomode.width=800;
-    window=new sf::RenderWindow(videomode, "SFML Centipede", sf::Style::Titlebar | sf::Style::Close);
+    window=std::make_shared<sf::RenderWindow>(videomode, "SFML Centipede", sf::Style::Titlebar | sf::Style::Close);
     window->setFramerateLimit(60);
 };
 //Gives values to private variables.
@@ -68,7 +68,6 @@ void Game::createVarible()
     lvlBegin=false;
     start=true;
     gameOver=true;
-    centMush=false;
     pause=false;
 
 
@@ -160,7 +159,7 @@ void Game::update()
     centipedes.erase(remove_if(centipedes.begin(),centipedes.end(),[](std::shared_ptr<Centipede> cent)->bool{return cent->isEmpty();}),centipedes.end());
        // SelfCollision();
     for(int i=0;i<centipedes.size();i++){
-            centipedes.at(i)->update(this->window);
+            centipedes.at(i)->update(window);
 
         }
 

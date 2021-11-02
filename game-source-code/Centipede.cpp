@@ -10,7 +10,7 @@
 Centipede::Centipede(){
 segments.clear();
 }
-Centipede::Centipede(std::vector<Segment> seg, std::vector<MoveCentipede> m){
+Centipede::Centipede(std::vector<Segment> seg, std::vector<Movement> m){
     segments.clear();
     segments=seg;
     moves=m;
@@ -18,20 +18,20 @@ Centipede::Centipede(std::vector<Segment> seg, std::vector<MoveCentipede> m){
     upOrDown=true;
     leftOrRight=true;
     for(int i=0;i<moves.size();i++){
-        if(moves.at(i)==MoveCentipede::Down){
+        if(moves.at(i)==Movement::Down){
             upOrDown=true;
              break;
         }
-         if(moves.at(i)==MoveCentipede::Up){
+         if(moves.at(i)==Movement::Up){
             upOrDown=false;
             break;
         }
     }for(int i=0;i<moves.size();i++){
-        if(moves.at(i)==MoveCentipede::Right){
+        if(moves.at(i)==Movement::Right){
             leftOrRight=true;
              break;
         }
-         if(moves.at(i)==MoveCentipede::Left){
+         if(moves.at(i)==Movement::Left){
             leftOrRight=false;
             break;
         }
@@ -50,9 +50,9 @@ Centipede::Centipede(int l, float d, float p ):length(l),direction(d) {
     segments.at(0).makeHead();
     leftOrRight=true;
     upOrDown=true;
-std::vector<MoveCentipede> temp(length*9-8,MoveCentipede::NoMove);
+std::vector<Movement> temp(length*9-8);
 moves=temp;
-moves.insert(moves.begin(),MoveCentipede::Right);
+moves.insert(moves.begin(),Movement::Right);
 }
 //Moves Centipede and checks screen bounds with relation to head
 void Centipede::checkCentipedeBounds(){
@@ -65,11 +65,11 @@ void Centipede::checkCentipedeBounds(){
 
    // }
 
-     if((segments.at(0).GetSegmentPosition().left-1<=0&&moves.at(0)!=MoveCentipede::Right)
+     if((segments.at(0).GetSegmentPosition().left-1<=0&&moves.at(0)!=Movement::Right)
             ||segments.at(0).GetSegmentPosition().left +segments.at(0).GetSegmentPosition().width-1 >= gameWidth)
     {
     leftOrRight=!leftOrRight;
-    upOrDown ? moves.at(0)=MoveCentipede::Down : moves.at(0)=MoveCentipede::Up;
+    upOrDown ? moves.at(0)=Movement::Down : moves.at(0)=Movement::Up;
 
 
 
@@ -81,7 +81,7 @@ void Centipede::checkCentipedeBounds(){
            upOrDown=!upOrDown;
 
 
-           upOrDown ? moves.at(0)=MoveCentipede::Down : moves.at(0)=MoveCentipede::Up;
+           upOrDown ? moves.at(0)=Movement::Down : moves.at(0)=Movement::Up;
             leftOrRight=!leftOrRight;
             }
 
@@ -89,14 +89,14 @@ void Centipede::checkCentipedeBounds(){
 }
 
 void Centipede::Move(){
-if(!(moves.at(1)==MoveCentipede::Down||moves.at(1)==MoveCentipede::Up)){
+if(!(moves.at(1)==Movement::Down||moves.at(1)==Movement::Up)){
 checkCentipedeBounds();
 
 }
 for(int i=0;i<segments.size();i++){
     segments.at(i).moveDirections(moves.at(i*9));
 }
-leftOrRight ? moves.insert(moves.begin(),MoveCentipede::Right) : moves.insert(moves.begin(),MoveCentipede::Left);
+leftOrRight ? moves.insert(moves.begin(),Movement::Right) : moves.insert(moves.begin(),Movement::Left);
 
 moves.pop_back();
 
@@ -108,14 +108,14 @@ moves.pop_back();
 
 
 
-void Centipede::update(sf::RenderTarget* target)
+void Centipede::update(std::shared_ptr<sf::RenderWindow> target)
 {
 
-   this->Move();
+   Move();
    //setHitMushroom();
 }
 //Rednders segment
-void Centipede::render(sf::RenderTarget* target)
+void Centipede::render(std::shared_ptr<sf::RenderWindow> target)
 {
     for(int i=0;i<segments.size();i++)
     segments.at(i).render(target);
@@ -127,9 +127,9 @@ std::vector<Segment> Centipede::getNewCentipede(int pos){
 
     return centi;
 }
-std::vector<MoveCentipede> Centipede::getMovesNew(int pos){
+std::vector<Movement> Centipede::getMovesNew(int pos){
 
-    std::vector<MoveCentipede> m(moves.begin()+(pos+1)*9,moves.end());
+    std::vector<Movement> m(moves.begin()+(pos+1)*9,moves.end());
 
 
     return m;
@@ -140,7 +140,7 @@ sf::FloatRect Centipede::GetCentipedeHeadPosition()
     return CentipedeHeadBounds;
 }
 void Centipede::setHitMushroom(){
-   upOrDown ? moves.at(0)=MoveCentipede::Down : moves.at(0)=MoveCentipede::Up;
+   upOrDown ? moves.at(0)=Movement::Down : moves.at(0)=Movement::Up;
     leftOrRight=!leftOrRight;
 
 }

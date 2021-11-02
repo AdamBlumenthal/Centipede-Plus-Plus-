@@ -31,28 +31,19 @@ void BugBlaster::createBug()
 void BugBlaster::KeyInputResults(Movement movement)
 {
     //Key movements
+       switch(movement){
+    case Movement::Up:  bug.move(0.f,-MoveSpeed); break;
+    case Movement::Down:  bug.move(0.f,MoveSpeed); break;
+    case Movement::Left: bug.move(-MoveSpeed,0.f); break;
+    case Movement::Right: bug.move(MoveSpeed,0.f); break;
+    default:         bug.move(0,0);
+    }
 
-    if(movement==Movement::Up)
-    {
-        bug.move(0.f,-MoveSpeed);//Up
-    }
-    else if(movement==Movement::Down)
-    {
-        bug.move(0.f,MoveSpeed);//Down
-    }
-    if(movement==Movement::Left)
-    {
-        bug.move(-MoveSpeed,0.f);//Left
-    }
-    else if(movement==Movement::Right)
-    {
-        bug.move(MoveSpeed,0.f);//Right
-    }
 
 
 }
 //Checks if the bug collision with its defined bounds. Edge of screen and maximum height give by the developers
-void BugBlaster::WindowCollision(sf::RenderTarget* target)
+void BugBlaster::WindowCollision(std::shared_ptr<sf::RenderWindow> target)
 {
 //Creates lower box for BugBlaster
     if(bug.getGlobalBounds().left<=0.f)
@@ -83,7 +74,7 @@ sf::FloatRect BugBlaster::GetBugPosition()
 }
 
 //Updates bug based on user input
-void BugBlaster::update(sf::RenderTarget* target)
+void BugBlaster::update(std::shared_ptr<sf::RenderWindow> target)
 {
 
     //Key movements
@@ -94,7 +85,7 @@ void BugBlaster::update(sf::RenderTarget* target)
     //collision
     WindowCollision(target);
 }
-void BugBlaster::render(sf::RenderTarget* target)
+void BugBlaster::render(std::shared_ptr<sf::RenderWindow> target)
 {
     //Renders to window
     target->draw(bug);

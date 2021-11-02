@@ -4,6 +4,7 @@
 #include "CentipedeSegment.h"
 #include <SFML/Graphics.hpp>
 #include <string>
+#include <memory>
 
 
 /** \file Centipede.h
@@ -22,7 +23,7 @@ public:
             \param A vector of segments is received as it is reusing the objects
             \param A vector of MoveCentipede is received as it is reusing old movement
         */
-        Centipede(std::vector<Segment> segments, std::vector<MoveCentipede> m);
+        Centipede(std::vector<Segment> segments, std::vector<Movement> m);
         /** \brief The Parameterised constructor  for the Centipede class which is used to create a new centipede
             \param An integer specifying the length of the centipede
             \param A float giving the direction of the centipede
@@ -52,12 +53,12 @@ public:
          /** \brief The vector of movement is returned
             \return Returns the vector of the movements for the centipede
         */
-        std::vector<MoveCentipede> getMoves(){return moves;};
+        std::vector<Movement> getMoves(){return moves;};
           /** \brief Gives the movement for the new centipede from preceding centipede
             \param Receives the position where new movements are from
             \return Returns the vector of the movements for the new centipede
         */
-        std::vector<MoveCentipede> getMovesNew(int pos);
+        std::vector<Movement> getMovesNew(int pos);
         /** \brief Returns a vector of segments for the centipede
             \return Returns a vector of segments for the centipede
         */
@@ -71,11 +72,11 @@ public:
          /** \brief Updates the centipede's segments positions
         \param target The render window which is passed to it for calculations
         */
-        void update(sf::RenderTarget* target);
+        void update(std::shared_ptr<sf::RenderWindow> target);
             /** \brief Renders the Centipede's segments in the window
             \param  The window in which the centipede will rendered
                 */
-        void render(sf::RenderTarget* target);
+        void render(std::shared_ptr<sf::RenderWindow> target);
         /** \brief Erases the segments from the centipede that are destroyed and/or moved to new centipede
             \param Receives the position of where to erase segments from
         */
@@ -91,7 +92,7 @@ public:
 
 private:
     std::vector<Segment> segments;
-    std::vector<MoveCentipede> moves;
+    std::vector<Movement> moves;
     int length;
     float direction;
 

@@ -14,25 +14,16 @@ Segment::Segment(float& pos, float& mSpeed):position(pos),movespeed(mSpeed)
 
 }
 //Movement with in bounds for the segments
-void Segment::moveDirections(MoveCentipede dir)
+void Segment::moveDirections(Movement dir)
 {
-    if(dir==MoveCentipede::Up){
-            segment.move(0,(-1)*verticalSpeed);
+    switch(dir){
+    case Movement::Up:  segment.move(0,(-1)*verticalSpeed); break;
+    case Movement::Down: segment.move(0,verticalSpeed); break;
+    case Movement::Left: segment.move((-1)*movespeed,0); break;
+    case Movement::Right: segment.move(movespeed,0); break;
+    default:         segment.move(0,0);
+    }
 
-    }
-    else if(dir==MoveCentipede::Down){
-            segment.move(0,verticalSpeed);
-
-    }
-    else if(dir==MoveCentipede::Left){
-            segment.move((-1)*movespeed,0);
-    }
-    else if(dir==MoveCentipede::Right){
-            segment.move(movespeed,0);
-    }
-    else if(dir==MoveCentipede::NoMove){
-        segment.move(0,0);
-    }
 
 
 }
@@ -58,7 +49,7 @@ sf::RectangleShape Segment::getSegment()
 }
 
 //Renders segment
-void Segment::render(sf::RenderTarget* target)
+void Segment::render(std::shared_ptr<sf::RenderWindow> target)
 {
     target->draw(segment);
 }

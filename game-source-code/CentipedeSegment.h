@@ -1,10 +1,11 @@
 #ifndef CENTIPEDESEGMENT_H_INCLUDED
 #define CENTIPEDESEGMENT_H_INCLUDED
 #include <SFML/Graphics.hpp>
+#include "BugBlaster.h"
 /** \file CentipedeSegment.h
     \brief Contains code for constructing a segment of a centipede. This gives it's basic characteristics
  */
-enum class MoveCentipede{NoMove,Up,Down, Right, Left};
+//enum class MoveCentipede{NoMove,Up,Down, Right, Left};
 /** \class Segment
     \brief A rectangular shape is created that will act as a segment of a centipede. It sets up the ability for a segment to move
  */
@@ -25,7 +26,7 @@ public:
     /** \brief Moves the segment in one of the directions allowed
         \param dir is the enum of the direction for a segment to move
     */
-    void moveDirections(MoveCentipede dir);
+    void moveDirections(Movement dir);
 
 
     /** \brief Returns the a rectangle shape
@@ -37,7 +38,7 @@ public:
         \param target The window in which the bug will rendered
 
     */
-    void render(sf::RenderTarget* target);
+    void render(std::shared_ptr<sf::RenderWindow> target);
 
         /** \brief Changes the colour of a segment to red which is the colour of a head segment
     */

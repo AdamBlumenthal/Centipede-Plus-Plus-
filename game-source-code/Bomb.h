@@ -4,6 +4,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <memory>
 
 /** \file Bomb.h
     \brief Contains code for constructing the Bomb class
@@ -24,10 +25,10 @@ class Bomb
         Bomb(float x,float y);
 
          /** \brief Renders the Bomb in the window
-        \param window The window in which the bomb will rendered
+        \param target The window in which the bomb will rendered
 
     */
-        void render(sf::RenderTarget* window);
+        void render(std::shared_ptr<sf::RenderWindow> target);
 
         /** \brief Fetches the Bomb object position from the class
         \return Gets the bomb position stored as an sf::FloatRect

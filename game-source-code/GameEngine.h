@@ -77,7 +77,7 @@ public:
 
 private:
 
-    sf::RenderWindow* window;
+    std::shared_ptr<sf::RenderWindow> window;
     sf::Event event;
     sf::VideoMode videomode;
     static int numberOfCentipedes;

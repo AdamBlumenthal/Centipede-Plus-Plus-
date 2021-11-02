@@ -59,7 +59,7 @@ void Laser::update()
 
 }
 //renders laser
-void Laser::render(sf::RenderTarget* target)
+void Laser::render(std::shared_ptr<sf::RenderWindow> target)
 {
     target->draw(laser);
 }
