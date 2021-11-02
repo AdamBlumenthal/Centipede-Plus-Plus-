@@ -7,17 +7,12 @@
 //Constructor
 Laser::Laser(sf::FloatRect BugBounds)
 {
-    this->laser.setPosition(BugBounds.left+BugBounds.width/2,BugBounds.top);
-    this->createVarible();
-    this->createLaser();
+    laser.setPosition(BugBounds.left+BugBounds.width/2,BugBounds.top);
+    createVarible();
+    createLaser();
 
 }
 
-Laser::~Laser()
-{
-    //Destructor
-
-}
 //Get class object for shape
 sf::RectangleShape Laser::getLaser()
 {
@@ -26,20 +21,20 @@ sf::RectangleShape Laser::getLaser()
 //Sets movement speed
 void Laser::createVarible()
 {
-    this->MoveSpeed=10.f;
+    MoveSpeed=10.f;
 }
 void Laser::createLaser()
 {
     //Sets laser parameters
-    this->laser.setFillColor(sf::Color::Yellow);
-    this->laser.setSize(sf::Vector2f(1.f,20.f));
+    laser.setFillColor(sf::Color::Yellow);
+    laser.setSize(sf::Vector2f(1.f,20.f));
 }
 
 //functions
 //Moves the laser in a direction
 void Laser::LaserMove()
 {
-    this->laser.move(0.f,-this->MoveSpeed);//Upwards
+    laser.move(0.f,-this->MoveSpeed);//Upwards
 }
 void Laser::SetPositionLaser(sf::FloatRect BugBounds)
 {
@@ -57,16 +52,16 @@ sf::FloatRect Laser::GetLaserPosition()
 
 
 //Updates laser
-void Laser::update(sf::RenderTarget* target)
+void Laser::update()
 {
     //Changes in movement
-    this->LaserMove();
+    LaserMove();
 
 }
 //renders laser
 void Laser::render(sf::RenderTarget* target)
 {
-    target->draw(this->laser);
+    target->draw(laser);
 }
 
 

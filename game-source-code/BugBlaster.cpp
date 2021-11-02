@@ -5,15 +5,9 @@
 //Constructor
 BugBlaster::BugBlaster(float x,float y)
 {
-    this->bug.setPosition(x,y);//Set position of BugBlaster
-    this->createVarible();
-    this->createBug();
-}
-
-//Destructor
-BugBlaster::~BugBlaster()
-{
-
+    bug.setPosition(x,y);//Set position of BugBlaster
+    createVarible();
+    createBug();
 }
 //Get class object
 sf::RectangleShape BugBlaster::getBug()
@@ -23,13 +17,13 @@ sf::RectangleShape BugBlaster::getBug()
 //Initialise Variables
 void BugBlaster::createVarible()
 {
-    this->MoveSpeed=5.f;
+    MoveSpeed=5.f;
 }
 //Gives bug characteristics
 void BugBlaster::createBug()
 {
-    this->bug.setFillColor(sf::Color::Green);
-    this->bug.setSize(sf::Vector2f(20.f,20.f));
+    bug.setFillColor(sf::Color::Green);
+    bug.setSize(sf::Vector2f(20.f,20.f));
 }
 
 //functions
@@ -40,19 +34,19 @@ void BugBlaster::KeyInputResults(Movement movement)
 
     if(movement==Movement::Up)
     {
-        this->bug.move(0.f,-this->MoveSpeed);//Up
+        bug.move(0.f,-MoveSpeed);//Up
     }
     else if(movement==Movement::Down)
     {
-        this->bug.move(0.f,this->MoveSpeed);//Down
+        bug.move(0.f,MoveSpeed);//Down
     }
     if(movement==Movement::Left)
     {
-        this->bug.move(-this->MoveSpeed,0.f);//Left
+        bug.move(-MoveSpeed,0.f);//Left
     }
     else if(movement==Movement::Right)
     {
-        this->bug.move(this->MoveSpeed,0.f);//Right
+        bug.move(MoveSpeed,0.f);//Right
     }
 
 
@@ -63,20 +57,20 @@ void BugBlaster::WindowCollision(sf::RenderTarget* target)
 //Creates lower box for BugBlaster
     if(bug.getGlobalBounds().left<=0.f)
     {
-        this->bug.setPosition(0.f,bug.getGlobalBounds().top);
+        bug.setPosition(0.f,bug.getGlobalBounds().top);
     }
     else if(bug.getGlobalBounds().left+bug.getGlobalBounds().width>=target->getSize().x)
     {
-        this->bug.setPosition(target->getSize().x-bug.getGlobalBounds().width,bug.getGlobalBounds().top);
+        bug.setPosition(target->getSize().x-bug.getGlobalBounds().width,bug.getGlobalBounds().top);
     }
 
     if(bug.getGlobalBounds().top<=450.f)
     {
-        this->bug.setPosition(bug.getGlobalBounds().left,450.f);
+        bug.setPosition(bug.getGlobalBounds().left,450.f);
     }
     else if(bug.getGlobalBounds().top+bug.getGlobalBounds().height>=target->getSize().y-100.f)
     {
-        this->bug.setPosition(bug.getGlobalBounds().left,target->getSize().y-bug.getGlobalBounds().height-100.f);
+        bug.setPosition(bug.getGlobalBounds().left,target->getSize().y-bug.getGlobalBounds().height-100.f);
     }
 
 
@@ -95,20 +89,20 @@ void BugBlaster::update(sf::RenderTarget* target)
     //Key movements
     auto movement=BugBlasterGetInputs();
 
-    this->KeyInputResults(movement);
+    KeyInputResults(movement);
 
     //collision
-    this->WindowCollision(target);
+    WindowCollision(target);
 }
 void BugBlaster::render(sf::RenderTarget* target)
 {
     //Renders to window
-    target->draw(this->bug);
+    target->draw(bug);
 }
 
 void BugBlaster::SetPosition(float x,float y)
 {
-    this->bug.setPosition(x,y);
+    bug.setPosition(x,y);
 }
 
  Movement BugBlaster::BugBlasterGetInputs()

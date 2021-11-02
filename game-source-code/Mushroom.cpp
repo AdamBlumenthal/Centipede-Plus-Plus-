@@ -3,43 +3,37 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
+//Will set a known startpoint
 Mushroom::Mushroom(float x, float y)
 {
-    this->LoadTexture();
-    this->LoadSprite();
+    LoadTexture();
+    LoadSprite();
 
-    this->mush.setPosition(x,y);
+    mush.setPosition(x,y);
 
 }
-
+//Will set a random startpoint
 Mushroom::Mushroom()
 {
-    this->LoadTexture();
-    this->LoadSprite();
+    LoadTexture();
+    LoadSprite();
 
     float randomy = 20+(rand() % 28)*20;
     float randomx =20 + (rand() % 38)*20;
 
-    this->mush.setPosition(randomx,randomy);
+    mush.setPosition(randomx,randomy);
 
 }
 
-
-
-Mushroom::~Mushroom()
-{
-    //dtor
-}
 
 void Mushroom::render(sf::RenderTarget* target)
 {
-    target->draw(this->mush);
+    target->draw(mush);
 }
 
 void Mushroom::LoadTexture()
 {
-    if(!this->mushtext.loadFromFile("resources/Mushroomsprite1.png"))
+    if(!mushtext.loadFromFile("resources/Mushroomsprite1.png"))
     {
         std::cout << "Mushroom.cpp Failed to load Sprite" <<std::endl;
     }
@@ -48,15 +42,15 @@ void Mushroom::LoadTexture()
 
 void Mushroom::LoadSprite()
 {
-    this->mush.setTexture(this->mushtext);
+    mush.setTexture(mushtext);
 
     //Scaling image
-    this->mush.scale(0.009f,0.009f);
+    mush.scale(0.009f,0.009f);
 
     //Set Health start
     MushHealth=4;
 }
-
+//Called when hit by Laser
 void Mushroom::HealthLoss()
 {
     MushHealth--;
@@ -73,6 +67,7 @@ sf::Sprite Mushroom::getMushroom()
     return mush;
 }
 
+//Checks if Health is Zero
  bool Mushroom::IsHealthZero()
  {
      if(MushHealth<=0)
@@ -84,12 +79,21 @@ sf::Sprite Mushroom::getMushroom()
          return false;
      }
  }
-
+//Used to count mushrooms in Player area
  bool Mushroom::inPlayerArea()
 {
     if(mush.getPosition().y>450)
         return true;
         else
             return false;
+}
+//Does mushroom intersect with the PLayer
+bool Mushroom::MushroomInPlayerStart(std::shared_ptr<BugBlaster> Bug)
+{
+    if(mush.getGlobalBounds().intersects(Bug->GetBugPosition()))
+        return true;
+
+    else
+        return false;
 }
 
