@@ -56,9 +56,9 @@ void BugBlaster::WindowCollision(std::shared_ptr<sf::RenderWindow> target)
         bug.setPosition(target->getSize().x-bug.getGlobalBounds().width,bug.getGlobalBounds().top);
     }
 
-    if(bug.getGlobalBounds().top<=450.f)
+    if(bug.getGlobalBounds().top<=460.f)
     {
-        bug.setPosition(bug.getGlobalBounds().left,450.f);
+        bug.setPosition(bug.getGlobalBounds().left,460.f);
     }
     else if(bug.getGlobalBounds().top+bug.getGlobalBounds().height>=target->getSize().y-100.f)
     {

@@ -10,11 +10,9 @@
 Centipede::Centipede(){
 segments.clear();
 }
-Centipede::Centipede(std::vector<Segment> seg, std::vector<Movement> m){
-    segments.clear();
-    segments=seg;
-    moves=m;
-    hitMushroom=true;
+Centipede::Centipede(std::vector<Segment> seg, std::vector<Movement> m):segments(seg),moves(m)
+{
+
     upOrDown=true;
     leftOrRight=true;
     for(int i=0;i<moves.size();i++){
@@ -37,12 +35,10 @@ Centipede::Centipede(std::vector<Segment> seg, std::vector<Movement> m){
         }
     }
     segments.at(0).makeHead();
-   // moves.insert(moves.begin(),MoveCentipede::Down);
     }
 Centipede::Centipede(int l, float d, float p ):length(l),direction(d) {
     segments.clear();
     float pos=p;
-    hitMushroom=false;
     for(auto i=0; i<length;i++){
             //pos=p+(-18)*i;
     segments.push_back(Segment(pos, direction));
@@ -58,32 +54,18 @@ moves.insert(moves.begin(),Movement::Right);
 void Centipede::checkCentipedeBounds(){
     int gameWidth=800;//constants throughout the game
     int gameHeight=600;//constants
-     //if(hitMushroom==true){
 
-
-       // hitMushroom=false;
-
-   // }
 
      if((segments.at(0).GetSegmentPosition().left-1<=0&&moves.at(0)!=Movement::Right)
             ||segments.at(0).GetSegmentPosition().left +segments.at(0).GetSegmentPosition().width-1 >= gameWidth)
     {
     leftOrRight=!leftOrRight;
+    if(segments.at(0).GetSegmentPosition().top>=580.f||segments.at(0).GetSegmentPosition().top<=460.f&&!upOrDown)
+        upOrDown=!upOrDown;
     upOrDown ? moves.at(0)=Movement::Down : moves.at(0)=Movement::Up;
 
-
-
     }
-    else if(segments.at(0).GetSegmentPosition().top+segments.at(0).GetSegmentPosition().height>gameHeight||
-            (segments.at(0).GetSegmentPosition().top<450.f&&!upOrDown)){
-            //segments.at(0).setVerticalSpeed();
-           // segments.at(0).moveMushroom();
-           upOrDown=!upOrDown;
 
-
-           upOrDown ? moves.at(0)=Movement::Down : moves.at(0)=Movement::Up;
-            leftOrRight=!leftOrRight;
-            }
 
 
 }
@@ -102,17 +84,9 @@ moves.pop_back();
 
 }
 
-
-
-
-
-
-
 void Centipede::update(std::shared_ptr<sf::RenderWindow> target)
 {
-
    Move();
-   //setHitMushroom();
 }
 //Rednders segment
 void Centipede::render(std::shared_ptr<sf::RenderWindow> target)
@@ -140,6 +114,8 @@ sf::FloatRect Centipede::GetCentipedeHeadPosition()
     return CentipedeHeadBounds;
 }
 void Centipede::setHitMushroom(){
+    if(segments.at(0).GetSegmentPosition().top>=580.f||segments.at(0).GetSegmentPosition().top<=460.f&&!upOrDown)
+        upOrDown=!upOrDown;
    upOrDown ? moves.at(0)=Movement::Down : moves.at(0)=Movement::Up;
     leftOrRight=!leftOrRight;
 

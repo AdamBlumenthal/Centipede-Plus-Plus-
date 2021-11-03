@@ -35,6 +35,7 @@ class Bomb
     */
         sf::FloatRect GetBombPosition();
 
+
     private:
 
         sf::Sprite bomb;

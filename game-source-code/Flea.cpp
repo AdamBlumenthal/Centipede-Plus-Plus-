@@ -75,7 +75,7 @@ return false;
      float randomvalue = (rand() % 100);
      int Length=Mush.size();
 
-     if(randomvalue<2&&flea.getGlobalBounds().top<660)
+     if(randomvalue<2&&flea.getGlobalBounds().top<600)
      {
         Mush.push_back(std::make_shared<Mushroom>(flea.getGlobalBounds().left, flea.getGlobalBounds().top));
 

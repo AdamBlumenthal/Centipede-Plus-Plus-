@@ -3,12 +3,12 @@
 #include <iostream>
 
 //Constructor
-Segment::Segment(float& pos):position(pos)
+Segment::Segment(float pos):position(pos)
 {
     movespeed=2.f;
     makeSegment(pos);
 }
-Segment::Segment(float& pos, float& mSpeed):position(pos),movespeed(mSpeed)
+Segment::Segment(float pos, float mSpeed):position(pos),movespeed(mSpeed)
 {
     makeSegment(pos);
 
@@ -59,4 +59,8 @@ sf::FloatRect Segment::GetSegmentPosition()
 
     return segment.getGlobalBounds();
 }
+//Used for Testing Centipede
+void Segment::setSegmentPosition(float x, float y){
 
+    segment.setPosition(x,y);
+}

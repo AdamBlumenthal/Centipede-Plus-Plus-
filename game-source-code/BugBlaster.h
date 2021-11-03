@@ -10,6 +10,7 @@
 
 enum class Movement{NoMove,Up,Down, Right, Left};
 
+
 /** \class BugBlaster
     \brief Creates a Green square what can be controled by the arrow keys on the keyboard.
     The movement is limited to a rectangle at the bottom of the screen.
@@ -21,9 +22,9 @@ class BugBlaster
 public:
      /** \brief The Constructor for the BugBlaster class
         \param x The set starting x-axis position defualt at 350
-        \param y The set starting y-axis position defualt at 450
+        \param y The set starting y-axis position defualt at 460
     */
-    BugBlaster(float x=350.f,float y=450.f);
+    BugBlaster(float x=350.f,float y=460.f);
 
     //functions
     /** \brief Finds the movement direction of the player form the keyboard inputs
