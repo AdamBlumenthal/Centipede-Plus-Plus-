@@ -1,7 +1,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "BugBlaster.h"
-
+#include <iostream>
 //Constructor
 BugBlaster::BugBlaster(float x,float y)
 {
@@ -31,6 +31,7 @@ void BugBlaster::createBug()
 void BugBlaster::KeyInputResults(Movement movement)
 {
     //Key movements
+
        switch(movement){
     case Movement::Up:  bug.move(0.f,-MoveSpeed); break;
     case Movement::Down:  bug.move(0.f,MoveSpeed); break;
