@@ -380,17 +380,23 @@ void CollisionControl::CollisionCentipedeBomb(std::vector<std::shared_ptr<Centip
 //Centipede collisons
 void CollisionControl::CentipedeSelfCollision(std::vector<std::shared_ptr<Centipede>>& centipedes)
 {
-    for(int k=0; k<centipedes.size()-1; k++)
+    for(int k=0; k<centipedes.size(); k++)
     {
         bool breakMiddleLoop=false;
-        for(int i=k+1; i<centipedes.size(); i++)
+        for(int i=0; i<centipedes.size(); i++)
         {
+            if(i==k)
+                continue;
             for(int j=0; j<centipedes.at(i)->getSize(); j++)
             {
                 if(centipedes.at(k)->getCentipede().at(0).GetSegmentPosition().intersects(centipedes.at(i)->getCentipede().at(j).GetSegmentPosition())
                         &&
                         !(centipedes.at(k)->getMoves().at(1)==Movement::Down||centipedes.at(k)->getMoves().at(1)==Movement::Up))
                 {
+
+                    //ensures that if 2 centipedes land up overlapping that the one is pushed downwards
+                    if(centipedes.at(k)->getMoves().at(0)==centipedes.at(i)->getMoves().at(0))
+                        centipedes.at(k)->setHitMushroom();
                     centipedes.at(k)->setHitMushroom();
                     breakMiddleLoop=true;
                     break;

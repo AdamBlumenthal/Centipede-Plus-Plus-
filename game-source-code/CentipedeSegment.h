@@ -16,12 +16,12 @@ public:
     /** \brief One of the constructors for the Segment  class
         \param Receives the intial x position for the segment to be created.
     */
-    Segment(float& position);
+    Segment(float position);
       /** \brief One of the constructors for the Segment class
         \param Receives the intial x position for the segment to be created.
         \param Receives the movespeeed for a segment
     */
-    Segment(float& position, float& movespeed);
+    Segment(float position, float movespeed);
 
     /** \brief Moves the segment in one of the directions allowed
         \param dir is the enum of the direction for a segment to move
@@ -47,6 +47,11 @@ public:
             \returns A segment's global bounds
     */
     sf::FloatRect GetSegmentPosition();
+          /** \brief Sets the segments position
+            \param x coordinate
+            \param y coordinate
+    */
+    void setSegmentPosition(float x, float y);
 
 private:
     sf::RectangleShape segment;

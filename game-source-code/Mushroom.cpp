@@ -81,7 +81,7 @@ sf::Sprite Mushroom::getMushroom()
 //Used to count mushrooms in Player area
  bool Mushroom::inPlayerArea()
 {
-    if(mush.getPosition().y>450)
+    if(mush.getPosition().y>460)
         return true;
         else
             return false;

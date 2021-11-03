@@ -10,6 +10,7 @@
 #include "Centipede.h"
 #include "CollisionControl.h"
 #include "Bomb.h"
+#include "Spawn.h"
 #include <memory>
 
 /** \file GameEngine.h
@@ -86,20 +87,20 @@ private:
     bool lvlBegin;
     int MaxLengthCentipede;
     int currentSegments;
-    int MaxLaserCount;
-    float MinLaserDelay;
-    float LaserDelay;
+//    int MaxLaserCount;
+//    float MinLaserDelay;
+//    float LaserDelay;
 
-    //Mushroom starting value
-    int MushCount;
+//    //Mushroom starting value
+//    int MushCount;
 
-    //Flea varibles
-    int MinFleaTimeDelay;
-    int FleaTimeDelay;
-
-    //Bomb varibles
-    int MinBombTimeDelay;
-    int BombTimeDelay;
+//    //Flea varibles
+//    int MinFleaTimeDelay;
+//    int FleaTimeDelay;
+//
+//    //Bomb varibles
+//    int MinBombTimeDelay;
+//    int BombTimeDelay;
 
     int Lives;
 
@@ -115,6 +116,7 @@ private:
     sf::RectangleShape BotLine;
 
     CollisionControl Collision;
+    Spawn spawnobj;
 
     std::shared_ptr<BugBlaster> BugB;
     std::vector<std::shared_ptr<Laser>> laser;

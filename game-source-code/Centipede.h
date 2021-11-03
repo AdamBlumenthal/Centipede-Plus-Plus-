@@ -96,7 +96,6 @@ private:
     int length;
     float direction;
 
-    bool hitMushroom;
     bool leftOrRight;
     bool upOrDown;
 };

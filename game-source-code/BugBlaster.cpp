@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "BugBlaster.h"
-
+#include <iostream>
 //Constructor
 BugBlaster::BugBlaster(float x,float y)
 {
@@ -30,6 +30,7 @@ void BugBlaster::createBug()
 void BugBlaster::KeyInputResults(Movement movement)
 {
     //Key movements
+
        switch(movement){
     case Movement::Up:  bug.move(0.f,-MoveSpeed); break;
     case Movement::Down:  bug.move(0.f,MoveSpeed); break;
@@ -54,9 +55,9 @@ void BugBlaster::WindowCollision(std::shared_ptr<sf::RenderWindow> target)
         bug.setPosition(target->getSize().x-bug.getGlobalBounds().width,bug.getGlobalBounds().top);
     }
 
-    if(bug.getGlobalBounds().top<=450.f)
+    if(bug.getGlobalBounds().top<=460.f)
     {
-        bug.setPosition(bug.getGlobalBounds().left,450.f);
+        bug.setPosition(bug.getGlobalBounds().left,460.f);
     }
     else if(bug.getGlobalBounds().top+bug.getGlobalBounds().height>=target->getSize().y-100.f)
     {

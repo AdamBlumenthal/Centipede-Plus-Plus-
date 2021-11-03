@@ -1,6 +1,5 @@
 #ifndef COLLISIONCONTROL_H
 #define COLLISIONCONTROL_H
-#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <cstdlib>
