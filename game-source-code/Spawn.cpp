@@ -88,7 +88,6 @@ void Spawn::SpawnBomb(std::vector <std::shared_ptr<Bomb>>& bomb,std::vector <std
             {
                 bomb.pop_back();
 
-
                 BombTimeDelay=MinBombTimeDelay;
                 break;
             }
