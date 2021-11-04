@@ -47,7 +47,7 @@ public:
     /** \brief initializes the Starting objects in the game and constants
 
     */
-    void createVarible();
+    void createVariable();
     /** \brief Sets the conditions and parameters of the render window
 
     */
@@ -87,20 +87,6 @@ private:
     bool lvlBegin;
     int MaxLengthCentipede;
     int currentSegments;
-//    int MaxLaserCount;
-//    float MinLaserDelay;
-//    float LaserDelay;
-
-//    //Mushroom starting value
-//    int MushCount;
-
-//    //Flea varibles
-//    int MinFleaTimeDelay;
-//    int FleaTimeDelay;
-//
-//    //Bomb varibles
-//    int MinBombTimeDelay;
-//    int BombTimeDelay;
 
     int Lives;
 

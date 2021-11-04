@@ -19,11 +19,11 @@
 
 
 int Game::numberOfCentipedes=12;
-//int Game::
+
 //Constructor
 Game::Game()
 {
-    createVarible();
+    createVariable();
     createWindow();
 
 }
@@ -52,7 +52,7 @@ void Game::createWindow()
     window->setFramerateLimit(60);
 };
 //Gives values to private variables.
-void Game::createVarible()
+void Game::createVariable()
 {
     BugB=std::make_shared<BugBlaster>();
 
@@ -144,7 +144,7 @@ void Game::update()
 
 
     centipedes.erase(remove_if(centipedes.begin(),centipedes.end(),[](std::shared_ptr<Centipede> cent)->bool{return cent->isEmpty();}),centipedes.end());
-       // SelfCollision();
+
     for(int i=0;i<centipedes.size();i++){
             centipedes.at(i)->update(window);
 
@@ -218,7 +218,7 @@ void Game::render()
 
         bomb.clear();
           Mush.clear();
-          createVarible();
+          createVariable();
           start=false;
             gameOver=false;
             lvlBegin=true;
