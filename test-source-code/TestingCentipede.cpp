@@ -320,7 +320,9 @@ TEST_CASE("Player and Flea collide")
     std::vector<std::shared_ptr<Flea>> flea;
     flea.push_back(std::make_shared<Flea>());
     flea.at(0)->setFleaPosition(400.f, 400.f);
-
+    CollisionControl collision;
+    collision.CollisionBugFlea(BugB, flea);
+    CHECK(collision.DidPlayerLoseLife()==true);
 
 
 
@@ -344,6 +346,30 @@ TEST_CASE("Centipede and Mushroom collide")
 
 }
 
+TEST_CASE("Centipede self collision")
+{
+
+    std::vector<std::shared_ptr<Centipede>> centipedes;
+    std::vector<Movement> moves(10, Movement::Left);
+
+    std::vector<Segment> seg(2.f,400.f);
+    centipedes.push_back(std::make_shared<Centipede>(1,2.f, 380.f));
+    centipedes.push_back(std::make_shared<Centipede>(seg,moves));
+    for(int i=0; i<centipedes.size();i++)
+        centipedes.at(i)->Move();
+
+    CollisionControl collision;
+    collision.CentipedeSelfCollision(centipedes);
+    for(int i=0; i<centipedes.size();i++)
+    {
+        CHECK(centipedes.at(i)->getMoves().at(0)==Movement::Down);
+        centipedes.at(i)->Move();
+
+    }
+    CHECK(centipedes.at(0)->getMoves().at(0)==Movement::Left);
+    CHECK(centipedes.at(1)->getMoves().at(0)==Movement::Right);
+
+}
 TEST_CASE("Laser collision with top of playable area")
 {
     std::shared_ptr<BugBlaster> BugB=std::make_shared<BugBlaster>(0.f,0.f);
